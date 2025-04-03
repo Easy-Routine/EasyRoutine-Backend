@@ -35,6 +35,9 @@ subprojects {
 
     dependencies {
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        implementation 'com.google.guava:guava:29.0-jre'
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
     }
 
     bootJar.enabled = false
