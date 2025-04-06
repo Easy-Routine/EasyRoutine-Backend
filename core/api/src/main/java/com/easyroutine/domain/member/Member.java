@@ -5,10 +5,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import static lombok.AccessLevel.*;
 
 @Getter
 @Entity
 @Table(name = "members")
+@NoArgsConstructor(access = PROTECTED)
 public class Member {
 
     @Id
