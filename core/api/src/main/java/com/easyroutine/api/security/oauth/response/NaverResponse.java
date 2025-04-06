@@ -1,5 +1,6 @@
 package com.easyroutine.api.security.oauth.response;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class NaverResponse implements OAuth2Response {
@@ -17,16 +18,24 @@ public class NaverResponse implements OAuth2Response {
 
     @Override
     public String getProviderId() {
-        return attribute.get("id").toString();
+        Map response = getResponse();
+        return response.get("id").toString();
     }
 
     @Override
     public String getEmail() {
-        return attribute.get("email").toString();
+        Map response = getResponse();
+        return response.get("email").toString();
     }
 
     @Override
     public String getName() {
-        return attribute.get("name").toString();
+        Map response = getResponse();
+        return response.get("name").toString();
+    }
+
+    private Map getResponse() {
+        Map response = (LinkedHashMap) attribute.get("response");
+        return response;
     }
 }

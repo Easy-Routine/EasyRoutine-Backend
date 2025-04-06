@@ -1,6 +1,7 @@
 package com.easyroutine.api.security.oauth;
 
 import com.easyroutine.api.security.oauth.response.GoogleResponse;
+import com.easyroutine.api.security.oauth.response.KakaoResponse;
 import com.easyroutine.api.security.oauth.response.NaverResponse;
 import com.easyroutine.api.security.oauth.response.OAuth2Response;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -32,6 +33,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 return new GoogleResponse(attributes);
             case "naver":
                 return new NaverResponse(attributes);
+            case "kakao":
+                return new KakaoResponse(attributes);
             default:
                 throw new IllegalArgumentException("Unsupported OAuth2 provider: " + registrationId);
         }

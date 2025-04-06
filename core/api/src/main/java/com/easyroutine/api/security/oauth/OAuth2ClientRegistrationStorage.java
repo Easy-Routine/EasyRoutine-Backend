@@ -17,7 +17,8 @@ public class OAuth2ClientRegistrationStorage {
     public ClientRegistrationRepository clientRegistrationRepository() {
         return new InMemoryClientRegistrationRepository(
                 oAuthClientRegistration.googleClientRegistration(),
-                oAuthClientRegistration.naverClientRegistration()
+                oAuthClientRegistration.naverClientRegistration(),
+                oAuthClientRegistration.kakaoClientRegistration()
         );
     }
 }
