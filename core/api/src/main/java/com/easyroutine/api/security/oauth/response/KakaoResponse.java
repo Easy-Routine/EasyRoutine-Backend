@@ -1,13 +1,9 @@
 package com.easyroutine.api.security.oauth.response;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class KakaoResponse implements OAuth2Response{
+public class KakaoResponse implements OAuth2Response {
 
     private final Map<String, Object> attribute;
 
@@ -27,12 +23,18 @@ public class KakaoResponse implements OAuth2Response{
 
     @Override
     public String getName() {
-        Map properties = (LinkedHashMap)attribute.get("properties");
-        return properties.get("nickname").toString();
+        Map properties = getProperties();
+        Map profile = (LinkedHashMap) properties.get("profile");
+        return profile.get("nickname").toString();
     }
 
     @Override
     public String getEmail() {
-        return "";
+        Map properties = getProperties();
+        return properties.get("email").toString();
+    }
+
+    private Map getProperties() {
+        return (LinkedHashMap) attribute.get("kakao_account");
     }
 }
