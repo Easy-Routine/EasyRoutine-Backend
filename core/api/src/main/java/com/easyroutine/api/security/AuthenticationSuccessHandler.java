@@ -32,9 +32,10 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 
         String token = jwtUtil.createJwt(username, role, 60*60*60L);
         Cookie authorization = createCookie("Authorization", token);
+        response.setHeader("Authorization", token);
 
         response.addCookie(authorization);
-        response.sendRedirect("http://localhost:8080/");
+        response.sendRedirect("http://localhost:3000/");
     }
 
     private String getRoleIn(Collection<? extends GrantedAuthority> authorities) {

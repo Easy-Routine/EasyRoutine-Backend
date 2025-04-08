@@ -2,6 +2,7 @@ package com.easyroutine.api.security.jwt;
 
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -15,10 +16,8 @@ public class JsonWebTokenUtil {
 
     private SecretKey secretKey;
 
-    // TODO : need to set the secret key
-    public JsonWebTokenUtil() {
-        // TODO : need to set the secret key
-        byte[] key = "SECRETKEY=".getBytes(StandardCharsets.UTF_8);
+    public JsonWebTokenUtil(@Value("${jwt.secret}") String rawSecretKey) {
+        byte[] key = rawSecretKey.getBytes(StandardCharsets.UTF_8);
         String algorithm = Jwts.SIG.HS256.key().build().getAlgorithm();
         this.secretKey = new SecretKeySpec(key, algorithm);
     }

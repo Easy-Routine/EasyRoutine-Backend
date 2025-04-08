@@ -1,6 +1,6 @@
 package com.easyroutine.api.security.oauth;
 
-import ch.qos.logback.core.net.server.Client;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
@@ -10,11 +10,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class OAuthClientRegistration {
 
+    @Value("${google.client.id}")
+    private String googleClientId;
+    @Value("${google.client.secret}")
+    private String googleClientSecret;
+    @Value("${google.client.redirect-uri}")
+    private String googleRedirectUri;
+
     public ClientRegistration googleClientRegistration() {
         return ClientRegistration.withRegistrationId("google")
-                .clientId("ID" )
-                .clientSecret("PASSWORD")
-                .redirectUri("http://localhost:8080/login/oauth2/code/google")
+                .clientId(googleClientId)
+                .clientSecret(googleClientSecret)
+                .redirectUri(googleRedirectUri)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .scope("profile", "email")
                 .authorizationUri("https://accounts.google.com/o/oauth2/v2/auth")
@@ -26,11 +33,18 @@ public class OAuthClientRegistration {
                 .build();
     }
 
+    @Value("${naver.client.id}")
+    private String naverClientId;
+    @Value("${naver.client.secret}")
+    private String naverClientSecret;
+    @Value("${naver.client.redirect-uri}")
+    private String naverRedirectUri;
+
     public ClientRegistration naverClientRegistration() {
         return ClientRegistration.withRegistrationId("naver")
-                .clientId("ID")
-                .clientSecret("PASSWORD")
-                .redirectUri("http://localhost:8080/login/oauth2/code/naver")
+                .clientId(naverClientId)
+                .clientSecret(naverClientSecret)
+                .redirectUri(naverRedirectUri)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .scope("name", "email")
                 .authorizationUri("https://nid.naver.com/oauth2.0/authorize")
@@ -40,11 +54,18 @@ public class OAuthClientRegistration {
                 .build();
     }
 
+    @Value("${kakao.client.id}")
+    private String kakaoClientId;
+    @Value("${kakao.client.secret}")
+    private String kakaoClientSecret;
+    @Value("${kakao.client.redirect-uri}")
+    private String kakaoRedirectUri;
+
     public ClientRegistration kakaoClientRegistration() {
         return ClientRegistration.withRegistrationId("kakao")
-                .clientId("ID")
-                .clientSecret("PASSWORD")
-                .redirectUri("http://localhost:8080/login/oauth2/code/kakao")
+                .clientId(kakaoClientId)
+                .clientSecret(kakaoClientSecret)
+                .redirectUri(kakaoRedirectUri)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .scope("profile_nickname", "profile_image", "account_email")
                 .authorizationUri("https://kauth.kakao.com/oauth/authorize")
