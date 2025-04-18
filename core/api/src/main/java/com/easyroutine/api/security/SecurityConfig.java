@@ -40,10 +40,11 @@ public class SecurityConfig {
                 .formLogin(form -> form.disable())
                 .httpBasic(httpBasic -> httpBasic.disable());
 
-        http.cors(auth -> auth.configurationSource(
+        http
+                .cors(auth -> auth.configurationSource(
                 request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
-                    configuration.setAllowedOrigins(Collections.singletonList("https://localhost:3000"));
+                    configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
                     configuration.setAllowCredentials(true);
                     configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     configuration.setMaxAge(3600L);
