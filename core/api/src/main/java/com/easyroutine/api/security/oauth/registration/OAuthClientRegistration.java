@@ -1,4 +1,4 @@
-package com.easyroutine.api.security.oauth;
+package com.easyroutine.api.security.oauth.registration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;

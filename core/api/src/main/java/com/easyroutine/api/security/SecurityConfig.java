@@ -3,7 +3,7 @@ package com.easyroutine.api.security;
 import com.easyroutine.api.security.jwt.JsonWebTokenFilter;
 import com.easyroutine.api.security.jwt.JsonWebTokenUtil;
 import com.easyroutine.api.security.oauth.CustomOAuth2UserService;
-import com.easyroutine.api.security.oauth.OAuth2ClientRegistrationStorage;
+import com.easyroutine.api.security.oauth.registration.OAuth2ClientRegistrationStorage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
