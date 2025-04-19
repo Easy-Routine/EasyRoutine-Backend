@@ -23,24 +23,29 @@ public class KakaoResponse implements OAuth2Response {
 
     @Override
     public String getName() {
-        Map properties = getProperties();
-        Map profile = (LinkedHashMap) properties.get("profile");
+        Map<String, Object> properties = getProperties();
+        Map<String, Object> profile = (LinkedHashMap) properties.get("profile");
         return profile.get("nickname").toString();
     }
 
     @Override
     public String getEmail() {
-        Map properties = getProperties();
+        Map<String, Object> properties = getProperties();
         return properties.get("email").toString();
     }
 
     @Override
     public String getProfileImage() {
-        Map properties = getProperties();
-        return properties.get("profile_image").toString();
+        Map<String, Object> properties = getProperties();
+        Map<String, Object> profile = getProfile(properties);
+        return profile.get("profile_image_url").toString();
     }
 
-    private Map getProperties() {
+    private Map<String, Object> getProfile(Map<String, Object> properties) {
+        return (LinkedHashMap) properties.get("profile");
+    }
+
+    private Map<String, Object> getProperties() {
         return (LinkedHashMap) attribute.get("kakao_account");
     }
 }
