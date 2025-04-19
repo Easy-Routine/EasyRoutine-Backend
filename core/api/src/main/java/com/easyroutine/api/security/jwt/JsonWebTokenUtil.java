@@ -22,9 +22,9 @@ public class JsonWebTokenUtil {
         this.secretKey = new SecretKeySpec(key, algorithm);
     }
 
-    public String getUsername(String token) {
+    public String getMemberId(String token) {
         Claims payload = getClaimsBy(token);
-        return payload.get("username", String.class);
+        return payload.get("memberId", String.class);
     }
 
     public String getRole(String token) {
@@ -45,9 +45,9 @@ public class JsonWebTokenUtil {
         }
     }
 
-    public String createJwt(String username, String role, Long expiredMs) {
+    public String createJwt(String memberId, String role, Long expiredMs) {
         return Jwts.builder()
-                .claim("username", username)
+                .claim("memberId", memberId)
                 .claim("role", role)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiredMs))

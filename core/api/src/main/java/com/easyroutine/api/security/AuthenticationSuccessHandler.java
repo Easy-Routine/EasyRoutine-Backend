@@ -25,12 +25,12 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
-        String username = customUserDetails.getUsername();
+        String memberId = customUserDetails.getMemberId();
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         String role = getRoleIn(authorities);
 
-        String token = jwtUtil.createJwt(username, role, 60*60*60L);
+        String token = jwtUtil.createJwt(memberId, role, 60*60*60L);
 
         String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000")
                 .queryParam("token", token)

@@ -42,6 +42,8 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable);
 
         http
+                .headers(headers -> headers.frameOptions(frame -> frame.disable()));
+        http
                 .cors(auth -> auth.configurationSource(
                 request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
@@ -64,6 +66,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/oauth2/**", "/login/**").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .anyRequest().authenticated());
 

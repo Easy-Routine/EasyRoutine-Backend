@@ -45,10 +45,10 @@ public class JsonWebTokenFilter extends OncePerRequestFilter {
             return;
         }
 
-        String username = jwtUtil.getUsername(token);
+        String memberId = jwtUtil.getMemberId(token);
         String role = jwtUtil.getRole(token);
 
-        CustomOAuth2User customOAuth2User = new CustomOAuth2User(username, role);
+        CustomOAuth2User customOAuth2User = new CustomOAuth2User(memberId, role);
 
         Authentication authToken = new UsernamePasswordAuthenticationToken(customOAuth2User, null, customOAuth2User.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authToken);

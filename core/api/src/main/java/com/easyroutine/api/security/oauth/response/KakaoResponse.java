@@ -34,6 +34,12 @@ public class KakaoResponse implements OAuth2Response {
         return properties.get("email").toString();
     }
 
+    @Override
+    public String getProfileImage() {
+        Map properties = getProperties();
+        return properties.get("profile_image").toString();
+    }
+
     private Map getProperties() {
         return (LinkedHashMap) attribute.get("kakao_account");
     }

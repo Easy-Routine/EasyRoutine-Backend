@@ -15,9 +15,10 @@ public class CustomOAuth2User implements OAuth2User {
 
     public CustomOAuth2User(OAuth2Response oAuth2Response, String role) {
         this.member = Member.builder()
-                .username(oAuth2Response.getProvider() + "-" + oAuth2Response.getProviderId())
                 .provider(oAuth2Response.getProvider())
                 .email(oAuth2Response.getEmail())
+                .masking_email(getMaskEmailBy(oAuth2Response.getEmail()))
+                .profileImage(oAuth2Response.getProfileImage())
                 .nickname(oAuth2Response.getName())
                 .provider(oAuth2Response.getProvider())
                 .providerId(oAuth2Response.getProviderId())
@@ -25,11 +26,19 @@ public class CustomOAuth2User implements OAuth2User {
                 .build();
     }
 
-    public CustomOAuth2User(String username, String role) {
+    public CustomOAuth2User(String memberId, String role) {
         this.member = Member.builder()
-                .username(username)
+                .id(memberId)
                 .role(role)
                 .build();
+    }
+
+    public String getMaskEmailBy(String email) {
+        int atIndex = email.indexOf("@");
+        String username = email.substring(0, atIndex);
+        String domain = email.substring(atIndex);
+        String maskedUsername = username.substring(0, 3) + "****";
+        return maskedUsername + domain;
     }
 
     @Override
@@ -42,12 +51,16 @@ public class CustomOAuth2User implements OAuth2User {
         return List.of(this.member::getRole);
     }
 
+    public Member getMember() {
+        return this.member;
+    }
+
+    public String getMemberId() {
+        return this.member.getId();
+    }
+
     @Override
     public String getName() {
         return this.member.getNickname();
-    }
-
-    public String getUsername() {
-        return this.member.getUsername();
     }
 }
