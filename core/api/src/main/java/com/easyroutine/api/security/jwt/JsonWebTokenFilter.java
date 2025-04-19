@@ -32,12 +32,12 @@ public class JsonWebTokenFilter extends OncePerRequestFilter {
             return;
         }
 
+        token = token.substring(7).trim();
+
         if (jwtUtil.isExpired(token)) {
             filterChain.doFilter(request, response);
             return;
         }
-        
-        token = token.substring(7).trim();
 
         String memberId = jwtUtil.getMemberId(token);
         String role = jwtUtil.getRole(token);

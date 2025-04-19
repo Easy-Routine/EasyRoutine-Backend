@@ -1,11 +1,14 @@
 package com.easyroutine.domain.member;
 
 import com.easyroutine.api.security.oauth.response.OAuth2Response;
+import com.easyroutine.domain.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
+
+import java.time.LocalDateTime;
 
 import static lombok.AccessLevel.*;
 
@@ -13,7 +16,7 @@ import static lombok.AccessLevel.*;
 @Entity
 @Table(name = "members")
 @NoArgsConstructor(access = PROTECTED)
-public class Member {
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -28,6 +31,8 @@ public class Member {
     private String bio;
     private String profileImage;
     private String role;
+    @Enumerated(EnumType.STRING)
+    private MemberStatus status;
 
     @Builder
     public Member(String id, String provider, String providerId, String email, String masking_email, String nickname, String bio, String profileImage, String role) {
@@ -40,6 +45,7 @@ public class Member {
         this.bio = bio;
         this.profileImage = profileImage;
         this.role = role;
+        this.status = MemberStatus.ACTIVE;
     }
 
     public static Member of(OAuth2Response oAuth2Response, String role) {
@@ -68,5 +74,10 @@ public class Member {
         String domain = email.substring(atIndex);
         String maskedUsername = username.substring(0, 3) + "****";
         return maskedUsername + domain;
+    }
+
+    public void changeStatus(MemberStatus status) {
+        this.status = status;
+        this.setDeletedAt();
     }
 }

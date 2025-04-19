@@ -1,15 +1,26 @@
 package com.easyroutine.domain.member;
 
+import com.easyroutine.repository.member.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
-@RequestMapping("/members")
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MemberService {
 
-    @PutMapping
-    public Member updateMember() {
-        return new Member();
+    private final MemberRepository memberRepository;
+
+    @Transactional(rollbackFor = Exception.class)
+    public String deleteMember(String memberId) {
+        Optional<Member> optionalMember = memberRepository.findById(memberId);
+        Member member = optionalMember.orElseGet(() -> {
+            throw new IllegalArgumentException("Member not found");
+        });
+        member.changeStatus(MemberStatus.DELETED);
+        return memberId;
     }
 }
