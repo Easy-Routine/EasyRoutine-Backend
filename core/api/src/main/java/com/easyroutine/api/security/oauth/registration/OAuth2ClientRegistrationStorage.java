@@ -1,4 +1,4 @@
-package com.easyroutine.api.security.oauth;
+package com.easyroutine.api.security.oauth.registration;
 
 
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +16,9 @@ public class OAuth2ClientRegistrationStorage {
 
     public ClientRegistrationRepository clientRegistrationRepository() {
         return new InMemoryClientRegistrationRepository(
-                oAuthClientRegistration.googleClientRegistration()
+                oAuthClientRegistration.googleClientRegistration(),
+                oAuthClientRegistration.naverClientRegistration(),
+                oAuthClientRegistration.kakaoClientRegistration()
         );
     }
 }
