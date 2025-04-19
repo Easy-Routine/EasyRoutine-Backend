@@ -1,7 +1,7 @@
 package com.easyroutine.api.security;
 
 import com.easyroutine.api.security.jwt.JsonWebTokenUtil;
-import com.easyroutine.api.security.oauth.CustomOAuth2User;
+import com.easyroutine.api.security.oauth.CustomOAuth2UserImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
@@ -24,7 +24,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
+        CustomOAuth2UserImpl customUserDetails = (CustomOAuth2UserImpl) authentication.getPrincipal();
         String memberId = customUserDetails.getMemberId();
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();

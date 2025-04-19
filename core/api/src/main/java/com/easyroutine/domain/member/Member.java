@@ -1,5 +1,6 @@
 package com.easyroutine.domain.member;
 
+import com.easyroutine.api.security.oauth.response.OAuth2Response;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,5 +40,33 @@ public class Member {
         this.bio = bio;
         this.profileImage = profileImage;
         this.role = role;
+    }
+
+    public static Member of(OAuth2Response oAuth2Response, String role) {
+        return Member.builder()
+                .provider(oAuth2Response.getProvider())
+                .email(oAuth2Response.getEmail())
+                .masking_email(getMaskEmailBy(oAuth2Response.getEmail()))
+                .profileImage(oAuth2Response.getProfileImage())
+                .nickname(oAuth2Response.getName())
+                .provider(oAuth2Response.getProvider())
+                .providerId(oAuth2Response.getProviderId())
+                .role(role)
+                .build();
+    }
+
+    public static Member of(String memberId, String role) {
+        return Member.builder()
+                .id(memberId)
+                .role(role)
+                .build();
+    }
+
+    private static String getMaskEmailBy(String email) {
+        int atIndex = email.indexOf("@");
+        String username = email.substring(0, atIndex);
+        String domain = email.substring(atIndex);
+        String maskedUsername = username.substring(0, 3) + "****";
+        return maskedUsername + domain;
     }
 }

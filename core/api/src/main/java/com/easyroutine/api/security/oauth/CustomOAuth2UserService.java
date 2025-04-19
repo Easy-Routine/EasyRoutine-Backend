@@ -31,14 +31,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2Response oAuth2Response = getOAuth2ResponseBy(registrationId, attributes);
 
         // TODO : add other roles
-        CustomOAuth2User user = new CustomOAuth2User(oAuth2Response, "ROLE_USER");
+        Member member = Member.of(oAuth2Response, "ROLE_USER");
+        CustomOAuth2User user = new CustomOAuth2UserImpl(member);
 
         String provider = oAuth2Response.getProvider();
         String providerId = oAuth2Response.getProviderId();
-        Optional<Member> member = memberRepository.findByProviderAndProviderId(provider, providerId);
+        Optional<Member> existMember = memberRepository.findByProviderAndProviderId(provider, providerId);
 
-        if (member.isEmpty()) {
-            memberRepository.save(user.getMember());
+        if (existMember.isEmpty()) {
+            memberRepository.save(member);
         }
 
         return user;
