@@ -4,6 +4,7 @@ pipeline {
     environment {
         REPO_NAME = "easyroutine-backend"
         CONTAINER_NAME = "easyroutine-backend-container"
+        ENV_FILE = credentials('Backend_ENV')
     }
 
     stages {
@@ -32,10 +33,11 @@ pipeline {
 
         stage('Run Docker Container') {
             steps {
+                writeFile file: '.env', text: "${ENV_FILE}"
                 sh """
                 docker stop ${CONTAINER_NAME} || true
                 docker rm ${CONTAINER_NAME} || true
-                docker run -d --name ${CONTAINER_NAME} -p 8080:8080 ${IMAGE_TAG}
+                docker run --env-file .env -d --name ${CONTAINER_NAME} -p 8080:8080 ${IMAGE_TAG}
                 """
             }
         }
