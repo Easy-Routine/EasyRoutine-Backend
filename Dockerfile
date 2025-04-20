@@ -1,4 +1,4 @@
-FROM gradle:8.1.3-jdk21 AS builder
+FROM gradle:8.1.1-jdk17 AS builder
 COPY --chown=gradle:gradle . /home/gradle/project
 WORKDIR /home/gradle/project
 RUN gradle build --no-daemon
