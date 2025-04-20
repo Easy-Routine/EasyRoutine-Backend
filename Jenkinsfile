@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        REPO_NAME = "EasyRoutine-Backend"
-        CONTAINER_NAME = "EasyRoutine-Backend-Container"
+        REPO_NAME = "easyroutine-backend"
+        CONTAINER_NAME = "easyroutine-backend-container"
     }
 
     stages {
