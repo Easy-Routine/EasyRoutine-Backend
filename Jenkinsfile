@@ -4,6 +4,15 @@ pipeline {
     environment {
         REPO_NAME = "easyroutine-backend"
         CONTAINER_NAME = "easyroutine-backend-container"
+        
+        JWT_SECRET_KEY = credentials('JWT_SECRET_KEY')
+        GOOGLE_CLIENT_ID = credentials('GOOGLE_CLIENT_ID')
+        GOOGLE_CLIENT_SECRET = credentials('GOOGLE_CLIENT_SECRET')
+        KAKAO_CLIENT_ID = credentials('KAKAO_CLIENT_ID')
+        KAKAO_CLIENT_SECRET = credentials('KAKAO_CLIENT_SECRET')
+        NAVER_CLIENT_ID = credentials('NAVER_CLIENT_ID')
+        NAVER_CLIENT_SECRET = credentials('NAVER_CLIENT_SECRET')
+
     }
 
     stages {
