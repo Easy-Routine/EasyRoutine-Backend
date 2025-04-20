@@ -4,7 +4,6 @@ pipeline {
     environment {
         REPO_NAME = "easyroutine-backend"
         CONTAINER_NAME = "easyroutine-backend-container"
-        ENV_FILE = credentials('Backend_ENV')
     }
 
     stages {
