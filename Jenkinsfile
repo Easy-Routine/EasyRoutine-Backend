@@ -37,7 +37,13 @@ pipeline {
                 sh """
                 docker stop ${CONTAINER_NAME} || true
                 docker rm ${CONTAINER_NAME} || true
-                docker run --env-file .env -d --name ${CONTAINER_NAME} -p 8080:8080 ${IMAGE_TAG}
+                docker run  -e JWT_SECRET_KEY=${JWT_SECRET_KEY} \\
+                                       -e GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID} \\
+                                       -e GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET} \\
+                                       -e KAKAO_CLIENT_ID=${KAKAO_CLIENT_ID} \\
+                                       -e KAKAO_CLIENT_SECRET=${KAKAO_CLIENT_SECRET} \\
+                                       -e NAVER_CLIENT_ID=${NAVER_CLIENT_ID} \\
+                                       -e NAVER_CLIENT_SECRET=${NAVER_CLIENT_SECRET}  -d --name ${CONTAINER_NAME} -p 8080:8080 ${IMAGE_TAG}
                 """
             }
         }
