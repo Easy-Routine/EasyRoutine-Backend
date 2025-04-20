@@ -43,3 +43,4 @@ out/
 *.tar
 *.zip
 *.tar.gz
+.env
