@@ -32,7 +32,6 @@ pipeline {
 
         stage('Run Docker Container') {
             steps {
-                writeFile file: '.env', text: "${ENV_FILE}"
                 sh """
                 docker stop ${CONTAINER_NAME} || true
                 docker rm ${CONTAINER_NAME} || true
