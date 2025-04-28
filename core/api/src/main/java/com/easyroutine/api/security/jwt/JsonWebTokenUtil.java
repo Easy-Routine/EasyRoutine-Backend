@@ -45,10 +45,19 @@ public class JsonWebTokenUtil {
         }
     }
 
-    public String createJwt(String memberId, String role, Long expiredMs) {
+    public String createAccessToken(String memberId, String role, Long expiredMs) {
         return Jwts.builder()
                 .claim("memberId", memberId)
                 .claim("role", role)
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + (expiredMs * 1000)))
+                .signWith(secretKey)
+                .compact();
+    }
+
+    public String createRefreshToken(String memberId, Long expiredMs) {
+        return Jwts.builder()
+                .claim("memberId", memberId)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + (expiredMs * 1000)))
                 .signWith(secretKey)

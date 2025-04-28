@@ -30,10 +30,12 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         String role = getRoleIn(authorities);
 
-        String token = jwtUtil.createJwt(memberId, role, 60*60*60L);
+        String token = jwtUtil.createAccessToken(memberId, role, 60*60*60L);
+        String refreshToken = jwtUtil.createRefreshToken(memberId, 60*60*24*30L);
 
         String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000")
                 .queryParam("token", token)
+                .queryParam("refreshToken", refreshToken)
                 .build().toUriString();
 
         response.sendRedirect(targetUrl);
