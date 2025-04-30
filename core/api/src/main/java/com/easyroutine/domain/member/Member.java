@@ -96,4 +96,8 @@ public class Member extends BaseEntity {
         this.status = status;
         this.setDeletedAt();
     }
+
+    public String getRole() {
+        return this.role.getAuthority();
+    }
 }
