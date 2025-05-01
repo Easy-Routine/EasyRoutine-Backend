@@ -72,3 +72,36 @@ kakao:
 ---
 spring.config.activate.on-profile: live
 
+---
+spring.config.activate.on-profile: test
+
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+google:
+  client:
+    id: ${GOOGLE_CLIENT_ID}
+    secret: ${GOOGLE_CLIENT_SECRET}
+    redirect-uri: http://localhost:8080/login/oauth2/code/google
+naver:
+  client:
+    id: ${NAVER_CLIENT_ID}
+    secret: ${NAVER_CLIENT_SECRET}
+    redirect-uri: http://localhost:8080/login/oauth2/code/naver
+kakao:
+  client:
+    id: ${KAKAO_CLIENT_ID}
+    secret: ${KAKAO_CLIENT_SECRET}
+    redirect-uri: http://localhost:8080/login/oauth2/code/kakao
