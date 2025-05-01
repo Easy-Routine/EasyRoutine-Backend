@@ -4,7 +4,7 @@ pipeline {
     environment {
         REPO_NAME = "easyroutine-backend"
         CONTAINER_NAME = "easyroutine-backend-container"
-        
+
         JWT_SECRET_KEY = credentials('JWT_SECRET_KEY')
         GOOGLE_CLIENT_ID = credentials('GOOGLE_CLIENT_ID')
         GOOGLE_CLIENT_SECRET = credentials('GOOGLE_CLIENT_SECRET')

@@ -23,7 +23,7 @@ public class Member extends BaseEntity {
     @UuidGenerator
     @Column(columnDefinition = "VARCHAR(36)")
     private String id;
-    private String provider;
+    private String provider;˜
     private String providerId;
     private String email;
     private String masking_email;
