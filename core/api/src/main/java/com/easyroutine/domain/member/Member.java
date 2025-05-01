@@ -68,6 +68,14 @@ public class Member extends BaseEntity {
                 .build();
     }
 
+
+    public static Member of(String memberId) {
+        return Member.builder()
+                .id(memberId)
+                .build();
+    }
+
+
     private static String getMaskEmailBy(String email) {
         int atIndex = email.indexOf("@");
         String username = email.substring(0, atIndex);

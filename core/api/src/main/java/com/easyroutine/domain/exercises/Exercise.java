@@ -5,11 +5,13 @@ import com.easyroutine.domain.BaseEntity;
 import com.easyroutine.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@Builder
 @Table(name = "exercises")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Exercise extends BaseEntity {
@@ -41,6 +43,11 @@ public class Exercise extends BaseEntity {
     @Column(name = "share_level")
     private int shareLevel;
 
+    public static Exercise of(Long id){
+        return Exercise.builder()
+                .id(id)
+                .build();
+    }
 
 
 }

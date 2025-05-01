@@ -5,12 +5,14 @@ import com.easyroutine.domain.exercises.Exercise;
 import com.easyroutine.domain.routine.Routine;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @Table(name = "routine_exercise")
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoutineExercise extends BaseEntity {
 
@@ -28,6 +30,14 @@ public class RoutineExercise extends BaseEntity {
 
     @Column(name = "order", nullable = false)
     private int order;
+
+    public static RoutineExercise of(Long id){
+        return RoutineExercise.builder()
+                .id(id)
+                .build();
+    }
+
+
 
 
 
