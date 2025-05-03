@@ -23,6 +23,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class RoutineService {
 
     private final RoutineMapper routineMapper;

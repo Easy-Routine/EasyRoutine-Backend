@@ -12,6 +12,12 @@ pipeline {
         KAKAO_CLIENT_SECRET = credentials('KAKAO_CLIENT_SECRET')
         NAVER_CLIENT_ID = credentials('NAVER_CLIENT_ID')
         NAVER_CLIENT_SECRET = credentials('NAVER_CLIENT_SECRET')
+        AWS_ACCESS_KEY = credentials('AWS_ACCESS_KEY')
+        AWS_REGION = credentials('AWS_REGION')
+        AWS_S3_BUCKET = credentials('AWS_S3_BUCKET')
+        AWS_S3_DIRECTORY = credentials('AWS_S3_DIRECTORY')
+        AWS_SECRET_KEY = credentials('AWS_SECRET_KEY')
+
 
     }
 
@@ -50,6 +56,11 @@ pipeline {
                                        -e KAKAO_CLIENT_ID=${KAKAO_CLIENT_ID} \\
                                        -e KAKAO_CLIENT_SECRET=${KAKAO_CLIENT_SECRET} \\
                                        -e NAVER_CLIENT_ID=${NAVER_CLIENT_ID} \\
+                                       -e AWS_ACCESS_KEY=${AWS_ACCESS_KEY} \\
+                                       -e AWS_REGION=${AWS_REGION} \\
+                                       -e AWS_S3_BUCKET=${AWS_S3_BUCKET} \\
+                                       -e AWS_S3_DIRECTORY=${AWS_S3_DIRECTORY} \\
+                                       -e AWS_SECRET_KEY=${AWS_SECRET_KEY} \\
                                        -e NAVER_CLIENT_SECRET=${NAVER_CLIENT_SECRET}  -d --name ${CONTAINER_NAME} -p 8080:8080 ${IMAGE_TAG}
                 """
             }
