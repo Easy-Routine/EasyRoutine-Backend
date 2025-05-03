@@ -37,6 +37,7 @@ public class RoutineControllerTest extends ControllerTestSupport {
         {
           "routineDto": {
             "name": "상체 루틴",
+            "color": "blue",
             "routineExerciseDtoList": [
               {
                 "exerciseId": 1,
