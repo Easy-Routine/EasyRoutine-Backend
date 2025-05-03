@@ -39,7 +39,6 @@ public class Member extends BaseEntity {
 
     private String bio;
 
-    @Column(length = 255, nullable = false)
     private String profileImage;
 
     @Column(length = 50, nullable = false)
@@ -51,7 +50,7 @@ public class Member extends BaseEntity {
     private MemberStatus status;
 
     @Builder
-    private Member(String id, String provider, String providerId, String email, String masking_email, String nickname, String bio, String profileImage, MemberRole role) {
+    private Member(String id, String provider, String providerId, String email, String masking_email, String nickname, String bio, String profileImage, MemberRole role, MemberStatus status) {
         this.id = id;
         this.provider = provider;
         this.providerId = providerId;
@@ -61,7 +60,7 @@ public class Member extends BaseEntity {
         this.bio = bio;
         this.profileImage = profileImage;
         this.role = role;
-        this.status = MemberStatus.ACTIVE;
+        this.status = status;
     }
 
     public static Member of(OAuth2Response oAuth2Response, MemberRole role) {
@@ -74,6 +73,7 @@ public class Member extends BaseEntity {
                 .provider(oAuth2Response.getProvider())
                 .providerId(oAuth2Response.getProviderId())
                 .role(role)
+                .status(MemberStatus.ACTIVE)
                 .build();
     }
 
