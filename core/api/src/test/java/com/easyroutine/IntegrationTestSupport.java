@@ -8,6 +8,6 @@ import org.springframework.test.context.TestConstructor;
 @Tag("context")
 @SpringBootTest
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
-@ActiveProfiles("test")
+@ActiveProfiles("dev")
 public abstract class IntegrationTestSupport {
 }
