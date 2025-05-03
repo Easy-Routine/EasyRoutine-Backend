@@ -5,6 +5,7 @@ import com.easyroutine.api.security.oauth.response.KakaoResponse;
 import com.easyroutine.api.security.oauth.response.NaverResponse;
 import com.easyroutine.api.security.oauth.response.OAuth2Response;
 import com.easyroutine.domain.member.Member;
+import com.easyroutine.domain.member.MemberRole;
 import com.easyroutine.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -31,7 +32,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2Response oAuth2Response = getOAuth2ResponseBy(registrationId, attributes);
 
         // TODO : add other roles
-        Member member = Member.of(oAuth2Response, "ROLE_USER");
+        Member member = Member.of(oAuth2Response, MemberRole.MEMBER);
         CustomOAuth2User user = new CustomOAuth2UserImpl(member);
 
         String provider = oAuth2Response.getProvider();

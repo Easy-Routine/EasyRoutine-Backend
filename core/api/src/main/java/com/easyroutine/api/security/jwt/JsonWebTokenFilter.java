@@ -3,6 +3,7 @@ package com.easyroutine.api.security.jwt;
 import com.easyroutine.api.security.oauth.CustomOAuth2User;
 import com.easyroutine.api.security.oauth.CustomOAuth2UserImpl;
 import com.easyroutine.domain.member.Member;
+import com.easyroutine.domain.member.MemberRole;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,7 +43,7 @@ public class JsonWebTokenFilter extends OncePerRequestFilter {
         String memberId = jwtUtil.getMemberId(token);
         String role = jwtUtil.getRole(token);
 
-        Member member = Member.of(memberId, role);
+        Member member = Member.of(memberId, MemberRole.MEMBER);
         CustomOAuth2User customOAuth2User = new CustomOAuth2UserImpl(member);
 
         Authentication authToken = new UsernamePasswordAuthenticationToken(customOAuth2User, null, customOAuth2User.getAuthorities());

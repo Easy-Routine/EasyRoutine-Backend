@@ -8,8 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
 
-import java.time.LocalDateTime;
-
 import static lombok.AccessLevel.*;
 
 @Getter
@@ -23,19 +21,36 @@ public class Member extends BaseEntity {
     @UuidGenerator
     @Column(columnDefinition = "VARCHAR(36)")
     private String id;
-    private String provider;˜
+
+    @Column(length = 50, nullable = false)
+    private String provider;
+
+    @Column(length = 255, nullable = false)
     private String providerId;
+
+    @Column(length = 255, nullable = false)
     private String email;
+
+    @Column(length = 255, nullable = false)
     private String masking_email;
+
+    @Column(length = 255, nullable = false)
     private String nickname;
+
     private String bio;
+
     private String profileImage;
-    private String role;
+
+    @Column(length = 50, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private MemberRole role;
+
+    @Column(length = 50, nullable = false)
     @Enumerated(EnumType.STRING)
     private MemberStatus status;
 
     @Builder
-    public Member(String id, String provider, String providerId, String email, String masking_email, String nickname, String bio, String profileImage, String role) {
+    private Member(String id, String provider, String providerId, String email, String masking_email, String nickname, String bio, String profileImage, MemberRole role, MemberStatus status) {
         this.id = id;
         this.provider = provider;
         this.providerId = providerId;
@@ -45,10 +60,10 @@ public class Member extends BaseEntity {
         this.bio = bio;
         this.profileImage = profileImage;
         this.role = role;
-        this.status = MemberStatus.ACTIVE;
+        this.status = status;
     }
 
-    public static Member of(OAuth2Response oAuth2Response, String role) {
+    public static Member of(OAuth2Response oAuth2Response, MemberRole role) {
         return Member.builder()
                 .provider(oAuth2Response.getProvider())
                 .email(oAuth2Response.getEmail())
@@ -58,23 +73,16 @@ public class Member extends BaseEntity {
                 .provider(oAuth2Response.getProvider())
                 .providerId(oAuth2Response.getProviderId())
                 .role(role)
+                .status(MemberStatus.ACTIVE)
                 .build();
     }
 
-    public static Member of(String memberId, String role) {
+    public static Member of(String memberId, MemberRole role) {
         return Member.builder()
                 .id(memberId)
                 .role(role)
                 .build();
     }
-
-
-    public static Member of(String memberId) {
-        return Member.builder()
-                .id(memberId)
-                .build();
-    }
-
 
     private static String getMaskEmailBy(String email) {
         int atIndex = email.indexOf("@");
@@ -87,5 +95,9 @@ public class Member extends BaseEntity {
     public void changeStatus(MemberStatus status) {
         this.status = status;
         this.setDeletedAt();
+    }
+
+    public String getRole() {
+        return this.role.getAuthority();
     }
 }
