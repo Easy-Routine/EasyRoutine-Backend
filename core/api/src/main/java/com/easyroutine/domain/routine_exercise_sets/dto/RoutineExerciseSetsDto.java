@@ -6,11 +6,13 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import net.minidev.json.annotate.JsonIgnore;
 
 @Getter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class RoutineExerciseSetsDto {
     @JsonIgnore
     private Long id;
