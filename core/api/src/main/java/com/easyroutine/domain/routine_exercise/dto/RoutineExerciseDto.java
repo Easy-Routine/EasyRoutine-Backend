@@ -5,12 +5,16 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import net.minidev.json.annotate.JsonIgnore;
 
 import java.util.List;
 
 @Getter
+@Builder
+@AllArgsConstructor
 public class RoutineExerciseDto {
     @JsonIgnore
     private Long id;
@@ -18,7 +22,7 @@ public class RoutineExerciseDto {
     private Long routineId;
 
     @NotNull(message = "운동 아이디가 없습니다.")
-    private Long ExerciseId;
+    private Long exerciseId;
 
     @Min(value = 1, message = "운동 순서는 1 이상이어야 합니다.")
     @NotNull(message = "운동 순서는 필 수 입니다.")
@@ -27,4 +31,14 @@ public class RoutineExerciseDto {
     @NotEmpty(message = "세트 리스트는 비어 있을 수 없습니다.")
     @Valid
     private List<@Valid RoutineExerciseSetsDto> setsDtoList;
+
+
+
+    public void setRoutineId(Long routineId){
+        this.routineId = routineId;
+    }
+
+    public void setExerciseId(Long exerciseId){
+        this.exerciseId = exerciseId;
+    }
 }

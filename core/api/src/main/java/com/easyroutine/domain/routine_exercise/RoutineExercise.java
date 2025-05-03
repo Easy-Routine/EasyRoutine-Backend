@@ -4,15 +4,13 @@ import com.easyroutine.domain.BaseEntity;
 import com.easyroutine.domain.exercises.Exercise;
 import com.easyroutine.domain.routine.Routine;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @Entity
 @Table(name = "routine_exercise")
 @Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoutineExercise extends BaseEntity {
 
@@ -28,7 +26,7 @@ public class RoutineExercise extends BaseEntity {
     @JoinColumn(name = "exercise_id", nullable = false)
     private Exercise exercise;
 
-    @Column(name = "order", nullable = false)
+    @Column(name = "order_index", nullable = false)
     private int order;
 
     public static RoutineExercise of(Long id){

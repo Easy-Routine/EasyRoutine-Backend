@@ -5,12 +5,14 @@ import com.easyroutine.domain.routine_exercise.dto.RoutineExerciseDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.Builder;
 import lombok.Getter;
 import net.minidev.json.annotate.JsonIgnore;
 
 import java.util.List;
 
 @Getter
+@Builder
 public class RoutineDto {
     @JsonIgnore
     private Long id;

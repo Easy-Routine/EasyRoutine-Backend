@@ -10,7 +10,7 @@ public class RoutineExerciseSetsMapper {
 
     public RoutineExerciseSets toEntity(RoutineExerciseSetsDto routineExerciseSetsDto){
         return RoutineExerciseSets.builder()
-                .routineExercise(RoutineExercise.of(routineExerciseSetsDto.getId()))
+                .routineExercise(RoutineExercise.of(routineExerciseSetsDto.getRoutineExerciesId()))
                 .order(routineExerciseSetsDto.getOrder())
                 .weight(routineExerciseSetsDto.getWeight())
                 .rep(routineExerciseSetsDto.getRep())

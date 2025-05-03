@@ -3,10 +3,14 @@ package com.easyroutine.domain.routine_exercise_sets.dto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import net.minidev.json.annotate.JsonIgnore;
 
 @Getter
+@Builder
+@AllArgsConstructor
 public class RoutineExerciseSetsDto {
     @JsonIgnore
     private Long id;
@@ -24,4 +28,8 @@ public class RoutineExerciseSetsDto {
 
     @NotBlank(message = "휴식 시간은 비어 있을 수 없습니다.")
     private String refreshTime; // mm:ss
+
+    public void setRoutineExerciesId(Long routineExerciesId){
+        this.routineExerciesId = routineExerciesId;
+    }
 }

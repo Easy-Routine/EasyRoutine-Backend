@@ -3,7 +3,6 @@ package com.easyroutine.domain.routine_exercise;
 import com.easyroutine.domain.exercises.Exercise;
 import com.easyroutine.domain.routine.Routine;
 import com.easyroutine.domain.routine_exercise.dto.RoutineExerciseDto;
-import com.easyroutine.domain.routine_exercise_sets.RoutineExerciseSets;
 import org.springframework.stereotype.Component;
 
 @Component

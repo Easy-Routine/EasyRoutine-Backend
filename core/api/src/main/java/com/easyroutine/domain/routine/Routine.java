@@ -4,14 +4,12 @@ import com.easyroutine.domain.BaseEntity;
 import com.easyroutine.domain.member.Member;
 import com.easyroutine.domain.routine.dto.RoutineDto;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @Entity
 @Builder
+@AllArgsConstructor
 @Table(name = "routines")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Routine extends BaseEntity {

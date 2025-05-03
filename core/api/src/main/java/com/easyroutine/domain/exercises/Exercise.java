@@ -4,14 +4,12 @@ package com.easyroutine.domain.exercises;
 import com.easyroutine.domain.BaseEntity;
 import com.easyroutine.domain.member.Member;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @Entity
 @Builder
+@AllArgsConstructor
 @Table(name = "exercises")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Exercise extends BaseEntity {
@@ -23,9 +21,6 @@ public class Exercise extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "register_id", nullable = false)
     private Member member;
-
-    @Column(name = "register_id",length = 36, nullable = false)
-    private String registerId;
 
     @Column
     private String image;
@@ -46,6 +41,12 @@ public class Exercise extends BaseEntity {
     public static Exercise of(Long id){
         return Exercise.builder()
                 .id(id)
+                .build();
+    }
+
+    public static Exercise of(Member member){
+        return Exercise.builder()
+                .member(member)
                 .build();
     }
 

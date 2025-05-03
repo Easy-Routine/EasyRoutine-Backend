@@ -3,14 +3,12 @@ package com.easyroutine.domain.routine_exercise_sets;
 import com.easyroutine.domain.BaseEntity;
 import com.easyroutine.domain.routine_exercise.RoutineExercise;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @Entity
 @Builder
+@AllArgsConstructor
 @Table(name = "routine_exercise_sets")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoutineExerciseSets extends BaseEntity {
@@ -23,7 +21,7 @@ public class RoutineExerciseSets extends BaseEntity {
     @JoinColumn(name = "routine_exercise_id", nullable = false)
     private RoutineExercise routineExercise;
 
-    @Column(nullable = false)
+    @Column(name="order_index" ,nullable = false)
     private int order;
 
     @Column

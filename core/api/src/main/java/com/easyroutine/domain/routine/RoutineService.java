@@ -38,9 +38,11 @@ public class RoutineService {
         Routine routine = routineRepository.save(routineMapper.toEntity(routineDto));
 
         for(RoutineExerciseDto routineExerciseDto : routineDto.getRoutineExerciseDtoList()){
+            routineExerciseDto.setRoutineId(routine.getId());
             RoutineExercise routineExercise = routineExerciseRepository.save(routineExerciseMapper.toEntity(routineExerciseDto));
 
             for(RoutineExerciseSetsDto routineExerciseSetsDto : routineExerciseDto.getSetsDtoList()){
+                routineExerciseSetsDto.setRoutineExerciesId(routineExercise.getId());
                 routineExerciseSetsRepository.save(routineExerciseSetsMapper.toEntity(routineExerciseSetsDto));
             }
         }
