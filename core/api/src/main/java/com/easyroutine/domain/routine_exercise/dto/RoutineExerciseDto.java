@@ -1,15 +1,30 @@
 package com.easyroutine.domain.routine_exercise.dto;
 
 import com.easyroutine.domain.routine_exercise_sets.dto.RoutineExerciseSetsDto;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import net.minidev.json.annotate.JsonIgnore;
 
 import java.util.List;
 
 @Getter
 public class RoutineExerciseDto {
+    @JsonIgnore
     private Long id;
+    @JsonIgnore
     private Long routineId;
+
+    @NotNull(message = "운동 아이디가 없습니다.")
     private Long ExerciseId;
+
+    @Min(value = 1, message = "운동 순서는 1 이상이어야 합니다.")
+    @NotNull(message = "운동 순서는 필 수 입니다.")
     private int order;
-    private List<RoutineExerciseSetsDto> setsDtoList;
+
+    @NotEmpty(message = "세트 리스트는 비어 있을 수 없습니다.")
+    @Valid
+    private List<@Valid RoutineExerciseSetsDto> setsDtoList;
 }
