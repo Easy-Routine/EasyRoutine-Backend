@@ -5,7 +5,12 @@ ENV GOOGLE_CLIENT_ID=dummy \
     NAVER_CLIENT_SECRET=dummy \
     KAKAO_CLIENT_ID=dummy \
     KAKAO_CLIENT_SECRET=dummy \
-    JWT_SECRET_KEY=dummy
+    JWT_SECRET_KEY=dummy \
+    AWS_ACCESS_KEY=dummy \
+    AWS_REGION=dummy \
+    AWS_S3_BUCKET=dummy \
+    AWS_S3_DIRECTORY=dummy \
+    AWS_SECRET_KEY=dummy
 COPY --chown=gradle:gradle . /home/gradle/project
 WORKDIR /home/gradle/project
 RUN gradle format --no-daemon
