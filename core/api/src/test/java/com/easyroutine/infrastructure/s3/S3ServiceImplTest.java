@@ -16,6 +16,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -54,15 +55,17 @@ class S3ServiceImplTest {
         assertTrue(result.contains("https://test-bucket.s3.amazonaws.com/" + fileNamePattern));
     }
 
-    @DisplayName("")
+    @DisplayName("deleteFile_성공시_true_리턴")
     @Test
     void deleteFileFromS3() {
 
         // given
+        String url = "https://test-bucket.s3.amazonaws.com/images/test.jpg";
 
         // when
+        boolean result = s3Service.deleteFile(url);
 
         // then
-
+        assertTrue(result);
     }
 }
