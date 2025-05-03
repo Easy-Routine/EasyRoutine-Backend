@@ -2,10 +2,7 @@ package com.easyroutine.api.controller.v1.member;
 
 import com.easyroutine.ControllerTestSupport;
 import com.easyroutine.api.security.oauth.CustomOAuth2User;
-import com.easyroutine.domain.member.MemberService;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Description;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

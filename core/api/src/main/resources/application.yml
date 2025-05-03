@@ -32,6 +32,18 @@ jwt:
   expiration_time: 86400000
   secret: ${JWT_SECRET_KEY}
 
+cloud:
+  aws:
+    credentials:
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}
+  s3:
+    bucket: ${AWS_S3_BUCKET}
+    directory: ${AWS_S3_DIRECTORY}
+  region: ${AWS_REGION}
+  stack:
+    auto: false
+
 ---
 spring.config.activate.on-profile: local
 
@@ -51,17 +63,6 @@ kakao:
     secret: ${KAKAO_CLIENT_SECRET}
     redirect-uri: http://localhost:8080/login/oauth2/code/kakao
 
-cloud:
-  aws:
-    credentials:
-      access-key : ${AWS_ACCESS_KEY}
-      secret-key : ${AWS_SECRET_KEY}
-  s3:
-    bucket: ${AWS_S3_BUCKET}
-    directory: ${AWS_S3_DIRECTORY}
-  region: ${AWS_REGION}
-  stack:
-        auto: false
 ---
 spring.config.activate.on-profile: dev
 
