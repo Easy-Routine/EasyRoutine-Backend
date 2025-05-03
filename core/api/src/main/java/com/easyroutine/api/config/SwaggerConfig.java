@@ -16,6 +16,7 @@ public class SwaggerConfig {
     public OpenAPI openAPI() {
         return new OpenAPI()
                 .addServersItem(new Server().url("https://easyroutine.heykiwoung.com")) // 서버 URL 추가
+                .addServersItem(new Server().url("http://localhost:8080")) // 서버 URL 추가
                 .addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))
                 .components(new Components().addSecuritySchemes("Bearer Authentication",
                         new SecurityScheme()

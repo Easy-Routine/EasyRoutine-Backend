@@ -8,6 +8,7 @@ public enum ResultType {
     FAIL(false, "ERR-S001" ,"실패"),
     DATA_NOT_FOUND(false, "ERR-D001" ,"실패"),
     ILLEGAL_ARGUMENT(false, "ERR-B001" ,"실패"),
+    INPUT_ERROR(false, "ERR-C001", "실패")
     ;
 
     private final boolean success;

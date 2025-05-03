@@ -83,6 +83,11 @@ public class Member extends BaseEntity {
                 .role(role)
                 .build();
     }
+    public static Member of(String memberId) {
+        return Member.builder()
+                .id(memberId)
+                .build();
+    }
 
     private static String getMaskEmailBy(String email) {
         int atIndex = email.indexOf("@");

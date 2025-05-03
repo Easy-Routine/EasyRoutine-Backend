@@ -23,4 +23,9 @@ dependencies {
 
     // Test
     testImplementation 'org.springframework.security:spring-security-test'
+
+    // validation
+    implementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
+    implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
+
 }
