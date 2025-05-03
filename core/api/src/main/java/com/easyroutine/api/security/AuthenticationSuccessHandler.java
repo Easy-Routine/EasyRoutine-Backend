@@ -1,7 +1,7 @@
 package com.easyroutine.api.security;
 
 import com.easyroutine.api.security.jwt.JsonWebTokenUtil;
-import com.easyroutine.api.security.oauth.CustomOAuth2UserImpl;
+import com.easyroutine.infrastructure.oauth.CustomOAuth2UserImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;

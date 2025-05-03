@@ -1,9 +1,11 @@
 package com.easyroutine.api.security.oauth;
 
-import com.easyroutine.api.security.oauth.response.GoogleResponse;
-import com.easyroutine.api.security.oauth.response.KakaoResponse;
-import com.easyroutine.api.security.oauth.response.NaverResponse;
-import com.easyroutine.api.security.oauth.response.OAuth2Response;
+import com.easyroutine.infrastructure.oauth.CustomOAuth2User;
+import com.easyroutine.infrastructure.oauth.CustomOAuth2UserImpl;
+import com.easyroutine.infrastructure.oauth.response.GoogleResponse;
+import com.easyroutine.infrastructure.oauth.response.KakaoResponse;
+import com.easyroutine.infrastructure.oauth.response.NaverResponse;
+import com.easyroutine.infrastructure.oauth.response.OAuth2Response;
 import com.easyroutine.domain.member.Member;
 import com.easyroutine.domain.member.MemberRole;
 import com.easyroutine.repository.member.MemberRepository;

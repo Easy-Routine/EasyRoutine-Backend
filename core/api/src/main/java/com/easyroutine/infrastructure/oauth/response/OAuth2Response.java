@@ -1,4 +1,4 @@
-package com.easyroutine.api.security.oauth.response;
+package com.easyroutine.infrastructure.oauth.response;
 
 import java.util.Map;
 

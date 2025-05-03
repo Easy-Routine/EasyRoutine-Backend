@@ -1,6 +1,6 @@
 package com.easyroutine.domain.member;
 
-import com.easyroutine.api.security.oauth.response.OAuth2Response;
+import com.easyroutine.infrastructure.oauth.response.OAuth2Response;
 import com.easyroutine.domain.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
