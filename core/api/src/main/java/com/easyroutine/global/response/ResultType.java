@@ -9,6 +9,7 @@ public enum ResultType {
     DATA_NOT_FOUND(false, "ERR-D001" ,"실패"),
     ILLEGAL_ARGUMENT(false, "ERR-B001" ,"실패"),
     S3_UPLOAD_FAIL(false, "ERR-B002" ,"실패"),
+    INPUT_ERROR(false, "ERR-C001", "실패")
     ;
 
     private final boolean success;
