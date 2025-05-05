@@ -22,6 +22,12 @@ dependencies {
     // Database
     runtimeOnly 'com.h2database:h2'
 
+    // QueryDSL (Spring Boot 3.x 이상, Jakarta EE)
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
     // Swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.6'
 
@@ -31,4 +37,25 @@ dependencies {
     // Test
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+def generated = layout.buildDirectory.dir("generated/querydsl")
+
+sourceSets {
+    main {
+        java {
+            srcDirs += generated.get().asFile
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs += [
+            '--add-modules', 'java.compiler',
+            '-Aquerydsl.generatedAnnotationClass=none'
+    ]
+}
+
+clean {
+    delete generated
 }
