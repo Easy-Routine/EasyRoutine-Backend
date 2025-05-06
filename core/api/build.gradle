@@ -21,6 +21,7 @@ dependencies {
 
     // Database
     runtimeOnly 'com.h2database:h2'
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.3'
 
     // QueryDSL (Spring Boot 3.x 이상, Jakarta EE)
     implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
