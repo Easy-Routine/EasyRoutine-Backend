@@ -15,7 +15,6 @@ import java.util.List;
 public class ExerciseDto {
 
     private Long id;
-    private Member member;
     private String name;
     private String image;
     private String originImage;
@@ -25,9 +24,8 @@ public class ExerciseDto {
     private int shareLevel;
 
     @Builder
-    public ExerciseDto(Long id, Member member, String name, String image, String originImage, ExerciseCategory category, List<ExerciseType> types, int isEditable, int shareLevel) {
+    public ExerciseDto(Long id, String name, String image, String originImage, ExerciseCategory category, List<ExerciseType> types, int isEditable, int shareLevel) {
         this.id = id;
-        this.member = member;
         this.name = name;
         this.image = image;
         this.originImage = originImage;
@@ -40,7 +38,6 @@ public class ExerciseDto {
     public static ExerciseDto of(Exercise exercise) {
         return ExerciseDto.builder()
                 .id(exercise.getId())
-                .member(exercise.getMember())
                 .name(exercise.getName())
                 .image(exercise.getImage())
                 .originImage(exercise.getOriginImage())
