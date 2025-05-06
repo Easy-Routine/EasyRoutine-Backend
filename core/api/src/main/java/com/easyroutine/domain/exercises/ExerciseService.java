@@ -64,7 +64,7 @@ public class ExerciseService {
         Member member = Member.of(memberId);
         Optional<Exercise> exerciseOptional = exerciseRepository.findByIdAndMemberAndDeletedAtIsNull(id, member);
         
-        exerciseOptional.ifPresentOrElse(Exercise::deleteExercise, () -> {;
+        exerciseOptional.ifPresentOrElse(Exercise::deleteExercise, () -> {
             throw new DataException(ResultType.DATA_NOT_FOUND, "운동을 찾을 수 없습니다.");
         });
         

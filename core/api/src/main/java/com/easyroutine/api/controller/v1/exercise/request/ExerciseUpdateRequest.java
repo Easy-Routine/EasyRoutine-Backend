@@ -16,7 +16,7 @@ public class ExerciseUpdateRequest {
 
     @Positive(message = "운동 ID는 양수여야 합니다.")
     @NotBlank(message = "운동 ID는 비어 있을 수 없습니다.")
-    private long id;
+    private Long id;
 
     @NotBlank(message = "운동 이름은 비어 있을 수 없습니다.")
     private String name;
