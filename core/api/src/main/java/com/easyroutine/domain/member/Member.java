@@ -86,7 +86,7 @@ public class Member extends BaseEntity {
                 .build();
     }
     public static Member of(String memberId) {
-        if(memberId == null) {
+        if(memberId == null || memberId.isEmpty()) {
             throw new BusinessException(ResultType.MEMBER_NOT_FOUND, "사용자 정보가 없습니다.");
         }
 
