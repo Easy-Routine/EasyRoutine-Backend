@@ -2,6 +2,7 @@ package com.easyroutine.domain.exercises;
 
 
 import com.easyroutine.domain.BaseEntity;
+import com.easyroutine.domain.exercises.dto.ExerciseDto;
 import com.easyroutine.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.*;
@@ -76,4 +77,39 @@ public class Exercise extends BaseEntity {
                 .build();
     }
 
+    public static Exercise of(ExerciseDto exerciseDto, Member member) {
+        return Exercise.builder()
+                .member(member)
+                .name(exerciseDto.getName())
+                .image(exerciseDto.getImage())
+                .originImage(exerciseDto.getOriginImage())
+                .category(exerciseDto.getCategory())
+                .types(exerciseDto.getTypes())
+                .isEditable(exerciseDto.getIsEditable())
+                .shareLevel(exerciseDto.getShareLevel())
+                .build();
+    }
+
+    public void updateExercise(ExerciseDto exerciseDto) {
+        this.name = exerciseDto.getName();
+        this.image = exerciseDto.getImage();
+        this.originImage = exerciseDto.getOriginImage();
+        this.category = exerciseDto.getCategory();
+        this.types = exerciseDto.getTypes();
+        this.isEditable = exerciseDto.getIsEditable();
+        this.shareLevel = exerciseDto.getShareLevel();
+        this.setUpdatedAt();
+    }
+
+    public void deleteExercise() {
+        this.setDeletedAt();
+    }
+
+    public boolean isCreatedBy(String memberId) {
+        return this.member.getId().equals(memberId);
+    }
+
+    public boolean isNotCreatedBy(String memberId) {
+        return !isCreatedBy(memberId);
+    }
 }

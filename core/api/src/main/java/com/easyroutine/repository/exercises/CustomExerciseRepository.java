@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface CustomExerciseRepository {
 
-    List<Exercise> findAllByCategory(String types, Pageable pageable);
+    List<Exercise> findAllByCategoryAndDeletedAtIsNull(String types, Pageable pageable);
 }

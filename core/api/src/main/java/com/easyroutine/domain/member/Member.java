@@ -1,5 +1,7 @@
 package com.easyroutine.domain.member;
 
+import com.easyroutine.global.exception.BusinessException;
+import com.easyroutine.global.response.ResultType;
 import com.easyroutine.infrastructure.oauth.response.OAuth2Response;
 import com.easyroutine.domain.BaseEntity;
 import jakarta.persistence.*;
@@ -84,6 +86,10 @@ public class Member extends BaseEntity {
                 .build();
     }
     public static Member of(String memberId) {
+        if(memberId == null) {
+            throw new BusinessException(ResultType.MEMBER_NOT_FOUND, "사용자 정보가 없습니다.");
+        }
+
         return Member.builder()
                 .id(memberId)
                 .build();

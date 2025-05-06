@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.easyroutine.domain.exercises.ExerciseCategory.*;
 import static com.easyroutine.domain.exercises.ExerciseType.*;
@@ -32,8 +33,8 @@ class ExercisesRepositoryTest extends IntegrationTestSupport {
 
     @AfterEach
     void tearDown() {
-        exercisesRepository.deleteAll();
-        memberRepository.deleteAll();
+        exercisesRepository.deleteAllInBatch();
+        memberRepository.deleteAllInBatch();
     }
 
     @DisplayName("운동 종목을 조회한다.")
@@ -63,7 +64,7 @@ class ExercisesRepositoryTest extends IntegrationTestSupport {
         ));
     
         // when
-        List<Exercise> exercises = exercisesRepository.findAllByCategory(category, PageRequest.of(0, 10));
+        List<Exercise> exercises = exercisesRepository.findAllByCategoryAndDeletedAtIsNull(category, PageRequest.of(0, 10));
 
         // then
         assertThat(exercises)
@@ -98,13 +99,52 @@ class ExercisesRepositoryTest extends IntegrationTestSupport {
 
         // when
         String allCategoryKeyword = "ALL";
-        List<Exercise> allByCategory = exercisesRepository.findAllByCategory(allCategoryKeyword, PageRequest.of(0, 10));
+        List<Exercise> allByCategory = exercisesRepository.findAllByCategoryAndDeletedAtIsNull(allCategoryKeyword, PageRequest.of(0, 10));
 
         // then
         assertThat(allByCategory)
                 .hasSize(7)
                 .extracting("category")
                 .containsExactlyInAnyOrder(CHEST, BACK, SHOULDER, LEG, ARM, ETC, ETC);
+    }
+    
+    @DisplayName("운동 종목을 조회한다. (삭제된 운동 제외)")
+    @Test
+    void findByIdAndMemberAndDeletedAtIsNull(){
+    
+        // given
+        Member memberA = getMember("google", "1234", "tester1");
+        Member memberB = getMember("google", "1234", "tester2");
+        Exercise exerciseA = getExerciseEntity("exerciseA", List.of(WEIGHT), CHEST, memberA);
+        Exercise exerciseB = getExerciseEntity("exerciseB", List.of(TIME), BACK, memberB);
+        Exercise exerciseC = getExerciseEntity("exerciseB", List.of(TIME), BACK, memberB);
+        exerciseC.deleteExercise();
+
+        memberRepository.saveAll(List.of(memberA, memberB));
+        exercisesRepository.saveAll(List.of(
+                exerciseA,
+                exerciseB,
+                exerciseC
+        ));
+
+        // when
+        Exercise searchedExerciseA = exercisesRepository.findByIdAndMemberAndDeletedAtIsNull(exerciseA.getId(), memberA).get();
+        Exercise searchedExerciseB = exercisesRepository.findByIdAndMemberAndDeletedAtIsNull(exerciseB.getId(), memberB).get();
+        Optional<Exercise> searchedExerciseC = exercisesRepository.findByIdAndMemberAndDeletedAtIsNull(exerciseC.getId(), memberB);
+
+
+        // then
+        assertThat(searchedExerciseA)
+                .isNotNull()
+                .extracting("name", "category")
+                .containsExactly("exerciseA", CHEST);
+
+        assertThat(searchedExerciseB)
+                .isNotNull()
+                .extracting("name", "category")
+                .containsExactly("exerciseB", BACK);
+
+        assertThat(searchedExerciseC).isNotPresent();
     }
 
     private static Exercise getExerciseEntity(String name, List<ExerciseType> types, ExerciseCategory category, Member member) {

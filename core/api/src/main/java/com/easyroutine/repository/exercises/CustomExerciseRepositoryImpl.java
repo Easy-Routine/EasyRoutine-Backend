@@ -16,13 +16,16 @@ public class CustomExerciseRepositoryImpl implements CustomExerciseRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<Exercise> findAllByCategory(String category, Pageable pageable) {
+    public List<Exercise> findAllByCategoryAndDeletedAtIsNull(String category, Pageable pageable) {
 
         QExercise exercise = QExercise.exercise;
 
         return jpaQueryFactory
                 .selectFrom(exercise)
-                .where(categoryEq(category, exercise))
+                .where(
+                        categoryEq(category, exercise),
+                        exercise.deletedAt.isNull()
+                )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();

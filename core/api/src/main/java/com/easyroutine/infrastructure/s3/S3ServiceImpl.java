@@ -23,8 +23,8 @@ public class S3ServiceImpl implements S3Service{
     private String bucketName;
 
     @Override
-    public String uploadFile(MultipartFile multipartFile, String url) {
-        String fileName = getFileName(multipartFile, url);
+    public String uploadFile(MultipartFile multipartFile, String directoryPath) {
+        String fileName = getFileName(multipartFile, directoryPath);
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentLength(multipartFile.getSize());
         objectMetadata.setContentType(multipartFile.getContentType());
