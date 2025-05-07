@@ -1,6 +1,5 @@
 package com.easyroutine.domain.routine.dto;
 
-import com.easyroutine.domain.exercises.dto.ExercisesDto;
 import com.easyroutine.domain.routine_exercise.dto.RoutineExerciseDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;

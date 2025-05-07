@@ -1,4 +1,4 @@
-package com.easyroutine.api.security.oauth;
+package com.easyroutine.infrastructure.oauth;
 
 import org.springframework.security.oauth2.core.user.OAuth2User;
 

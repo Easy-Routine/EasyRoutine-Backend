@@ -1,4 +1,4 @@
-package com.easyroutine.api.security.oauth;
+package com.easyroutine.infrastructure.oauth;
 
 import com.easyroutine.domain.member.Member;
 import org.springframework.security.core.GrantedAuthority;

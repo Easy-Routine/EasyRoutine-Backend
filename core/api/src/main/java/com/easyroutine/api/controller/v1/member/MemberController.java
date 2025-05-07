@@ -1,6 +1,6 @@
 package com.easyroutine.api.controller.v1.member;
 
-import com.easyroutine.api.security.oauth.CustomOAuth2User;
+import com.easyroutine.infrastructure.oauth.CustomOAuth2User;
 import com.easyroutine.domain.member.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

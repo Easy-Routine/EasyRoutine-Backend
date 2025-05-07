@@ -1,7 +1,7 @@
 package com.easyroutine.api.controller.v1.routine;
 
 import com.easyroutine.api.controller.v1.routine.request.RoutineCreateRequest;
-import com.easyroutine.api.security.oauth.CustomOAuth2User;
+import com.easyroutine.infrastructure.oauth.CustomOAuth2User;
 import com.easyroutine.domain.routine.RoutineService;
 import com.easyroutine.global.response.ApiResponse;
 import com.easyroutine.global.response.ResultType;

@@ -1,4 +1,4 @@
-package com.easyroutine.api.security.oauth.registration;
+package com.easyroutine.infrastructure.oauth.registration;
 
 
 import org.springframework.context.annotation.Configuration;

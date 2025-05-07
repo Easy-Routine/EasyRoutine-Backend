@@ -1,7 +1,7 @@
 package com.easyroutine.api.security.jwt;
 
-import com.easyroutine.api.security.oauth.CustomOAuth2User;
-import com.easyroutine.api.security.oauth.CustomOAuth2UserImpl;
+import com.easyroutine.infrastructure.oauth.CustomOAuth2User;
+import com.easyroutine.infrastructure.oauth.CustomOAuth2UserImpl;
 import com.easyroutine.domain.member.Member;
 import com.easyroutine.domain.member.MemberRole;
 import jakarta.servlet.FilterChain;
