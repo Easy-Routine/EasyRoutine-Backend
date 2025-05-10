@@ -17,8 +17,9 @@ pipeline {
         AWS_S3_BUCKET = credentials('AWS_S3_BUCKET')
         AWS_S3_DIRECTORY = credentials('AWS_S3_DIRECTORY')
         AWS_SECRET_KEY = credentials('AWS_SECRET_KEY')
-
-
+        DB_URL = credentials('DB_URL')
+        DB_USER = credentials('DB_USER')
+        DB_PASSWORD = credentials('DB_PASSWORD')
     }
 
     stages {
