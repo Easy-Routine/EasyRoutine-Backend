@@ -12,10 +12,11 @@ spring:
       enabled: true
       path: /h2-console
   datasource:
-    url: jdbc:h2:mem:testdb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password: password
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    url: ${DB_URL}
+
   jpa:
     hibernate:
       ddl-auto: update
