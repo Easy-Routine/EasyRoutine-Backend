@@ -16,7 +16,6 @@ spring:
     username: ${DB_USER}
     password: ${DB_PASSWORD}
     url: ${DB_URL}
-
   jpa:
     hibernate:
       ddl-auto: update
@@ -24,18 +23,15 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-
 server:
   tomcat:
     max-connections: 20000
     threads:
       max: 600
       min-spare: 100
-
 jwt:
   expiration_time: 86400000
   secret: ${JWT_SECRET_KEY}
-
 cloud:
   aws:
     credentials:
