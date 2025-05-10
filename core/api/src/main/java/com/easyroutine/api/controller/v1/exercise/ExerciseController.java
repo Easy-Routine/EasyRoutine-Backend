@@ -1,6 +1,7 @@
 package com.easyroutine.api.controller.v1.exercise;
 
 import com.easyroutine.api.controller.v1.exercise.request.ExerciseCreateRequest;
+import com.easyroutine.api.controller.v1.exercise.request.ExerciseDeleteRequest;
 import com.easyroutine.api.controller.v1.exercise.request.ExerciseUpdateRequest;
 import com.easyroutine.domain.exercises.ExerciseService;
 import com.easyroutine.domain.exercises.dto.ExerciseDto;
@@ -67,10 +68,10 @@ public class ExerciseController {
 
     @Operation(summary = "운동 삭제", description = "운동을 삭제합니다.")
     @DeleteMapping
-    public String deleteExercise(@RequestBody Long id,
+    public String deleteExercise(@RequestBody ExerciseDeleteRequest request,
                                 @AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
         String memberId = customOAuth2User.getMemberId();
-        return exerciseService.deleteExercise(id, memberId);
+        return exerciseService.deleteExercise(request.getId(), memberId);
     }
 
     private String uploadImageAndGetImageUrl(MultipartFile image) {
