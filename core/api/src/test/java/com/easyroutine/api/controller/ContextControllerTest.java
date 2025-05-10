@@ -17,7 +17,7 @@ class ContextControllerTest extends ControllerTestSupport {
     @WithMockUser(username ="tester", roles = "MEMBER")
     @DisplayName("GET /context should return a context status message")
     void contextShouldReturnExpectedMessage() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/context"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/context"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))

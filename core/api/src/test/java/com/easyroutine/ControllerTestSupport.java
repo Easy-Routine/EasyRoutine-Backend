@@ -3,6 +3,7 @@ package com.easyroutine;
 import com.easyroutine.api.controller.ContextController;
 import com.easyroutine.api.controller.v1.member.MemberController;
 import com.easyroutine.api.controller.v1.routine.RoutineController;
+import com.easyroutine.api.security.jwt.JsonWebTokenUtil;
 import com.easyroutine.domain.member.MemberService;
 import com.easyroutine.domain.routine.RoutineService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,5 +26,8 @@ public abstract class ControllerTestSupport {
 
     @MockBean
     protected RoutineService routineService;
+
+    @MockBean
+    private JsonWebTokenUtil jsonWebTokenUtil;
 }
 

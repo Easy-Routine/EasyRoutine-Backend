@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
@@ -128,7 +129,8 @@ class ExerciseServiceTest extends IntegrationTestSupport {
         exerciseService.createExercise(exerciseDto, member.getId());
 
         // when
-        exerciseService.deleteExercise(1L, member.getId());
+        Optional<Exercise> exerciseOptional = exercisesRepository.findByName(exerciseDto.getName());
+        exerciseService.deleteExercise(exerciseOptional.get().getId(), member.getId());
         List<ExerciseDto> exercises = exerciseService.getExercises("ALL", 0, 10);
 
         // then

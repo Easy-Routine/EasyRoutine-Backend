@@ -12,4 +12,6 @@ import java.util.Optional;
 public interface ExercisesRepository extends JpaRepository<Exercise, Long>, CustomExerciseRepository {
 
     Optional<Exercise> findByIdAndMemberAndDeletedAtIsNull(Long id, Member member);
+
+    Optional<Exercise> findByName(String name);
 }
