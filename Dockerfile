@@ -13,7 +13,7 @@ ENV GOOGLE_CLIENT_ID=dummy \
     AWS_SECRET_KEY=dummy \
     DB_PASSWORD=dummy \
     DB_URL=dummy \
-    DB_USER=dummy \
+    DB_USER=dummy
 COPY --chown=gradle:gradle . /home/gradle/project
 WORKDIR /home/gradle/project
 RUN gradle format --no-daemon
