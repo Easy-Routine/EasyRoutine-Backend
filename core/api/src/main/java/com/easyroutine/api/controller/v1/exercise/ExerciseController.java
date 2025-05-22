@@ -3,6 +3,7 @@ package com.easyroutine.api.controller.v1.exercise;
 import com.easyroutine.api.controller.v1.exercise.request.ExerciseCreateRequest;
 import com.easyroutine.api.controller.v1.exercise.request.ExerciseDeleteRequest;
 import com.easyroutine.api.controller.v1.exercise.request.ExerciseUpdateRequest;
+import com.easyroutine.domain.exercises.Exercise;
 import com.easyroutine.domain.exercises.ExerciseService;
 import com.easyroutine.domain.exercises.dto.ExerciseDto;
 import com.easyroutine.global.response.PageData;
@@ -37,9 +38,12 @@ public class ExerciseController {
 
     @Operation(summary = "운동 목록 조회", description = "운동 목록을 조회합니다.")
     @GetMapping("/{type}/{page}/{size}")
-    public PageData<?> getExercises(@PathVariable String type, @PathVariable int page, @PathVariable int size) {
-        List<ExerciseDto> exercises = exerciseService.getExercises(type, page, size);
-        return PageData.of(0, exercises);
+    public PageData<ExerciseDto> getExercises(@PathVariable String type, @PathVariable int page, @PathVariable int size) {
+        List<Exercise> exercises = exerciseService.getExercises(type, page, size);
+        List<ExerciseDto> exerciseDtos = exercises.stream()
+                .map(ExerciseDto::of)
+                .toList();
+        return PageData.of(0, exerciseDtos);
     }
 
     @Operation(summary = "운동 생성", description = "운동을 생성합니다.")
