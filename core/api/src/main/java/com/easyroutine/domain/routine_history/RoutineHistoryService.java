@@ -2,6 +2,7 @@ package com.easyroutine.domain.routine_history;
 
 import com.easyroutine.domain.routine_history.dto.RoutineHistoryDto;
 import com.easyroutine.domain.routine_history.mapper.RoutineHistoryMapper;
+import com.easyroutine.repository.routine_history.RoutineHistoryQueryRepository;
 import com.easyroutine.repository.routine_history.RoutineHistoryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,26 +17,29 @@ public class RoutineHistoryService {
 
     // repository
     private final RoutineHistoryRepository routineHistoryRepository;
+    private final RoutineHistoryQueryRepository routineHistoryQueryRepository;
 
     // mapper
     private final RoutineHistoryMapper routineHistoryMapper;
 
     public RoutineHistoryService(RoutineHistoryRepository routineHistoryRepository,
-                                RoutineHistoryMapper routineHistoryMapper) {
+                                RoutineHistoryMapper routineHistoryMapper,
+                                RoutineHistoryQueryRepository routineHistoryQueryRepository) {
         this.routineHistoryRepository = routineHistoryRepository;
         this.routineHistoryMapper = routineHistoryMapper;
+        this.routineHistoryQueryRepository = routineHistoryQueryRepository;
     }
 
     public int getExerciseTime(String date) {
-        return 0;
+        return routineHistoryQueryRepository.getExerciseTime(date);
     }
 
     public int getTotalVolume(String date) {
-        return 0;
+        return routineHistoryQueryRepository.getTotalVolume(date);
     }
 
     public List<RoutineHistory> getRoutineHistory(String date) {
-        return null;
+        return routineHistoryQueryRepository.findAllByExerciseDate(date);
     }
 
     @Transactional(rollbackFor = Exception.class)
