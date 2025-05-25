@@ -47,7 +47,7 @@ public class RoutineControllerTest extends ControllerTestSupport {
                     "order": 1,
                     "weight": 20.0,
                     "rep": 10,
-                    "refreshTime": "01:00"
+                    "restSec": "01:00"
                   }
                 ]
               }

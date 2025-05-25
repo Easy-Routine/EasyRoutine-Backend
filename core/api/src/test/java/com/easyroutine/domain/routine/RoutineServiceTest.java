@@ -11,9 +11,7 @@ import com.easyroutine.domain.routine_exercise_sets.dto.RoutineExerciseSetsDto;
 import com.easyroutine.repository.exercises.ExercisesRepository;
 import com.easyroutine.repository.member.MemberRepository;
 import com.easyroutine.repository.routine.RoutineRepository;
-import com.easyroutine.repository.routine.RoutineRepositoryTest;
 import jakarta.transaction.Transactional;
-import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +77,7 @@ public class RoutineServiceTest extends IntegrationTestSupport {
         return RoutineExerciseSetsDto.builder()
                 .weight(50.0)
                 .rep(10)
-                .refreshTime("1:30")
+                .restSec("1:30")
                 .build();
     }
 

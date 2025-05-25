@@ -31,6 +31,6 @@ public class RoutineExerciseSets extends BaseEntity {
     private int rep;
 
     @Column
-    private String refreshTime; // mm:ss
+    private String restSec; // mm:ss
 
 }

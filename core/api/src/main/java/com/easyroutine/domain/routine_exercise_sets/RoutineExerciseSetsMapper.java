@@ -1,6 +1,5 @@
 package com.easyroutine.domain.routine_exercise_sets;
 
-import com.easyroutine.domain.routine.Routine;
 import com.easyroutine.domain.routine_exercise.RoutineExercise;
 import com.easyroutine.domain.routine_exercise_sets.dto.RoutineExerciseSetsDto;
 import org.springframework.stereotype.Component;
@@ -14,7 +13,7 @@ public class RoutineExerciseSetsMapper {
                 .order(routineExerciseSetsDto.getOrder())
                 .weight(routineExerciseSetsDto.getWeight())
                 .rep(routineExerciseSetsDto.getRep())
-                .refreshTime(routineExerciseSetsDto.getRefreshTime())
+                .restSec(routineExerciseSetsDto.getRestSec())
                 .build();
     }
 }
