@@ -26,8 +26,6 @@ public class RoutineHistoryDto {
 
     private String memberId;
 
-    private int order;
-
     private String name;
 
     private String color;
@@ -43,7 +41,6 @@ public class RoutineHistoryDto {
 
         return RoutineHistoryDto.builder()
                 .id(routineHistory.getId())
-                .order(routineHistory.getOrder())
                 .name(routineHistory.getRoutine().getName())
                 .color(routineHistory.getRoutine().getColor())
                 .routineHistoryDetails(routineHistoryDetailsDtos)
@@ -61,7 +58,6 @@ public class RoutineHistoryDto {
                 .name(request.getName())
                 .color(request.getColor())
                 .exerciseId(historyRequest.getExerciseId())
-                .order(historyRequest.getOrder())
                 .routineHistoryDetails(routineHistoryDetailsDtos)
                 .build();
     }

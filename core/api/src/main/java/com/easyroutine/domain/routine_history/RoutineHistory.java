@@ -63,7 +63,6 @@ public class RoutineHistory extends BaseEntity {
         return RoutineHistory.builder()
                 .id(routineHistoryDto.getId())
                 .exerciseDate(routineHistoryDto.getExerciseDate())
-                .order(routineHistoryDto.getOrder())
                 .routine(Routine.of(routineHistoryDto.getRoutineId()))
                 .exercise(Exercise.of(routineHistoryDto.getExerciseId()))
                 .member(Member.of(routineHistoryDto.getMemberId()))

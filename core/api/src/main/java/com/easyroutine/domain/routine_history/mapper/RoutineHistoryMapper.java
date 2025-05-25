@@ -23,7 +23,6 @@ public class RoutineHistoryMapper {
         RoutineHistory routineHistory = RoutineHistory.builder()
                 .id(dto.getId())
                 .exerciseDate(dto.getExerciseDate())
-                .order(dto.getOrder())
                 .routine(Routine.of(dto.getRoutineId()))
                 .exercise(Exercise.of(dto.getExerciseId()))
                 .member(Member.of(memberId))

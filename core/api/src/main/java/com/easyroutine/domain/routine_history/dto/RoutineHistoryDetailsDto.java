@@ -17,7 +17,7 @@ public class RoutineHistoryDetailsDto {
 
     private int order;
 
-    private Double weight;
+    private double weight;
 
     private int rep;
 
