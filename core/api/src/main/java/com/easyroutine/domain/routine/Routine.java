@@ -3,8 +3,12 @@ package com.easyroutine.domain.routine;
 import com.easyroutine.domain.BaseEntity;
 import com.easyroutine.domain.member.Member;
 import com.easyroutine.domain.routine.dto.RoutineDto;
+import com.easyroutine.domain.routine_exercise.RoutineExercise;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -27,6 +31,9 @@ public class Routine extends BaseEntity {
 
     @Column
     private String color;
+
+    @OneToMany(mappedBy = "routine", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RoutineExercise> routineExercises = new ArrayList<>();
 
 
     public static Routine of(Long id){

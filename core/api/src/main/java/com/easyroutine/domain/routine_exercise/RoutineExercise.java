@@ -3,8 +3,12 @@ package com.easyroutine.domain.routine_exercise;
 import com.easyroutine.domain.BaseEntity;
 import com.easyroutine.domain.exercises.Exercise;
 import com.easyroutine.domain.routine.Routine;
+import com.easyroutine.domain.routine_exercise_sets.RoutineExerciseSets;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -28,6 +32,9 @@ public class RoutineExercise extends BaseEntity {
 
     @Column(name = "order_index", nullable = false)
     private int order;
+
+    @OneToMany(mappedBy = "routineExercise", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RoutineExerciseSets> sets = new ArrayList<>();
 
     public static RoutineExercise of(Long id){
         return RoutineExercise.builder()
