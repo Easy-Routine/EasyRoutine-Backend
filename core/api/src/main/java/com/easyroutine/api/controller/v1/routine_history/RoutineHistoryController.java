@@ -1,6 +1,7 @@
 package com.easyroutine.api.controller.v1.routine_history;
 
 import com.easyroutine.api.controller.v1.routine_history.request.RoutineHistoryCreateRequest;
+import com.easyroutine.api.controller.v1.routine_history.request.RoutineHistoryUpdateRequest;
 import com.easyroutine.domain.routine_history.RoutineHistory;
 import com.easyroutine.domain.routine_history.RoutineHistoryService;
 import com.easyroutine.domain.routine_history.dto.RoutineHistoryDto;
@@ -51,5 +52,26 @@ public class RoutineHistoryController {
                 .map(historyRequest -> RoutineHistoryDto.of(request, historyRequest))
                 .toList();
         return routineHistoryService.createRoutineHistory(routineHistoryDtos, memberId);
+    }
+
+    // TODO 수정, 삭제, 종목 별 통계, 테스트 코드 작성
+    @Operation(summary = "루틴 이력 수정", description = "루틴 이력을 수정합니다.")
+    @PutMapping("/{id}")
+    public String updateRoutineHistory(@PathVariable("id") Long id,
+                                    @RequestBody RoutineHistoryUpdateRequest request,
+                                    @AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+        String memberId = customOAuth2User.getMemberId();
+        List<RoutineHistoryDto> routineHistoryDtos = request.getRoutineExercises().stream()
+                .map(historyRequest -> RoutineHistoryDto.of(id, request, historyRequest))
+                .toList();
+        return routineHistoryService.updateRoutineHistory(id, routineHistoryDtos, memberId);
+    }
+
+    @Operation(summary = "루틴 이력 삭제", description = "루틴 이력을 삭제합니다.")
+    @DeleteMapping("/{id}")
+    public String deleteRoutineHistory(@PathVariable("id") Long id,
+                                    @AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+        String memberId = customOAuth2User.getMemberId();
+        return routineHistoryService.deleteRoutineHistory(id, memberId);
     }
 }

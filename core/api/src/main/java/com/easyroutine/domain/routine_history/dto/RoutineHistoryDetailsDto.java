@@ -1,6 +1,7 @@
 package com.easyroutine.domain.routine_history.dto;
 
 import com.easyroutine.api.controller.v1.routine_history.request.RoutineHistoryDetailsCreateRequest;
+import com.easyroutine.api.controller.v1.routine_history.request.RoutineHistoryDetailsUpdateRequest;
 import com.easyroutine.domain.routine_history.RoutineHistoryDetails;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,6 +44,17 @@ public class RoutineHistoryDetailsDto {
                 .rep(request.getRep())
                 .exerciseSec(request.getExerciseSec())
                 .refreshTime(request.getRestSec())
+                .build();
+    }
+
+    public static RoutineHistoryDetailsDto of(RoutineHistoryDetailsUpdateRequest historyDetail) {
+        return RoutineHistoryDetailsDto.builder()
+                .id(historyDetail.getId())
+                .order(historyDetail.getOrder())
+                .weight(historyDetail.getWeight())
+                .rep(historyDetail.getRep())
+                .exerciseSec(historyDetail.getExerciseSec())
+                .refreshTime(historyDetail.getRestSec())
                 .build();
     }
 }

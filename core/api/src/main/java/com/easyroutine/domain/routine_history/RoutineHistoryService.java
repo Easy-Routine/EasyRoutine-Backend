@@ -48,6 +48,31 @@ public class RoutineHistoryService {
                 .map(dto -> routineHistoryMapper.toEntity(dto, memberId))
                 .collect(Collectors.toList());
         routineHistoryRepository.saveAll(routineHistories);
+
+        return "Success";
+    }
+
+    public String updateRoutineHistory(Long id, List<RoutineHistoryDto> routineHistoryDtos, String memberId) {
+        RoutineHistory routineHistory = routineHistoryQueryRepository.findAllByRoutineHistoryId(id)
+                .orElseThrow(() -> new IllegalArgumentException("루틴 이력을 찾을 수 없습니다."));
+
+        routineHistoryDtos.stream()
+                .map(dto -> routineHistoryMapper.toEntity(dto, memberId))
+                .forEach(entity -> routineHistory.updateRoutineHistory(entity));
+
+        // TODO 변경감지로 update 처리
+        routineHistoryRepository.save(routineHistory);
+
+        return "Success";
+    }
+
+    public String deleteRoutineHistory(Long id, String memberId) {
+        RoutineHistory routineHistory = routineHistoryQueryRepository.findAllByRoutineHistoryId(id)
+                .orElseThrow(() -> new IllegalArgumentException("루틴 이력을 찾을 수 없습니다."));
+
+        // Soft delete 처리?
+        routineHistoryRepository.delete(routineHistory);
+
         return "Success";
     }
 }

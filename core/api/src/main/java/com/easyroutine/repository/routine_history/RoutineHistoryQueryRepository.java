@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class RoutineHistoryQueryRepository {
@@ -53,10 +54,19 @@ public class RoutineHistoryQueryRepository {
         LocalDateTime endOfDay = parsedDate.atTime(23, 59, 59);
 
         return em.createQuery(
-                        "SELECT rh FROM RoutineHistory rh WHERE rh.exerciseDate BETWEEN :start AND :end", RoutineHistory.class)
+                        "SELECT rh FROM RoutineHistory rh JOIN FETCH rh.routineHistoryDetails WHERE rh.exerciseDate BETWEEN :start AND :end", RoutineHistory.class)
                 .setParameter("start", startOfDay)
                 .setParameter("end", endOfDay)
                 .getResultList();
+    }
+
+    public Optional<RoutineHistory> findAllByRoutineHistoryId(Long id) {
+        RoutineHistory result = em.createQuery(
+                        "SELECT rh FROM RoutineHistory rh JOIN FETCH rh.routineHistoryDetails WHERE rh.id = :id", RoutineHistory.class)
+                .setParameter("id", id)
+                .getSingleResult();
+
+        return Optional.of(result);
     }
 }
 

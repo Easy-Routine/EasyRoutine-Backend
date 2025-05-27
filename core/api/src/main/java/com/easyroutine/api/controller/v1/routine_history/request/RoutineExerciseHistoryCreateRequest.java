@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class RoutineExerciseHistoryRequest {
+public class RoutineExerciseHistoryCreateRequest {
 
     @Schema(description = "운동 아이디", example = "1")
     private long exerciseId;

@@ -47,4 +47,8 @@ public class RoutineHistoryDetails extends BaseEntity {
         this.exerciseTime = exerciseTime;
         this.routineHistory = routineHistory;
     }
+
+    public void setRoutineHistory(RoutineHistory routineHistory) {
+        this.routineHistory = routineHistory;
+    }
 }

@@ -1,7 +1,9 @@
 package com.easyroutine.domain.routine_history.dto;
 
-import com.easyroutine.api.controller.v1.routine_history.request.RoutineExerciseHistoryRequest;
+import com.easyroutine.api.controller.v1.routine_history.request.RoutineExerciseHistoryCreateRequest;
+import com.easyroutine.api.controller.v1.routine_history.request.RoutineExerciseHistoryUpdateRequest;
 import com.easyroutine.api.controller.v1.routine_history.request.RoutineHistoryCreateRequest;
+import com.easyroutine.api.controller.v1.routine_history.request.RoutineHistoryUpdateRequest;
 import com.easyroutine.domain.routine_history.RoutineHistory;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -48,12 +50,27 @@ public class RoutineHistoryDto {
     }
 
     public static RoutineHistoryDto of(RoutineHistoryCreateRequest request,
-                            RoutineExerciseHistoryRequest historyRequest) {
+                            RoutineExerciseHistoryCreateRequest historyRequest) {
         List<RoutineHistoryDetailsDto> routineHistoryDetailsDtos = historyRequest.getRoutineHistoryDetails().stream()
                 .map(historyDetail -> RoutineHistoryDetailsDto.of(historyDetail))
                 .toList();
 
         return RoutineHistoryDto.builder()
+                .routineId(request.getRoutineId())
+                .name(request.getName())
+                .color(request.getColor())
+                .exerciseId(historyRequest.getExerciseId())
+                .routineHistoryDetails(routineHistoryDetailsDtos)
+                .build();
+    }
+
+    public static RoutineHistoryDto of(Long id, RoutineHistoryUpdateRequest request, RoutineExerciseHistoryUpdateRequest historyRequest) {
+        List<RoutineHistoryDetailsDto> routineHistoryDetailsDtos = historyRequest.getRoutineHistoryDetails().stream()
+                .map(historyDetail -> RoutineHistoryDetailsDto.of(historyDetail))
+                .toList();
+
+        return RoutineHistoryDto.builder()
+                .id(id)
                 .routineId(request.getRoutineId())
                 .name(request.getName())
                 .color(request.getColor())

@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class RoutineHistoryCreateRequest {
+public class RoutineHistoryUpdateRequest {
 
     @Schema(description = "루틴 아이디", example = "1")
     private long routineId;
@@ -28,6 +28,7 @@ public class RoutineHistoryCreateRequest {
                     "   \"order\": 1," +
                     "   \"routineHistoryDetails\": [" +
                     "       {" +
+                    "           \"id\": 1, " +
                     "           \"order\": 1, " +
                     "           \"weight\": 20.0, " +
                     "           \"rep\": 10, " +
@@ -37,6 +38,5 @@ public class RoutineHistoryCreateRequest {
                     "}" +
                     "]"
     )
-    private List<RoutineExerciseHistoryCreateRequest> routineExercises;
+    private List<RoutineExerciseHistoryUpdateRequest> routineExercises;
 }
-

@@ -72,4 +72,12 @@ public class RoutineHistory extends BaseEntity {
     public void addRoutineHistoryDetails(List<RoutineHistoryDetails> routineHistoryDetails) {
         this.routineHistoryDetails = routineHistoryDetails;
     }
+
+    public void updateRoutineHistory(RoutineHistory routineHistory) {
+        this.routineHistoryDetails.clear();
+        routineHistory.routineHistoryDetails.forEach(detail -> {
+            detail.setRoutineHistory(this);
+            this.routineHistoryDetails.add(detail);
+        });
+    }
 }
