@@ -2,10 +2,20 @@ package com.easyroutine.domain.routine;
 
 import com.easyroutine.domain.member.Member;
 import com.easyroutine.domain.routine.dto.RoutineDto;
+import com.easyroutine.domain.routine_exercise.RoutineExerciseMapper;
+import com.easyroutine.domain.routine_exercise.dto.RoutineExerciseDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
+@RequiredArgsConstructor
 public class RoutineMapper {
+
+    private final RoutineExerciseMapper routineExerciseMapper;
 
     public Routine toEntity(RoutineDto routineDto){
         return Routine.builder()
@@ -14,5 +24,16 @@ public class RoutineMapper {
                 .color(routineDto.getColor())
                 .build();
 
+    }
+
+    public RoutineDto fromEntity(Routine e){
+        List<RoutineExerciseDto> routineExerciseDtoList = e.getRoutineExercises().stream().map(routineExerciseMapper::fromEntity).toList();
+        return RoutineDto.builder()
+                .id(e.getId())
+                .memberId(e.getMember().getId())
+                .name(e.getName())
+                .color(e.getColor())
+                .routineExerciseDtoList(routineExerciseDtoList)
+                .build();
     }
 }

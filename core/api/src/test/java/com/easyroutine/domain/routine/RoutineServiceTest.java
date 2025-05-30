@@ -56,6 +56,29 @@ public class RoutineServiceTest extends IntegrationTestSupport {
                 .containsExactly(tuple("test-routine","test-color"));
     }
 
+    @DisplayName("회원의 루틴 목록을 조회한다.")
+    @Test
+    void findAllRoutine() {
+        // given
+        Member member = memberRepository.save(getMember("google", "1234", "tester"));
+        Exercise exercise = exercisesRepository.save(getExercise(member));
+
+        RoutineDto routineDto = getMockRoutineDto();
+        routineDto.setMemberIdFromToken(member.getId());
+        routineDto.getRoutineExerciseDtoList ().forEach(dto -> dto.setExerciseId(exercise.getId()));
+
+        routineService.createRoutine(routineDto);
+
+        // when
+        List<RoutineDto> result = routineService.findAllRoutine(member);
+
+        // then
+        assertThat(result)
+                .hasSize(1)
+                .extracting("name", "color")
+                .containsExactly(tuple("test-routine", "test-color"));
+    }
+
 
 
     private static RoutineDto getMockRoutineDto(){

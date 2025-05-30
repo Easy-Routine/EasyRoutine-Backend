@@ -16,4 +16,15 @@ public class RoutineExerciseSetsMapper {
                 .restSec(routineExerciseSetsDto.getRestSec())
                 .build();
     }
+
+    public RoutineExerciseSetsDto fromEntity(RoutineExerciseSets e){
+        return RoutineExerciseSetsDto.builder()
+                .id(e.getId())
+                .routineExerciesId(e.getRoutineExercise().getId())
+                .order(e.getOrder())
+                .weight(e.getWeight())
+                .rep(e.getRep())
+                .restSec(e.getRestSec())
+                .build();
+    }
 }
