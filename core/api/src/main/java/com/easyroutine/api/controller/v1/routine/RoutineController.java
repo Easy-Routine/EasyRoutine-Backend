@@ -59,4 +59,15 @@ public class RoutineController {
 
         return ApiResponse.success(dto);
     }
+
+    @Operation(summary = "루틴 제거", description = "루틴 삭제 API")
+    @DeleteMapping("/{routineId}")
+    public ApiResponse<RoutineDto> deleteRoutine(@AuthenticationPrincipal CustomOAuth2User customOAuth2User, @PathVariable long routineId) {
+        Member member = Member.of(customOAuth2User.getMemberId());
+        RoutineDto dto = routineService.deleteRoutine(routineId, member);
+        if (dto == null){
+            return ApiResponse.fail(ResultType.FAIL);
+        }
+        return ApiResponse.success(dto);
+    }
 }
