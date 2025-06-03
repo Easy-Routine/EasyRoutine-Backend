@@ -25,14 +25,9 @@ public class ExerciseService {
         this.exerciseRepository = exerciseRepository;
     }
 
-    public List<ExerciseDto> getExercises(String type, int page, int size) {
+    public List<Exercise> getExercises(String type, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-
-        List<Exercise> exercises = exerciseRepository.findAllByCategoryAndDeletedAtIsNull(type, pageable);
-
-        return exercises.stream()
-                .map(exercise -> ExerciseDto.of(exercise))
-                .toList();
+        return exerciseRepository.findAllByCategoryAndDeletedAtIsNull(type, pageable);
     }
 
     @Transactional(rollbackFor = Exception.class)

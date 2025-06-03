@@ -5,7 +5,6 @@ import com.easyroutine.api.controller.v1.exercise.request.ExerciseUpdateRequest;
 import com.easyroutine.domain.exercises.Exercise;
 import com.easyroutine.domain.exercises.ExerciseCategory;
 import com.easyroutine.domain.exercises.ExerciseType;
-import com.easyroutine.domain.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -48,10 +47,10 @@ public class ExerciseDto {
                 .build();
     }
 
-    public static ExerciseDto of(ExerciseCreateRequest request, String imageUrl) {
+    public static ExerciseDto of(ExerciseCreateRequest request) {
         return ExerciseDto.builder()
                 .name(request.getName())
-                .image(imageUrl)
+                .image(request.getImageUrl())
                 .category(ExerciseCategory.convertToEnum(request.getCategory()))
                 .types(ExerciseType.convertToEnum(request.getTypes()))
                 .isEditable(1)
@@ -59,11 +58,11 @@ public class ExerciseDto {
                 .build();
     }
 
-    public static ExerciseDto of(ExerciseUpdateRequest request, String imageUrl) {
+    public static ExerciseDto of(ExerciseUpdateRequest request) {
         return ExerciseDto.builder()
                 .id(request.getId())
                 .name(request.getName())
-                .image(imageUrl)
+                .image(request.getImageUrl())
                 .category(ExerciseCategory.convertToEnum(request.getCategory()))
                 .types(ExerciseType.convertToEnum(request.getTypes()))
                 .isEditable(1)
