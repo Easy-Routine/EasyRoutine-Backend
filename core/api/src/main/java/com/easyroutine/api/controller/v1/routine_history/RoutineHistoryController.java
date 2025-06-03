@@ -54,7 +54,6 @@ public class RoutineHistoryController {
         return routineHistoryService.createRoutineHistory(routineHistoryDtos, memberId);
     }
 
-    // TODO 수정, 삭제, 종목 별 통계, 테스트 코드 작성
     @Operation(summary = "루틴 이력 수정", description = "루틴 이력을 수정합니다.")
     @PutMapping("/{id}")
     public String updateRoutineHistory(@PathVariable("id") Long id,
