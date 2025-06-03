@@ -61,4 +61,15 @@ public class RoutineService {
         return routineMapper.fromEntity(routine.orElseThrow(() -> new DataException(ResultType.DATA_NOT_FOUND, "운동을 찾을 수 없습니다.")));
     }
 
+//    public RoutineDto deleteRoutine(Long id, Member member) {
+//        Optional<Routine> routineOpt = routineRepository.findByIdAndMember(id, member);
+//        Routine routine = routineOpt.orElseThrow(() -> new DataException(ResultType.DATA_NOT_FOUND, "운동을 찾을 수 없습니다."));
+//
+//        routineExerciseSetsRepository.deleteByRoutineId(id);
+//        routineExerciseRepository.deleteByRoutineId(id);
+//        routineRepository.delete(routine);
+//
+//        return routineMapper.fromEntity(routine);
+//    }
+
 }
