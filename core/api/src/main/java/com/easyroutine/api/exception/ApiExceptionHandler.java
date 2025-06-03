@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 @Slf4j
 @RestControllerAdvice
@@ -25,8 +26,8 @@ public class ApiExceptionHandler {
         return ApiResponse.fail(e.getResultType());
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ApiResponse<String> handleMethodArgumentNotValidException(MethodArgumentNotValidException e){
+    @ExceptionHandler({MethodArgumentNotValidException.class, HandlerMethodValidationException.class})
+    public ApiResponse<String> handleMethodArgumentNotValidException(Exception e){
         log.error("MethodArgumentNotValidException : {}", e.getMessage(), e);
         return ApiResponse.fail(ResultType.INPUT_ERROR);
     }

@@ -27,4 +27,6 @@ public class ExerciseUpdateRequest {
 
     @NotBlank(message = "운동 카테고리는 비어 있을 수 없습니다.")
     private String category;
+
+    private String imageUrl;
 }

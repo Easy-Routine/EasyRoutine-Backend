@@ -49,7 +49,7 @@ class ExerciseServiceTest extends IntegrationTestSupport {
 
         // when
         String result = exerciseService.createExercise(exerciseDto, member.getId());
-        List<ExerciseDto> exercises = exerciseService.getExercises("CHEST", 0, 10);
+        List<Exercise> exercises = exerciseService.getExercises("CHEST", 0, 10);
 
         // then
         assertThat(result).isEqualTo("Success");
@@ -73,7 +73,7 @@ class ExerciseServiceTest extends IntegrationTestSupport {
         exerciseService.createExercise(exerciseDto, member.getId());
 
         // when
-        List<ExerciseDto> exercises = exerciseService.getExercises("ALL", 0, 10);
+        List<Exercise> exercises = exerciseService.getExercises("ALL", 0, 10);
 
         // then
         assertThat(exercises)
@@ -104,7 +104,7 @@ class ExerciseServiceTest extends IntegrationTestSupport {
         exerciseService.updateExercise(updateExerciseDto, member.getId());
 
         // then
-        List<ExerciseDto> exercises = exerciseService.getExercises("ALL", 0, 10);
+        List<Exercise> exercises = exerciseService.getExercises("ALL", 0, 10);
         assertThat(exercises)
                 .hasSize(1)
                 .satisfiesExactly(exercise -> {
@@ -131,7 +131,7 @@ class ExerciseServiceTest extends IntegrationTestSupport {
         // when
         Optional<Exercise> exerciseOptional = exercisesRepository.findByName(exerciseDto.getName());
         exerciseService.deleteExercise(exerciseOptional.get().getId(), member.getId());
-        List<ExerciseDto> exercises = exerciseService.getExercises("ALL", 0, 10);
+        List<Exercise> exercises = exerciseService.getExercises("ALL", 0, 10);
 
         // then
         assertThat(exercises)
