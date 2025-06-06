@@ -2,7 +2,6 @@ package com.easyroutine.domain.routine;
 
 import com.easyroutine.domain.BaseEntity;
 import com.easyroutine.domain.member.Member;
-import com.easyroutine.domain.routine.dto.RoutineDto;
 import com.easyroutine.domain.routine_exercise.RoutineExercise;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,6 +34,12 @@ public class Routine extends BaseEntity {
     @OneToMany(mappedBy = "routine", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RoutineExercise> routineExercises = new ArrayList<>();
 
+    public List<RoutineExercise> getRoutineExercises() {
+        if(routineExercises == null) {
+            routineExercises = new ArrayList<>();
+        }
+        return routineExercises;
+    }
 
     public static Routine of(Long id){
         return Routine.builder()
