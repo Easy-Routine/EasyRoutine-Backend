@@ -62,9 +62,12 @@ class ExercisesRepositoryTest extends IntegrationTestSupport {
                 exerciseF,
                 exerciseG
         ));
-    
+
+        String keyword = null;
+        String memberId = member.getId();
+
         // when
-        List<Exercise> exercises = exercisesRepository.findAllByCategoryAndDeletedAtIsNull(category, PageRequest.of(0, 10));
+        List<Exercise> exercises = exercisesRepository.findAllByCategoryAndDeletedAtIsNull(category, PageRequest.of(0, 10), keyword, memberId);
 
         // then
         assertThat(exercises)
@@ -97,9 +100,12 @@ class ExercisesRepositoryTest extends IntegrationTestSupport {
                 exerciseG
         ));
 
+        String keyword = null;
+        String memberId = member.getId();
+
         // when
         String allCategoryKeyword = "ALL";
-        List<Exercise> allByCategory = exercisesRepository.findAllByCategoryAndDeletedAtIsNull(allCategoryKeyword, PageRequest.of(0, 10));
+        List<Exercise> allByCategory = exercisesRepository.findAllByCategoryAndDeletedAtIsNull(allCategoryKeyword, PageRequest.of(0, 10), keyword, memberId);
 
         // then
         assertThat(allByCategory)

@@ -5,6 +5,7 @@ import com.easyroutine.api.controller.v1.exercise.request.ExerciseUpdateRequest;
 import com.easyroutine.domain.exercises.Exercise;
 import com.easyroutine.domain.exercises.ExerciseCategory;
 import com.easyroutine.domain.exercises.ExerciseType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -16,6 +17,7 @@ public class ExerciseDto {
     private Long id;
     private String name;
     private String image;
+    @JsonIgnore
     private String originImage;
     private ExerciseCategory category;
     private List<ExerciseType> types;

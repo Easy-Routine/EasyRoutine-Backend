@@ -47,9 +47,12 @@ class ExerciseServiceTest extends IntegrationTestSupport {
 
         ExerciseDto exerciseDto = getExerciseDto();
 
+        String keyword = null;
+        String memberId = member.getId();
+
         // when
         String result = exerciseService.createExercise(exerciseDto, member.getId());
-        List<Exercise> exercises = exerciseService.getExercises("CHEST", 0, 10);
+        List<Exercise> exercises = exerciseService.getExercises("CHEST", 0, 10, keyword, memberId);
 
         // then
         assertThat(result).isEqualTo("Success");
@@ -72,8 +75,11 @@ class ExerciseServiceTest extends IntegrationTestSupport {
         ExerciseDto exerciseDto = getExerciseDto();
         exerciseService.createExercise(exerciseDto, member.getId());
 
+        String keyword = null;
+        String memberId = member.getId();
+
         // when
-        List<Exercise> exercises = exerciseService.getExercises("ALL", 0, 10);
+        List<Exercise> exercises = exerciseService.getExercises("ALL", 0, 10, keyword, memberId);
 
         // then
         assertThat(exercises)
@@ -103,8 +109,11 @@ class ExerciseServiceTest extends IntegrationTestSupport {
         ExerciseDto updateExerciseDto = getExerciseDto(1L);
         exerciseService.updateExercise(updateExerciseDto, member.getId());
 
+        String keyword = null;
+        String memberId = member.getId();
+
         // then
-        List<Exercise> exercises = exerciseService.getExercises("ALL", 0, 10);
+        List<Exercise> exercises = exerciseService.getExercises("ALL", 0, 10, keyword, memberId);
         assertThat(exercises)
                 .hasSize(1)
                 .satisfiesExactly(exercise -> {
@@ -128,10 +137,13 @@ class ExerciseServiceTest extends IntegrationTestSupport {
         ExerciseDto exerciseDto = getExerciseDto();
         exerciseService.createExercise(exerciseDto, member.getId());
 
+        String keyword = null;
+        String memberId = member.getId();
+
         // when
         Optional<Exercise> exerciseOptional = exercisesRepository.findByName(exerciseDto.getName());
         exerciseService.deleteExercise(exerciseOptional.get().getId(), member.getId());
-        List<Exercise> exercises = exerciseService.getExercises("ALL", 0, 10);
+        List<Exercise> exercises = exerciseService.getExercises("ALL", 0, 10, keyword, memberId);
 
         // then
         assertThat(exercises)
