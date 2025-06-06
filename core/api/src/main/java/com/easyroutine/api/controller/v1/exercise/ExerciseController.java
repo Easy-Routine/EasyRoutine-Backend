@@ -27,9 +27,14 @@ public class ExerciseController {
     }
 
     @Operation(summary = "운동 목록 조회", description = "운동 목록을 조회합니다.")
-    @GetMapping("/{type}/{page}/{size}")
-    public PageData<ExerciseDto> getExercises(@PathVariable String type, @PathVariable int page, @PathVariable int size) {
-        List<Exercise> exercises = exerciseService.getExercises(type, page, size);
+    @GetMapping
+    public PageData<ExerciseDto> getExercises(@RequestParam(name = "category", required = false) String category,
+                                              @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+                                              @RequestParam(name = "size", required = false, defaultValue = "0") int size,
+                                              @RequestParam(name = "keyword", required = false) String keyword,
+                                              @AuthenticationPrincipal CustomOAuth2User user) {
+        String memberId = user.getMemberId();
+        List<Exercise> exercises = exerciseService.getExercises(category, page, size, keyword, memberId);
         List<ExerciseDto> exerciseDtos = exercises.stream()
                 .map(ExerciseDto::of)
                 .toList();
@@ -39,8 +44,8 @@ public class ExerciseController {
     @Operation(summary = "운동 생성", description = "운동을 생성합니다.")
     @PostMapping
     public String createExercise(@RequestBody ExerciseCreateRequest request,
-                                @AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
-        String memberId = customOAuth2User.getMemberId();
+                                @AuthenticationPrincipal CustomOAuth2User user) {
+        String memberId = user.getMemberId();
         ExerciseDto exerciseDto = ExerciseDto.of(request);
 
         return exerciseService.createExercise(exerciseDto, memberId);
@@ -49,8 +54,8 @@ public class ExerciseController {
     @Operation(summary = "운동 수정", description = "운동을 수정합니다.")
     @PutMapping
     public String updateExercise(@RequestBody ExerciseUpdateRequest request,
-                                @AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
-        String memberId = customOAuth2User.getMemberId();
+                                @AuthenticationPrincipal CustomOAuth2User user) {
+        String memberId = user.getMemberId();
         ExerciseDto exerciseDto = ExerciseDto.of(request);
 
         return exerciseService.updateExercise(exerciseDto, memberId);
@@ -59,8 +64,8 @@ public class ExerciseController {
     @Operation(summary = "운동 삭제", description = "운동을 삭제합니다.")
     @DeleteMapping
     public String deleteExercise(@RequestBody ExerciseDeleteRequest request,
-                                @AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
-        String memberId = customOAuth2User.getMemberId();
+                                @AuthenticationPrincipal CustomOAuth2User user) {
+        String memberId = user.getMemberId();
         return exerciseService.deleteExercise(request.getId(), memberId);
     }
 }

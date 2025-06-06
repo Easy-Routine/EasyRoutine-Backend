@@ -25,9 +25,9 @@ public class ExerciseService {
         this.exerciseRepository = exerciseRepository;
     }
 
-    public List<Exercise> getExercises(String type, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return exerciseRepository.findAllByCategoryAndDeletedAtIsNull(type, pageable);
+    public List<Exercise> getExercises(String category, int page, int size, String keyword, String memberId) {
+        Pageable pageable = (page == 0 || size == 0) ? Pageable.unpaged() : PageRequest.of(page, size);
+        return exerciseRepository.findAllByCategoryAndDeletedAtIsNull(category, pageable, keyword, memberId);
     }
 
     @Transactional(rollbackFor = Exception.class)
