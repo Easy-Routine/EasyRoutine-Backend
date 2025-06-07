@@ -42,6 +42,14 @@ public class RoutineExercise extends BaseEntity {
                 .build();
     }
 
+    /**
+     * for test
+     * helper method
+     */
+    public void setroutine(Routine routine){
+        this.routine = routine;
+    }
+
 
 
 

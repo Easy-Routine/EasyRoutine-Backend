@@ -46,4 +46,14 @@ public class Routine extends BaseEntity {
                 .id(id)
                 .build();
     }
+
+    /**
+     * for test code
+     * helper method
+     */
+
+    public void addRoutineExercise(RoutineExercise routineExercise){
+        this.getRoutineExercises().add(routineExercise);
+        routineExercise.setroutine(this);
+    }
 }
