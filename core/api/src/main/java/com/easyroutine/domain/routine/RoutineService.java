@@ -78,7 +78,7 @@ public class RoutineService {
                 set.setDeletedAt();
             }
         }
-        // 삭제된 엔티티를 DTO로 변환해 리턴
+        // 삭제된 엔티티를 DTO로 변환해 리턴z
         return routineMapper.fromEntity(routine);
     }
 

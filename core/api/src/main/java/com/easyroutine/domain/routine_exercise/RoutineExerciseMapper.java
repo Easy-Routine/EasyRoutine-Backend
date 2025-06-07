@@ -29,6 +29,9 @@ public class RoutineExerciseMapper {
                 .id(e.getId())
                 .routineId(e.getRoutine().getId())
                 .exerciseId(e.getExercise().getId())
+                .category(e.getExercise().getCategory())
+                .image(e.getExercise().getImage())
+                .name(e.getExercise().getName())
                 .order(e.getOrder())
                 .setsDtoList(setsDtoList)
                 .build();

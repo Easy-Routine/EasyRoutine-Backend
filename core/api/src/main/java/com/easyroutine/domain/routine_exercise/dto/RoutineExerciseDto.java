@@ -1,5 +1,6 @@
 package com.easyroutine.domain.routine_exercise.dto;
 
+import com.easyroutine.domain.exercises.ExerciseCategory;
 import com.easyroutine.domain.routine_exercise_sets.dto.RoutineExerciseSetsDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -29,6 +30,10 @@ public class RoutineExerciseDto {
     @Min(value = 1, message = "운동 순서는 1 이상이어야 합니다.")
     @NotNull(message = "운동 순서는 필 수 입니다.")
     private int order;
+
+    private ExerciseCategory category;
+    private String image;
+    private String name;
 
     @NotEmpty(message = "세트 리스트는 비어 있을 수 없습니다.")
     @Valid
