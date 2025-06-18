@@ -34,7 +34,7 @@ public class RoutineHistoryDto {
 
     private LocalDateTime exerciseDate;
 
-    private List<@Valid RoutineHistoryDetailsDto> routineHistoryDetails;
+    private List<@Valid RoutineHistoryDetailsDto> sets;
 
     public static RoutineHistoryDto of(RoutineHistory routineHistory) {
         List<RoutineHistoryDetailsDto> routineHistoryDetailsDtos = routineHistory.getRoutineHistoryDetails().stream()
@@ -45,13 +45,13 @@ public class RoutineHistoryDto {
                 .id(routineHistory.getId())
                 .name(routineHistory.getRoutine().getName())
                 .color(routineHistory.getRoutine().getColor())
-                .routineHistoryDetails(routineHistoryDetailsDtos)
+                .sets(routineHistoryDetailsDtos)
                 .build();
     }
 
     public static RoutineHistoryDto of(RoutineHistoryCreateRequest request,
                             RoutineExerciseHistoryCreateRequest historyRequest) {
-        List<RoutineHistoryDetailsDto> routineHistoryDetailsDtos = historyRequest.getRoutineHistoryDetails().stream()
+        List<RoutineHistoryDetailsDto> routineHistoryDetailsDtos = historyRequest.getSets().stream()
                 .map(historyDetail -> RoutineHistoryDetailsDto.of(historyDetail))
                 .toList();
 
@@ -59,13 +59,13 @@ public class RoutineHistoryDto {
                 .routineId(request.getRoutineId())
                 .name(request.getName())
                 .color(request.getColor())
-                .exerciseId(historyRequest.getExerciseId())
-                .routineHistoryDetails(routineHistoryDetailsDtos)
+                .exerciseId(historyRequest.getExercise().getExerciseId())
+                .sets(routineHistoryDetailsDtos)
                 .build();
     }
 
     public static RoutineHistoryDto of(Long id, RoutineHistoryUpdateRequest request, RoutineExerciseHistoryUpdateRequest historyRequest) {
-        List<RoutineHistoryDetailsDto> routineHistoryDetailsDtos = historyRequest.getRoutineHistoryDetails().stream()
+        List<RoutineHistoryDetailsDto> routineHistoryDetailsDtos = historyRequest.getSets().stream()
                 .map(historyDetail -> RoutineHistoryDetailsDto.of(historyDetail))
                 .toList();
 
@@ -74,8 +74,8 @@ public class RoutineHistoryDto {
                 .routineId(request.getRoutineId())
                 .name(request.getName())
                 .color(request.getColor())
-                .exerciseId(historyRequest.getExerciseId())
-                .routineHistoryDetails(routineHistoryDetailsDtos)
+                .exerciseId(historyRequest.getExercise().getExerciseId())
+                .sets(routineHistoryDetailsDtos)
                 .build();
     }
 }

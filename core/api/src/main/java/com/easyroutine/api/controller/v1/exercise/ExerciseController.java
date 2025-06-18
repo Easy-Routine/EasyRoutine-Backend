@@ -28,17 +28,28 @@ public class ExerciseController {
 
     @Operation(summary = "운동 목록 조회", description = "운동 목록을 조회합니다.")
     @GetMapping
-    public PageData<ExerciseDto> getExercises(@RequestParam(name = "category", required = false) String category,
-                                              @RequestParam(name = "page", required = false, defaultValue = "0") int page,
-                                              @RequestParam(name = "size", required = false, defaultValue = "0") int size,
-                                              @RequestParam(name = "keyword", required = false) String keyword,
-                                              @AuthenticationPrincipal CustomOAuth2User user) {
+    public PageData<ExerciseDto> getExercises(
+            @RequestParam(name = "category", required = false) String category,
+            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(name = "size", required = false, defaultValue = "0") int size,
+            @RequestParam(name = "keyword", required = false) String keyword,
+            @AuthenticationPrincipal CustomOAuth2User user
+    ) {
         String memberId = user.getMemberId();
-        List<Exercise> exercises = exerciseService.getExercises(category, page, size, keyword, memberId);
+        List<Exercise> exercises = exerciseService.getExercises(category, page - 1, size, keyword, memberId);
         List<ExerciseDto> exerciseDtos = exercises.stream()
                 .map(ExerciseDto::of)
                 .toList();
         return PageData.of(0, exerciseDtos);
+    }
+
+    @Operation(summary = "운동 상세 조회", description = "운동의 상세 정보를 조회합니다.")
+    @GetMapping("/{id}")
+    public ExerciseDto getExercise(@PathVariable Long id,
+                                @AuthenticationPrincipal CustomOAuth2User user) {
+        String memberId = user.getMemberId();
+        Exercise exercise = exerciseService.getExercise(id, memberId);
+        return ExerciseDto.of(exercise);
     }
 
     @Operation(summary = "운동 생성", description = "운동을 생성합니다.")
