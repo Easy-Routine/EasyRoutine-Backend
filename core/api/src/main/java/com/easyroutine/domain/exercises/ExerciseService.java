@@ -30,13 +30,19 @@ public class ExerciseService {
         return exerciseRepository.findAllByCategoryAndDeletedAtIsNull(category, pageable, keyword, memberId);
     }
 
+    public Exercise getExercise(Long id, String memberId) {
+        Member member = Member.of(memberId);
+        return exerciseRepository.findByIdAndMemberAndDeletedAtIsNull(id, member)
+                .orElseThrow(() -> new DataException(ResultType.DATA_NOT_FOUND, "운동을 찾을 수 없습니다."));
+    }
+
     @Transactional(rollbackFor = Exception.class)
     public String createExercise(ExerciseDto exerciseDto, String memberId) {
         Member member = Member.of(memberId);
         Exercise exercise = Exercise.of(exerciseDto, member);
 
         exerciseRepository.save(exercise);
-        
+
         return "Success";
     }
 
@@ -44,13 +50,13 @@ public class ExerciseService {
     public String updateExercise(ExerciseDto exerciseDto, String memberId) {
         Member member = Member.of(memberId);
         Optional<Exercise> exerciseOptional = exerciseRepository.findByIdAndMemberAndDeletedAtIsNull(exerciseDto.getId(), member);
-        
+
         exerciseOptional.ifPresentOrElse(exercise -> {
             exercise.updateExercise(exerciseDto);
             }, () -> {
             throw new DataException(ResultType.DATA_NOT_FOUND, "운동을 찾을 수 없습니다.");
         });
-        
+
         return "Success";
     }
 
@@ -58,11 +64,11 @@ public class ExerciseService {
     public String deleteExercise(Long id, String memberId) {
         Member member = Member.of(memberId);
         Optional<Exercise> exerciseOptional = exerciseRepository.findByIdAndMemberAndDeletedAtIsNull(id, member);
-        
+
         exerciseOptional.ifPresentOrElse(Exercise::deleteExercise, () -> {
             throw new DataException(ResultType.DATA_NOT_FOUND, "운동을 찾을 수 없습니다.");
         });
-        
+
         return "Success";
     }
 }
