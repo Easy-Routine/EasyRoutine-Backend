@@ -28,7 +28,7 @@ public class RoutineHistoryMapper {
                 .member(Member.of(memberId))
                 .build();
 
-        List<RoutineHistoryDetails> routineHistoryDetails = dto.getRoutineHistoryDetails().stream()
+        List<RoutineHistoryDetails> routineHistoryDetails = dto.getSets().stream()
                 .map(detail -> routineHistoryDetailsMapper.toEntity(detail, routineHistory))
                 .toList();
 
