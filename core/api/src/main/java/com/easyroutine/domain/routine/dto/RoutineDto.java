@@ -24,11 +24,16 @@ public class RoutineDto {
 
     @NotBlank(message = "루틴 이름은 비어 있을 수 없습니다.")
     private String name;
+
     @NotBlank(message = "루틴 색은 비어 있을 수 없습니다.")
     private String color;
+
     @NotEmpty(message = "하나 이상의 루틴을 채워 주세요.")
     @Valid
     private List<@Valid RoutineExerciseDto> routineExerciseDtoList;
+
+    @NotBlank(message = "루틴 순서는 비어 있을 수 없습니다.")
+    private int order;
 
 
     public void setMemberIdFromToken(String memberId){

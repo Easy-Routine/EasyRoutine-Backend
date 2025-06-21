@@ -30,6 +30,7 @@ public class RoutineMapper {
         List<RoutineExerciseDto> routineExerciseDtoList = e.getRoutineExercises().stream().map(routineExerciseMapper::fromEntity).toList();
         return RoutineDto.builder()
                 .id(e.getId())
+                .order(e.getOrder())
                 .memberId(e.getMember().getId())
                 .name(e.getName())
                 .color(e.getColor())

@@ -31,6 +31,9 @@ public class Routine extends BaseEntity {
     @Column
     private String color;
 
+    @Column(name = "order_index", nullable = false)
+    private int order;
+
     @OneToMany(mappedBy = "routine", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RoutineExercise> routineExercises = new ArrayList<>();
 

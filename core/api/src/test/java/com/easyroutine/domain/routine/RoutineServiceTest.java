@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
@@ -50,7 +51,7 @@ public class RoutineServiceTest extends IntegrationTestSupport {
 
     @DisplayName("루틴을 생성한다.")
     @Test
-    void createRoutine(){
+    void createRoutine() {
         //given
         RoutineDto routineDto = getMockRoutineDto();
         Member member = memberRepository.save(getMember("google", "1234", "tester"));
@@ -60,14 +61,13 @@ public class RoutineServiceTest extends IntegrationTestSupport {
         routineDto.getRoutineExerciseDtoList().forEach(dto -> dto.setExerciseId(exercise.getId()));
 
 
-
         //when
         routineService.createRoutine(routineDto);
 
         assertThat(routineRepository.findAll())
                 .hasSize(1)
-                .extracting("name","color")
-                .containsExactly(tuple("test-routine","test-color"));
+                .extracting("name", "color")
+                .containsExactly(tuple("test-routine", "test-color"));
     }
 
     @DisplayName("회원의 루틴 목록을 조회한다.")
@@ -80,6 +80,7 @@ public class RoutineServiceTest extends IntegrationTestSupport {
         Routine routine = routineRepository.save(Routine.builder()
                 .name("test-routine")
                 .color("test-color")
+                .order(1)
                 .member(member)
                 .build());
 
@@ -161,7 +162,7 @@ public class RoutineServiceTest extends IntegrationTestSupport {
 
         //when
 
-        RoutineDto routineDto = routineService.deleteRoutine(routine.getId(),member);
+        RoutineDto routineDto = routineService.deleteRoutine(routine.getId(), member);
 
         // then: DTO 반환 값 검증
         assertThat(routineDto.getId()).isEqualTo(routine.getId());
@@ -184,8 +185,7 @@ public class RoutineServiceTest extends IntegrationTestSupport {
     }
 
 
-
-    private static RoutineDto getMockRoutineDto(){
+    private static RoutineDto getMockRoutineDto() {
         return RoutineDto.builder()
                 .name("test-routine")
                 .color("test-color")
@@ -193,14 +193,14 @@ public class RoutineServiceTest extends IntegrationTestSupport {
                 .build();
     }
 
-    private static RoutineExerciseDto getRoutineExerciseDto(){
+    private static RoutineExerciseDto getRoutineExerciseDto() {
         return RoutineExerciseDto.builder()
                 .order(1)
                 .setsDtoList(List.of(getRoutineExerciseSetsDto()))
                 .build();
     }
 
-    private static RoutineExerciseSetsDto getRoutineExerciseSetsDto(){
+    private static RoutineExerciseSetsDto getRoutineExerciseSetsDto() {
         return RoutineExerciseSetsDto.builder()
                 .weight(50.0)
                 .rep(10)
@@ -220,7 +220,7 @@ public class RoutineServiceTest extends IntegrationTestSupport {
                 .build();
     }
 
-    private static Exercise getExercise(Member member){
+    private static Exercise getExercise(Member member) {
         return Exercise.of(member);
     }
 
