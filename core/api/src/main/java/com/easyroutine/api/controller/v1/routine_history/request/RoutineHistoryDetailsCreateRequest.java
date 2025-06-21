@@ -10,18 +10,19 @@ import lombok.Setter;
 @NoArgsConstructor
 public class RoutineHistoryDetailsCreateRequest {
 
-    @Schema(description = "순서", example = "1")
-    private int order;
+	@Schema(description = "순서", example = "1")
+	private int order;
 
-    @Schema(description = "무게", example = "20.0")
-    private double weight;
+	@Schema(description = "무게", example = "20.0")
+	private double weight;
 
-    @Schema(description = "운동 시간", example = "60")
-    private int exerciseSec;
+	@Schema(description = "운동 시간", example = "60")
+	private int exerciseSec;
 
-    @Schema(description = "횟수", example = "10")
-    private int rep;
+	@Schema(description = "횟수", example = "10")
+	private int rep;
 
-    @Schema(description = "휴식 시간", example = "30")
-    private int restSec;
+	@Schema(description = "휴식 시간", example = "30")
+	private int restSec;
+
 }

@@ -27,59 +27,61 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class RoutineService {
 
-    private final RoutineMapper routineMapper;
-    private final RoutineExerciseMapper routineExerciseMapper;
-    private final RoutineExerciseSetsMapper routineExerciseSetsMapper;
+	private final RoutineMapper routineMapper;
 
-    private final RoutineRepository routineRepository;
-    private final RoutineExerciseRepository routineExerciseRepository;
-    private final RoutineExerciseSetsRepository routineExerciseSetsRepository;
+	private final RoutineExerciseMapper routineExerciseMapper;
 
-    @Transactional(rollbackFor = Exception.class)
-    public Long createRoutine(RoutineDto routineDto) {
-        Routine routine = routineRepository.save(routineMapper.toEntity(routineDto));
+	private final RoutineExerciseSetsMapper routineExerciseSetsMapper;
 
-        for (RoutineExerciseDto routineExerciseDto : routineDto.getRoutineExerciseDtoList()) {
-            routineExerciseDto.setRoutineId(routine.getId());
-            RoutineExercise routineExercise = routineExerciseRepository.save(routineExerciseMapper.toEntity(routineExerciseDto));
+	private final RoutineRepository routineRepository;
 
-            for (RoutineExerciseSetsDto routineExerciseSetsDto : routineExerciseDto.getSetsDtoList()) {
-                routineExerciseSetsDto.setRoutineExerciesId(routineExercise.getId());
-                routineExerciseSetsRepository.save(routineExerciseSetsMapper.toEntity(routineExerciseSetsDto));
-            }
-        }
+	private final RoutineExerciseRepository routineExerciseRepository;
 
-        return routine.getId();
-    }
+	private final RoutineExerciseSetsRepository routineExerciseSetsRepository;
 
+	@Transactional(rollbackFor = Exception.class)
+	public Long createRoutine(RoutineDto routineDto) {
+		Routine routine = routineRepository.save(routineMapper.toEntity(routineDto));
 
-    /**
-     * 루틴 정보 조회
-     * @param member
-     * @return
-     */
-    public List<RoutineDto> findAllRoutine(Member member) {
-        List<Routine> routineList = routineRepository.findWithExercisesByMember(member);
-        return routineList.stream().map(routineMapper::fromEntity).toList();
-    }
+		for (RoutineExerciseDto routineExerciseDto : routineDto.getRoutineExerciseDtoList()) {
+			routineExerciseDto.setRoutineId(routine.getId());
+			RoutineExercise routineExercise = routineExerciseRepository
+				.save(routineExerciseMapper.toEntity(routineExerciseDto));
 
+			for (RoutineExerciseSetsDto routineExerciseSetsDto : routineExerciseDto.getSetsDtoList()) {
+				routineExerciseSetsDto.setRoutineExerciesId(routineExercise.getId());
+				routineExerciseSetsRepository.save(routineExerciseSetsMapper.toEntity(routineExerciseSetsDto));
+			}
+		}
 
-    public RoutineDto deleteRoutine(Long id, Member member) {
-        Routine routine = routineRepository.findByIdAndMember(id, member)
-                .orElseThrow(() -> new DataException(
-                        ResultType.DATA_NOT_FOUND, "루틴을 찾을 수 없습니다."));
+		return routine.getId();
+	}
 
-        routine.setDeletedAt();
+	/**
+	 * 루틴 정보 조회
+	 * @param member
+	 * @return
+	 */
+	public List<RoutineDto> findAllRoutine(Member member) {
+		List<Routine> routineList = routineRepository.findWithExercisesByMember(member);
+		return routineList.stream().map(routineMapper::fromEntity).toList();
+	}
 
-        for(RoutineExercise exercise : routine.getRoutineExercises()){
-            exercise.setDeletedAt();
+	public RoutineDto deleteRoutine(Long id, Member member) {
+		Routine routine = routineRepository.findByIdAndMember(id, member)
+			.orElseThrow(() -> new DataException(ResultType.DATA_NOT_FOUND, "루틴을 찾을 수 없습니다."));
 
-            for(RoutineExerciseSets set : exercise.getSets()){
-                set.setDeletedAt();
-            }
-        }
-        // 삭제된 엔티티를 DTO로 변환해 리턴z
-        return routineMapper.fromEntity(routine);
-    }
+		routine.setDeletedAt();
+
+		for (RoutineExercise exercise : routine.getRoutineExercises()) {
+			exercise.setDeletedAt();
+
+			for (RoutineExerciseSets set : exercise.getSets()) {
+				set.setDeletedAt();
+			}
+		}
+		// 삭제된 엔티티를 DTO로 변환해 리턴z
+		return routineMapper.fromEntity(routine);
+	}
 
 }

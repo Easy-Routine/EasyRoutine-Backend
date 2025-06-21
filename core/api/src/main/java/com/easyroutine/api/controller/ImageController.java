@@ -14,19 +14,23 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api/v1/images")
 public class ImageController {
-    private final S3Service s3Service;
-    private final String uploadDirectoryPath;
 
-    public ImageController(@Value("${cloud.s3.directory}") String uploadDirectoryPath, S3Service s3Service) {
-        this.uploadDirectoryPath = uploadDirectoryPath;
-        this.s3Service = s3Service;
-    }
+	private final S3Service s3Service;
 
-    @PostMapping(value = "/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public String uploadImageAndGetImageUrl(@RequestPart(value ="image", required = false)  MultipartFile image) {
-        if (image == null || image.isEmpty()) {
-            return null;
-        }
-        return s3Service.uploadFile(image, uploadDirectoryPath);
-    }
+	private final String uploadDirectoryPath;
+
+	public ImageController(@Value("${cloud.s3.directory}") String uploadDirectoryPath, S3Service s3Service) {
+		this.uploadDirectoryPath = uploadDirectoryPath;
+		this.s3Service = s3Service;
+	}
+
+	@PostMapping(value = "/upload",
+			consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE })
+	public String uploadImageAndGetImageUrl(@RequestPart(value = "image", required = false) MultipartFile image) {
+		if (image == null || image.isEmpty()) {
+			return null;
+		}
+		return s3Service.uploadFile(image, uploadDirectoryPath);
+	}
+
 }

@@ -18,40 +18,33 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoutineExercise extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "routine_id", nullable = false)
-    private Routine routine;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "routine_id", nullable = false)
+	private Routine routine;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "exercise_id", nullable = false)
-    private Exercise exercise;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "exercise_id", nullable = false)
+	private Exercise exercise;
 
-    @Column(name = "order_index", nullable = false)
-    private int order;
+	@Column(name = "order_index", nullable = false)
+	private int order;
 
-    @OneToMany(mappedBy = "routineExercise", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<RoutineExerciseSets> sets = new ArrayList<>();
+	@OneToMany(mappedBy = "routineExercise", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<RoutineExerciseSets> sets = new ArrayList<>();
 
-    public static RoutineExercise of(Long id){
-        return RoutineExercise.builder()
-                .id(id)
-                .build();
-    }
+	public static RoutineExercise of(Long id) {
+		return RoutineExercise.builder().id(id).build();
+	}
 
-    /**
-     * for test
-     * helper method
-     */
-    public void setroutine(Routine routine){
-        this.routine = routine;
-    }
-
-
-
-
+	/**
+	 * for test helper method
+	 */
+	public void setroutine(Routine routine) {
+		this.routine = routine;
+	}
 
 }

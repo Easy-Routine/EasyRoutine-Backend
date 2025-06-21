@@ -14,27 +14,28 @@ import org.springframework.web.method.annotation.HandlerMethodValidationExceptio
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
-    @ExceptionHandler(BusinessException.class)
-    public ApiResponse<String> handleBusinessException(BusinessException e) {
-        log.error("BusinessException: {}", e.getMessage(), e);
-        return ApiResponse.fail(e.getResultType());
-    }
+	@ExceptionHandler(BusinessException.class)
+	public ApiResponse<String> handleBusinessException(BusinessException e) {
+		log.error("BusinessException: {}", e.getMessage(), e);
+		return ApiResponse.fail(e.getResultType());
+	}
 
-    @ExceptionHandler(DataException.class)
-    public ApiResponse<String> handleDataException(DataException e) {
-        log.error("DataException: {}", e.getMessage(), e);
-        return ApiResponse.fail(e.getResultType());
-    }
+	@ExceptionHandler(DataException.class)
+	public ApiResponse<String> handleDataException(DataException e) {
+		log.error("DataException: {}", e.getMessage(), e);
+		return ApiResponse.fail(e.getResultType());
+	}
 
-    @ExceptionHandler({MethodArgumentNotValidException.class, HandlerMethodValidationException.class})
-    public ApiResponse<String> handleMethodArgumentNotValidException(Exception e){
-        log.error("MethodArgumentNotValidException : {}", e.getMessage(), e);
-        return ApiResponse.fail(ResultType.INPUT_ERROR);
-    }
+	@ExceptionHandler({ MethodArgumentNotValidException.class, HandlerMethodValidationException.class })
+	public ApiResponse<String> handleMethodArgumentNotValidException(Exception e) {
+		log.error("MethodArgumentNotValidException : {}", e.getMessage(), e);
+		return ApiResponse.fail(ResultType.INPUT_ERROR);
+	}
 
-    @ExceptionHandler(Exception.class)
-    public ApiResponse<String> handleException(Exception e) {
-        log.error("Exception: {}", e.getMessage(), e);
-        return ApiResponse.fail(ResultType.FAIL);
-    }
+	@ExceptionHandler(Exception.class)
+	public ApiResponse<String> handleException(Exception e) {
+		log.error("Exception: {}", e.getMessage(), e);
+		return ApiResponse.fail(ResultType.FAIL);
+	}
+
 }

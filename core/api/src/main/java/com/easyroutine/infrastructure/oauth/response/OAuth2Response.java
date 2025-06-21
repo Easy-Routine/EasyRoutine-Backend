@@ -4,13 +4,14 @@ import java.util.Map;
 
 public interface OAuth2Response {
 
-    String getProvider();
+	String getProvider();
 
-    String getProviderId();
+	String getProviderId();
 
-    String getName();
+	String getName();
 
-    String getEmail();
+	String getEmail();
 
-    String getProfileImage();
+	String getProfileImage();
+
 }

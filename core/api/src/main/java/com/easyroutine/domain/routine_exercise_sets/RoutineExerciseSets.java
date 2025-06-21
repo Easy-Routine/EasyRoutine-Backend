@@ -13,24 +13,24 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoutineExerciseSets extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "routine_exercise_id", nullable = false)
-    private RoutineExercise routineExercise;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "routine_exercise_id", nullable = false)
+	private RoutineExercise routineExercise;
 
-    @Column(name="order_index" ,nullable = false)
-    private int order;
+	@Column(name = "order_index", nullable = false)
+	private int order;
 
-    @Column
-    private Double weight;
+	@Column
+	private Double weight;
 
-    @Column
-    private int rep;
+	@Column
+	private int rep;
 
-    @Column
-    private String restSec; // mm:ss
+	@Column
+	private String restSec; // mm:ss
 
 }

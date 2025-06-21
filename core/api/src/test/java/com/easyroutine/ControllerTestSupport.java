@@ -12,22 +12,22 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(controllers = {ContextController.class, MemberController.class, RoutineController.class})
+@WebMvcTest(controllers = { ContextController.class, MemberController.class, RoutineController.class })
 public abstract class ControllerTestSupport {
 
-    @Autowired
-    protected MockMvc mockMvc;
+	@Autowired
+	protected MockMvc mockMvc;
 
-    @Autowired
-    protected ObjectMapper objectMapper;
+	@Autowired
+	protected ObjectMapper objectMapper;
 
-    @MockBean
-    protected MemberService memberService;
+	@MockBean
+	protected MemberService memberService;
 
-    @MockBean
-    protected RoutineService routineService;
+	@MockBean
+	protected RoutineService routineService;
 
-    @MockBean
-    private JsonWebTokenUtil jsonWebTokenUtil;
+	@MockBean
+	private JsonWebTokenUtil jsonWebTokenUtil;
+
 }
-

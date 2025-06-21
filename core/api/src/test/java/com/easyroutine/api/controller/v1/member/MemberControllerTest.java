@@ -20,26 +20,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class MemberControllerTest extends ControllerTestSupport {
 
-    @Description("회원을 삭제한다.")
-    @WithMockUser(username ="tester", roles = "MEMBER")
-    @Test
-    void deleteMember() throws Exception {
+	@Description("회원을 삭제한다.")
+	@WithMockUser(username = "tester", roles = "MEMBER")
+	@Test
+	void deleteMember() throws Exception {
 
-        CustomOAuth2User customUser = mock(CustomOAuth2User.class);
-        when(customUser.getMemberId()).thenReturn("test-id");
+		CustomOAuth2User customUser = mock(CustomOAuth2User.class);
+		when(customUser.getMemberId()).thenReturn("test-id");
 
-        TestingAuthenticationToken authentication = new TestingAuthenticationToken(customUser, null, "MEMBER");
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+		TestingAuthenticationToken authentication = new TestingAuthenticationToken(customUser, null, "MEMBER");
+		SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        given(memberService.deleteMember(anyString()))
-                .willReturn("test-id");
+		given(memberService.deleteMember(anyString())).willReturn("test-id");
 
-        mockMvc.perform(delete("/api/v1/members").with(csrf()))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.code").value("OK"))
-                .andExpect(jsonPath("$.result").value("test-id"));
+		mockMvc.perform(delete("/api/v1/members").with(csrf()))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.success").value(true))
+			.andExpect(jsonPath("$.code").value("OK"))
+			.andExpect(jsonPath("$.result").value("test-id"));
 
-    }
+	}
+
 }

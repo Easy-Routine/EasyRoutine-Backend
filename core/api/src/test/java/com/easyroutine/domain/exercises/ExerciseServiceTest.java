@@ -22,167 +22,160 @@ import static org.assertj.core.api.Assertions.tuple;
 @Transactional
 class ExerciseServiceTest extends IntegrationTestSupport {
 
-    @Autowired
-    private ExerciseService exerciseService;
+	@Autowired
+	private ExerciseService exerciseService;
 
-    @Autowired
-    private ExercisesRepository exercisesRepository;
+	@Autowired
+	private ExercisesRepository exercisesRepository;
 
-    @Autowired
-    private MemberRepository memberRepository;
+	@Autowired
+	private MemberRepository memberRepository;
 
-    @AfterEach
-    void tearDown() {
-        exercisesRepository.deleteAllInBatch();
-        memberRepository.deleteAllInBatch();
-    }
+	@AfterEach
+	void tearDown() {
+		exercisesRepository.deleteAllInBatch();
+		memberRepository.deleteAllInBatch();
+	}
 
-    @DisplayName("운동을 생성한다.")
-    @Test
-    void createExercise(){
+	@DisplayName("운동을 생성한다.")
+	@Test
+	void createExercise() {
 
-        // given
-        Member member = getMember("google", "1234", "tester");
-        memberRepository.save(member);
+		// given
+		Member member = getMember("google", "1234", "tester");
+		memberRepository.save(member);
 
-        ExerciseDto exerciseDto = getExerciseDto();
+		ExerciseDto exerciseDto = getExerciseDto();
 
-        String keyword = null;
-        String memberId = member.getId();
+		String keyword = null;
+		String memberId = member.getId();
 
-        // when
-        String result = exerciseService.createExercise(exerciseDto, member.getId());
-        List<Exercise> exercises = exerciseService.getExercises("CHEST", 0, 10, keyword, memberId);
+		// when
+		String result = exerciseService.createExercise(exerciseDto, member.getId());
+		List<Exercise> exercises = exerciseService.getExercises("CHEST", 0, 10, keyword, memberId);
 
-        // then
-        assertThat(result).isEqualTo("Success");
-        assertThat(exercises)
-                .hasSize(1)
-                .extracting("name", "category")
-                .containsExactlyInAnyOrder(
-                        tuple("exerciseName", ExerciseCategory.CHEST)
-                );
-    }
+		// then
+		assertThat(result).isEqualTo("Success");
+		assertThat(exercises).hasSize(1)
+			.extracting("name", "category")
+			.containsExactlyInAnyOrder(tuple("exerciseName", ExerciseCategory.CHEST));
+	}
 
-    @DisplayName("운동을 조회한다.")
-    @Test
-    void getExercises() {
+	@DisplayName("운동을 조회한다.")
+	@Test
+	void getExercises() {
 
-        // given
-        Member member = getMember("google", "1234", "tester");
-        memberRepository.save(member);
+		// given
+		Member member = getMember("google", "1234", "tester");
+		memberRepository.save(member);
 
-        ExerciseDto exerciseDto = getExerciseDto();
-        exerciseService.createExercise(exerciseDto, member.getId());
+		ExerciseDto exerciseDto = getExerciseDto();
+		exerciseService.createExercise(exerciseDto, member.getId());
 
-        String keyword = null;
-        String memberId = member.getId();
+		String keyword = null;
+		String memberId = member.getId();
 
-        // when
-        List<Exercise> exercises = exerciseService.getExercises("ALL", 0, 10, keyword, memberId);
+		// when
+		List<Exercise> exercises = exerciseService.getExercises("ALL", 0, 10, keyword, memberId);
 
-        // then
-        assertThat(exercises)
-                .hasSize(1)
-                .satisfiesExactly(exercise -> {
-                    assertThat(exercise.getName()).isEqualTo("exerciseName");
-                    assertThat(exercise.getCategory()).isEqualTo(ExerciseCategory.CHEST);
-                    assertThat(exercise.getTypes()).containsExactlyInAnyOrder(ExerciseType.WEIGHT);
-                    assertThat(exercise.getImage()).isEqualTo("http://example.com/image.jpg");
-                    assertThat(exercise.getIsEditable()).isEqualTo(1);
-                    assertThat(exercise.getShareLevel()).isEqualTo(1);
-                });
-    }
+		// then
+		assertThat(exercises).hasSize(1).satisfiesExactly(exercise -> {
+			assertThat(exercise.getName()).isEqualTo("exerciseName");
+			assertThat(exercise.getCategory()).isEqualTo(ExerciseCategory.CHEST);
+			assertThat(exercise.getTypes()).containsExactlyInAnyOrder(ExerciseType.WEIGHT);
+			assertThat(exercise.getImage()).isEqualTo("http://example.com/image.jpg");
+			assertThat(exercise.getIsEditable()).isEqualTo(1);
+			assertThat(exercise.getShareLevel()).isEqualTo(1);
+		});
+	}
 
-    @DisplayName("운동을 수정한다.")
-    @Test
-    void updateExercise(){
+	@DisplayName("운동을 수정한다.")
+	@Test
+	void updateExercise() {
 
-        // given
-        Member member = getMember("google", "1234", "tester");
-        memberRepository.save(member);
+		// given
+		Member member = getMember("google", "1234", "tester");
+		memberRepository.save(member);
 
-        ExerciseDto exerciseDto = getExerciseDto();
-        exerciseService.createExercise(exerciseDto, member.getId());
+		ExerciseDto exerciseDto = getExerciseDto();
+		exerciseService.createExercise(exerciseDto, member.getId());
 
-        // when
-        ExerciseDto updateExerciseDto = getExerciseDto(1L);
-        exerciseService.updateExercise(updateExerciseDto, member.getId());
+		// when
+		ExerciseDto updateExerciseDto = getExerciseDto(1L);
+		exerciseService.updateExercise(updateExerciseDto, member.getId());
 
-        String keyword = null;
-        String memberId = member.getId();
+		String keyword = null;
+		String memberId = member.getId();
 
-        // then
-        List<Exercise> exercises = exerciseService.getExercises("ALL", 0, 10, keyword, memberId);
-        assertThat(exercises)
-                .hasSize(1)
-                .satisfiesExactly(exercise -> {
-                    assertThat(exercise.getName()).isEqualTo("update-exerciseName");
-                    assertThat(exercise.getCategory()).isEqualTo(ExerciseCategory.ARM);
-                    assertThat(exercise.getTypes()).containsExactlyInAnyOrder(ExerciseType.WEIGHT, ExerciseType.COUNT);
-                    assertThat(exercise.getImage()).isEqualTo("http://update-example.com/image.jpg");
-                    assertThat(exercise.getIsEditable()).isEqualTo(0);
-                    assertThat(exercise.getShareLevel()).isEqualTo(0);
-                });
-    }
+		// then
+		List<Exercise> exercises = exerciseService.getExercises("ALL", 0, 10, keyword, memberId);
+		assertThat(exercises).hasSize(1).satisfiesExactly(exercise -> {
+			assertThat(exercise.getName()).isEqualTo("update-exerciseName");
+			assertThat(exercise.getCategory()).isEqualTo(ExerciseCategory.ARM);
+			assertThat(exercise.getTypes()).containsExactlyInAnyOrder(ExerciseType.WEIGHT, ExerciseType.COUNT);
+			assertThat(exercise.getImage()).isEqualTo("http://update-example.com/image.jpg");
+			assertThat(exercise.getIsEditable()).isEqualTo(0);
+			assertThat(exercise.getShareLevel()).isEqualTo(0);
+		});
+	}
 
-    @DisplayName("운동을 삭제한다.")
-    @Test
-    void deleteExercise(){
+	@DisplayName("운동을 삭제한다.")
+	@Test
+	void deleteExercise() {
 
-        // given
-        Member member = getMember("google", "1234", "tester");
-        memberRepository.save(member);
+		// given
+		Member member = getMember("google", "1234", "tester");
+		memberRepository.save(member);
 
-        ExerciseDto exerciseDto = getExerciseDto();
-        exerciseService.createExercise(exerciseDto, member.getId());
+		ExerciseDto exerciseDto = getExerciseDto();
+		exerciseService.createExercise(exerciseDto, member.getId());
 
-        String keyword = null;
-        String memberId = member.getId();
+		String keyword = null;
+		String memberId = member.getId();
 
-        // when
-        Optional<Exercise> exerciseOptional = exercisesRepository.findByName(exerciseDto.getName());
-        exerciseService.deleteExercise(exerciseOptional.get().getId(), member.getId());
-        List<Exercise> exercises = exerciseService.getExercises("ALL", 0, 10, keyword, memberId);
+		// when
+		Optional<Exercise> exerciseOptional = exercisesRepository.findByName(exerciseDto.getName());
+		exerciseService.deleteExercise(exerciseOptional.get().getId(), member.getId());
+		List<Exercise> exercises = exerciseService.getExercises("ALL", 0, 10, keyword, memberId);
 
-        // then
-        assertThat(exercises)
-                .hasSize(0);
-    }
+		// then
+		assertThat(exercises).hasSize(0);
+	}
 
-    public static ExerciseDto getExerciseDto(Long id) {
-        return ExerciseDto.builder()
-                .id(id)
-                .name("update-exerciseName")
-                .category(ExerciseCategory.ARM)
-                .types(List.of(ExerciseType.WEIGHT, ExerciseType.COUNT))
-                .image("http://update-example.com/image.jpg")
-                .isEditable(0)
-                .shareLevel(0)
-                .build();
-    }
+	public static ExerciseDto getExerciseDto(Long id) {
+		return ExerciseDto.builder()
+			.id(id)
+			.name("update-exerciseName")
+			.category(ExerciseCategory.ARM)
+			.types(List.of(ExerciseType.WEIGHT, ExerciseType.COUNT))
+			.image("http://update-example.com/image.jpg")
+			.isEditable(0)
+			.shareLevel(0)
+			.build();
+	}
 
-    private static ExerciseDto getExerciseDto() {
-        ExerciseDto exerciseDto = ExerciseDto.builder()
-                .name("exerciseName")
-                .category(ExerciseCategory.CHEST)
-                .types(List.of(ExerciseType.WEIGHT))
-                .image("http://example.com/image.jpg")
-                .isEditable(1)
-                .shareLevel(1)
-                .build();
-        return exerciseDto;
-    }
+	private static ExerciseDto getExerciseDto() {
+		ExerciseDto exerciseDto = ExerciseDto.builder()
+			.name("exerciseName")
+			.category(ExerciseCategory.CHEST)
+			.types(List.of(ExerciseType.WEIGHT))
+			.image("http://example.com/image.jpg")
+			.isEditable(1)
+			.shareLevel(1)
+			.build();
+		return exerciseDto;
+	}
 
-    private static Member getMember(String provider, String providerId, String nickname) {
-        return Member.builder()
-                .provider(provider)
-                .providerId(providerId)
-                .nickname(nickname)
-                .email("" + nickname + "@example.com")
-                .masking_email("" + nickname + "@example.com")
-                .role(MemberRole.MEMBER)
-                .status(MemberStatus.ACTIVE)
-                .build();
-    }
+	private static Member getMember(String provider, String providerId, String nickname) {
+		return Member.builder()
+			.provider(provider)
+			.providerId(providerId)
+			.nickname(nickname)
+			.email("" + nickname + "@example.com")
+			.masking_email("" + nickname + "@example.com")
+			.role(MemberRole.MEMBER)
+			.status(MemberStatus.ACTIVE)
+			.build();
+	}
+
 }

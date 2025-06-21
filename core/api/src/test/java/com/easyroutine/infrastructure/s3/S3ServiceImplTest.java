@@ -23,49 +23,45 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class S3ServiceImplTest {
 
-    @Mock
-    private AmazonS3 amazonS3;
+	@Mock
+	private AmazonS3 amazonS3;
 
-    @InjectMocks
-    private S3ServiceImpl s3Service;
+	@InjectMocks
+	private S3ServiceImpl s3Service;
 
-    @DisplayName("S3에 파일 업로드 성공시에 S3 URL을 반환한다.")
-    @Test
-    void uploadFileToS3() throws Exception {
+	@DisplayName("S3에 파일 업로드 성공시에 S3 URL을 반환한다.")
+	@Test
+	void uploadFileToS3() throws Exception {
 
-        // given
-        MockMultipartFile mockFile = new MockMultipartFile(
-                "file",
-                "test.jpg",
-                "text/jpg",
-                "test content".getBytes()
-        );
+		// given
+		MockMultipartFile mockFile = new MockMultipartFile("file", "test.jpg", "text/jpg", "test content".getBytes());
 
-        String url = "uploads";
-        String fileNamePattern = url + "/" + UUID.randomUUID() + "_" + mockFile.getOriginalFilename();
+		String url = "uploads";
+		String fileNamePattern = url + "/" + UUID.randomUUID() + "_" + mockFile.getOriginalFilename();
 
-        given(amazonS3.getUrl(any(), any(String.class)))
-                .willReturn(new URL("https://test-bucket.s3.amazonaws.com/" + fileNamePattern));
+		given(amazonS3.getUrl(any(), any(String.class)))
+			.willReturn(new URL("https://test-bucket.s3.amazonaws.com/" + fileNamePattern));
 
-        // when
-        String result = s3Service.uploadFile(mockFile, url);
+		// when
+		String result = s3Service.uploadFile(mockFile, url);
 
-        // then
-        verify(amazonS3).putObject(any(PutObjectRequest.class));
-        assertTrue(result.contains("https://test-bucket.s3.amazonaws.com/" + fileNamePattern));
-    }
+		// then
+		verify(amazonS3).putObject(any(PutObjectRequest.class));
+		assertTrue(result.contains("https://test-bucket.s3.amazonaws.com/" + fileNamePattern));
+	}
 
-    @DisplayName("deleteFile_성공시_true_리턴")
-    @Test
-    void deleteFileFromS3() {
+	@DisplayName("deleteFile_성공시_true_리턴")
+	@Test
+	void deleteFileFromS3() {
 
-        // given
-        String url = "https://test-bucket.s3.amazonaws.com/images/test.jpg";
+		// given
+		String url = "https://test-bucket.s3.amazonaws.com/images/test.jpg";
 
-        // when
-        boolean result = s3Service.deleteFile(url);
+		// when
+		boolean result = s3Service.deleteFile(url);
 
-        // then
-        assertTrue(result);
-    }
+		// then
+		assertTrue(result);
+	}
+
 }

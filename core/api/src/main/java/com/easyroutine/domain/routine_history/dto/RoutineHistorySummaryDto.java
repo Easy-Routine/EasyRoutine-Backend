@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoutineHistorySummaryDto {
-    int exerciseTime;
-    int totalVolume;
 
-    public static RoutineHistorySummaryDto of(int exerciseTime, int totalVolume) {
-        return RoutineHistorySummaryDto.builder()
-                .exerciseTime(exerciseTime)
-                .totalVolume(totalVolume)
-                .build();
-    }
+	int exerciseTime;
+
+	int totalVolume;
+
+	public static RoutineHistorySummaryDto of(int exerciseTime, int totalVolume) {
+		return RoutineHistorySummaryDto.builder().exerciseTime(exerciseTime).totalVolume(totalVolume).build();
+	}
+
 }

@@ -17,42 +17,45 @@ import java.io.IOException;
 
 public class JsonWebTokenFilter extends OncePerRequestFilter {
 
-    private final JsonWebTokenUtil jwtUtil;
+	private final JsonWebTokenUtil jwtUtil;
 
-    public JsonWebTokenFilter(JsonWebTokenUtil jwtUtil) {
-        this.jwtUtil = jwtUtil;
-    }
+	public JsonWebTokenFilter(JsonWebTokenUtil jwtUtil) {
+		this.jwtUtil = jwtUtil;
+	}
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException {
 
-        String token = request.getHeader("Authorization");
+		String token = request.getHeader("Authorization");
 
-        if (hasNotToken(token)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+		if (hasNotToken(token)) {
+			filterChain.doFilter(request, response);
+			return;
+		}
 
-        token = token.substring(7).trim();
+		token = token.substring(7).trim();
 
-        if (jwtUtil.isExpired(token)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+		if (jwtUtil.isExpired(token)) {
+			filterChain.doFilter(request, response);
+			return;
+		}
 
-        String memberId = jwtUtil.getMemberId(token);
-        String role = jwtUtil.getRole(token);
+		String memberId = jwtUtil.getMemberId(token);
+		String role = jwtUtil.getRole(token);
 
-        Member member = Member.of(memberId, MemberRole.MEMBER);
-        CustomOAuth2User customOAuth2User = new CustomOAuth2UserImpl(member);
+		Member member = Member.of(memberId, MemberRole.MEMBER);
+		CustomOAuth2User customOAuth2User = new CustomOAuth2UserImpl(member);
 
-        Authentication authToken = new UsernamePasswordAuthenticationToken(customOAuth2User, null, customOAuth2User.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authToken);
+		Authentication authToken = new UsernamePasswordAuthenticationToken(customOAuth2User, null,
+				customOAuth2User.getAuthorities());
+		SecurityContextHolder.getContext().setAuthentication(authToken);
 
-        filterChain.doFilter(request, response);
-    }
+		filterChain.doFilter(request, response);
+	}
 
-    private boolean hasNotToken(String token) {
-        return token == null || !token.startsWith("Bearer ");
-    }
+	private boolean hasNotToken(String token) {
+		return token == null || !token.startsWith("Bearer ");
+	}
+
 }

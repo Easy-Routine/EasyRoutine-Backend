@@ -19,25 +19,27 @@ import java.lang.reflect.Parameter;
 @Component
 public class AuthenticationCheckAspect {
 
-    @Pointcut("within(@org.springframework.web.bind.annotation.RestController *)")
-    public void restControllerMethods() {}
+	@Pointcut("within(@org.springframework.web.bind.annotation.RestController *)")
+	public void restControllerMethods() {
+	}
 
-    @Before("restControllerMethods()")
-    public void checkAuthentication(JoinPoint joinPoint) {
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        Method method = signature.getMethod();
-        Object[] args = joinPoint.getArgs();
-        Parameter[] parameters = method.getParameters();
+	@Before("restControllerMethods()")
+	public void checkAuthentication(JoinPoint joinPoint) {
+		MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+		Method method = signature.getMethod();
+		Object[] args = joinPoint.getArgs();
+		Parameter[] parameters = method.getParameters();
 
-        for (int i = 0; i < parameters.length; i++) {
-            for (Annotation annotation : parameters[i].getAnnotations()) {
-                if (annotation.annotationType() == AuthenticationPrincipal.class) {
-                    Object arg = args[i];
-                    if (arg == null || !(arg instanceof CustomOAuth2User)) {
-                        throw new BusinessException(ResultType.MEMBER_NOT_FOUND, "인증 정보가 없습니다.");
-                    }
-                }
-            }
-        }
-    }
+		for (int i = 0; i < parameters.length; i++) {
+			for (Annotation annotation : parameters[i].getAnnotations()) {
+				if (annotation.annotationType() == AuthenticationPrincipal.class) {
+					Object arg = args[i];
+					if (arg == null || !(arg instanceof CustomOAuth2User)) {
+						throw new BusinessException(ResultType.MEMBER_NOT_FOUND, "인증 정보가 없습니다.");
+					}
+				}
+			}
+		}
+	}
+
 }

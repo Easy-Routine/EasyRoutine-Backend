@@ -13,9 +13,13 @@ import java.util.Optional;
 
 @Repository
 public interface RoutineRepository extends JpaRepository<Routine, Long> {
-    @EntityGraph(attributePaths = {"routineExercises"})
-    @Query("SELECT r FROM Routine r WHERE r.member = :member")
-    List<Routine> findWithExercisesByMember(@Param("member") Member member);
-    List<Routine> findByMember(Member member);
-    Optional<Routine> findByIdAndMember(Long id, Member member);
+
+	@EntityGraph(attributePaths = { "routineExercises" })
+	@Query("SELECT r FROM Routine r WHERE r.member = :member")
+	List<Routine> findWithExercisesByMember(@Param("member") Member member);
+
+	List<Routine> findByMember(Member member);
+
+	Optional<Routine> findByIdAndMember(Long id, Member member);
+
 }

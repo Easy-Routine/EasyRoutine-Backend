@@ -17,46 +17,44 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Routine extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "member_id", nullable = false)
+	private Member member;
 
-    @Column(nullable = false)
-    private String name;
+	@Column(nullable = false)
+	private String name;
 
-    @Column
-    private String color;
+	@Column
+	private String color;
 
-    @Column(name = "order_index", nullable = false)
-    private int order;
+	@Column(name = "order_index", nullable = false)
+	private int order;
 
-    @OneToMany(mappedBy = "routine", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<RoutineExercise> routineExercises = new ArrayList<>();
+	@OneToMany(mappedBy = "routine", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<RoutineExercise> routineExercises = new ArrayList<>();
 
-    public List<RoutineExercise> getRoutineExercises() {
-        if(routineExercises == null) {
-            routineExercises = new ArrayList<>();
-        }
-        return routineExercises;
-    }
+	public List<RoutineExercise> getRoutineExercises() {
+		if (routineExercises == null) {
+			routineExercises = new ArrayList<>();
+		}
+		return routineExercises;
+	}
 
-    public static Routine of(Long id){
-        return Routine.builder()
-                .id(id)
-                .build();
-    }
+	public static Routine of(Long id) {
+		return Routine.builder().id(id).build();
+	}
 
-    /**
-     * for test code
-     * helper method
-     */
+	/**
+	 * for test code helper method
+	 */
 
-    public void addRoutineExercise(RoutineExercise routineExercise){
-        this.getRoutineExercises().add(routineExercise);
-        routineExercise.setroutine(this);
-    }
+	public void addRoutineExercise(RoutineExercise routineExercise) {
+		this.getRoutineExercises().add(routineExercise);
+		routineExercise.setroutine(this);
+	}
+
 }

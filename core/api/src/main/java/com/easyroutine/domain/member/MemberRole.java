@@ -5,12 +5,12 @@ import org.springframework.security.core.GrantedAuthority;
 
 @Getter
 public enum MemberRole implements GrantedAuthority {
-    MEMBER, ADMIN,
-    ;
 
+	MEMBER, ADMIN,;
 
-    @Override
-    public String getAuthority() {
-        return name();
-    }
+	@Override
+	public String getAuthority() {
+		return name();
+	}
+
 }

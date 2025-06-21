@@ -16,28 +16,25 @@ import java.util.ArrayList;
 @Configuration
 public class SwaggerConfig {
 
-    public SwaggerConfig(MappingJackson2HttpMessageConverter converter){
-        ArrayList<MediaType> supportedMediaTypes = new ArrayList<>(converter.getSupportedMediaTypes());
-        supportedMediaTypes.add(new MediaType("application", "octet-stream"));
-        converter.setSupportedMediaTypes(supportedMediaTypes);
-    }
+	public SwaggerConfig(MappingJackson2HttpMessageConverter converter) {
+		ArrayList<MediaType> supportedMediaTypes = new ArrayList<>(converter.getSupportedMediaTypes());
+		supportedMediaTypes.add(new MediaType("application", "octet-stream"));
+		converter.setSupportedMediaTypes(supportedMediaTypes);
+	}
 
-    @Bean
-    public OpenAPI openAPI() {
-        return new OpenAPI()
-                .addServersItem(new Server().url("https://easyroutine.heykiwoung.com")) // 서버 URL 추가
-                .addServersItem(new Server().url("http://localhost:8080")) // 서버 URL 추가
-                .addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))
-                .components(new Components().addSecuritySchemes("Bearer Authentication",
-                        new SecurityScheme()
-                                .name("Authentication")
-                                .type(SecurityScheme.Type.HTTP)
-                                .scheme("bearer")
-                                .bearerFormat("JWT")
-                ))
-                .info(new Info().title("Easy Routine API")
-                        .description("Easy Routine API Documentation")
-                        .version("v1.0.0"));
-    }
+	@Bean
+	public OpenAPI openAPI() {
+		return new OpenAPI().addServersItem(new Server().url("https://easyroutine.heykiwoung.com")) // 서버
+																									// URL
+																									// 추가
+			.addServersItem(new Server().url("http://localhost:8080")) // 서버 URL 추가
+			.addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))
+			.components(new Components().addSecuritySchemes("Bearer Authentication",
+					new SecurityScheme().name("Authentication")
+						.type(SecurityScheme.Type.HTTP)
+						.scheme("bearer")
+						.bearerFormat("JWT")))
+			.info(new Info().title("Easy Routine API").description("Easy Routine API Documentation").version("v1.0.0"));
+	}
 
 }

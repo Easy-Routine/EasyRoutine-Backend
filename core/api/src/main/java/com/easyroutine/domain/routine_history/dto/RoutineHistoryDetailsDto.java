@@ -14,47 +14,48 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RoutineHistoryDetailsDto {
 
-    private Long id;
+	private Long id;
 
-    private int order;
+	private int order;
 
-    private double weight;
+	private double weight;
 
-    private int rep;
+	private int rep;
 
-    private int exerciseSec;
+	private int exerciseSec;
 
-    private int refreshTime;
+	private int refreshTime;
 
-    public static RoutineHistoryDetailsDto of(RoutineHistoryDetails routineHistoryDetails) {
-        return RoutineHistoryDetailsDto.builder()
-                .id(routineHistoryDetails.getId())
-                .order(routineHistoryDetails.getOrder())
-                .weight(routineHistoryDetails.getWeight())
-                .rep(routineHistoryDetails.getRep())
-                .exerciseSec(routineHistoryDetails.getExerciseTime())
-                .refreshTime(routineHistoryDetails.getRefreshTime())
-                .build();
-    }
+	public static RoutineHistoryDetailsDto of(RoutineHistoryDetails routineHistoryDetails) {
+		return RoutineHistoryDetailsDto.builder()
+			.id(routineHistoryDetails.getId())
+			.order(routineHistoryDetails.getOrder())
+			.weight(routineHistoryDetails.getWeight())
+			.rep(routineHistoryDetails.getRep())
+			.exerciseSec(routineHistoryDetails.getExerciseTime())
+			.refreshTime(routineHistoryDetails.getRefreshTime())
+			.build();
+	}
 
-    public static RoutineHistoryDetailsDto of(RoutineHistoryDetailsCreateRequest request) {
-        return RoutineHistoryDetailsDto.builder()
-                .order(request.getOrder())
-                .weight(request.getWeight())
-                .rep(request.getRep())
-                .exerciseSec(request.getExerciseSec())
-                .refreshTime(request.getRestSec())
-                .build();
-    }
+	public static RoutineHistoryDetailsDto of(RoutineHistoryDetailsCreateRequest request) {
+		return RoutineHistoryDetailsDto.builder()
+			.order(request.getOrder())
+			.weight(request.getWeight())
+			.rep(request.getRep())
+			.exerciseSec(request.getExerciseSec())
+			.refreshTime(request.getRestSec())
+			.build();
+	}
 
-    public static RoutineHistoryDetailsDto of(RoutineHistoryDetailsUpdateRequest historyDetail) {
-        return RoutineHistoryDetailsDto.builder()
-                .id(historyDetail.getId())
-                .order(historyDetail.getOrder())
-                .weight(historyDetail.getWeight())
-                .rep(historyDetail.getRep())
-                .exerciseSec(historyDetail.getExerciseSec())
-                .refreshTime(historyDetail.getRestSec())
-                .build();
-    }
+	public static RoutineHistoryDetailsDto of(RoutineHistoryDetailsUpdateRequest historyDetail) {
+		return RoutineHistoryDetailsDto.builder()
+			.id(historyDetail.getId())
+			.order(historyDetail.getOrder())
+			.weight(historyDetail.getWeight())
+			.rep(historyDetail.getRep())
+			.exerciseSec(historyDetail.getExerciseSec())
+			.refreshTime(historyDetail.getRestSec())
+			.build();
+	}
+
 }

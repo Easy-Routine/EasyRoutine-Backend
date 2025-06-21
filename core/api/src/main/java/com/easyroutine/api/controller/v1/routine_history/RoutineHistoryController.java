@@ -24,53 +24,55 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RoutineHistoryController {
 
-    private final RoutineHistoryService routineHistoryService;
+	private final RoutineHistoryService routineHistoryService;
 
-    @Operation(summary = "루틴 이력 요약 조회", description = "루틴 이력 요약을 조회합니다.")
-    @GetMapping("/summary/{date}")
-    public RoutineHistorySummaryDto getRoutineHistories(@PathVariable("date") @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "날짜 형식은 yyyy-MM-dd 이어야 합니다.") String date) {
-        int exerciseTime = routineHistoryService.getExerciseTime(date);
-        int totalVolume = routineHistoryService.getTotalVolume(date);
-        return RoutineHistorySummaryDto.of(exerciseTime, totalVolume);
-    }
+	@Operation(summary = "루틴 이력 요약 조회", description = "루틴 이력 요약을 조회합니다.")
+	@GetMapping("/summary/{date}")
+	public RoutineHistorySummaryDto getRoutineHistories(@PathVariable("date") @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}",
+			message = "날짜 형식은 yyyy-MM-dd 이어야 합니다.") String date) {
+		int exerciseTime = routineHistoryService.getExerciseTime(date);
+		int totalVolume = routineHistoryService.getTotalVolume(date);
+		return RoutineHistorySummaryDto.of(exerciseTime, totalVolume);
+	}
 
-    @Operation(summary = "루틴 이력 조회", description = "루틴 이력을 조회합니다.")
-    @GetMapping("/{date}")
-    public List<RoutineHistoryDto> getRoutineHistory(@PathVariable("date") @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "날짜 형식은 yyyy-MM-dd 이어야 합니다.") String date) {
-        List<RoutineHistory> routineHistories = routineHistoryService.getRoutineHistory(date);
-        return routineHistories.stream()
-                .map(routineHistory -> RoutineHistoryDto.of(routineHistory)
-                ).toList();
-    }
+	@Operation(summary = "루틴 이력 조회", description = "루틴 이력을 조회합니다.")
+	@GetMapping("/{date}")
+	public List<RoutineHistoryDto> getRoutineHistory(@PathVariable("date") @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}",
+			message = "날짜 형식은 yyyy-MM-dd 이어야 합니다.") String date) {
+		List<RoutineHistory> routineHistories = routineHistoryService.getRoutineHistory(date);
+		return routineHistories.stream().map(routineHistory -> RoutineHistoryDto.of(routineHistory)).toList();
+	}
 
-    @Operation(summary = "루틴 이력 기록", description = "루틴 이력을 기록합니다.")
-    @PostMapping
-    public String createRoutineHistory(@RequestBody RoutineHistoryCreateRequest request,
-                                    @AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
-        String memberId = customOAuth2User.getMemberId();
-        List<RoutineHistoryDto> routineHistoryDtos = request.getRoutineExercises().stream()
-                .map(historyRequest -> RoutineHistoryDto.of(request, historyRequest))
-                .toList();
-        return routineHistoryService.createRoutineHistory(routineHistoryDtos, memberId);
-    }
+	@Operation(summary = "루틴 이력 기록", description = "루틴 이력을 기록합니다.")
+	@PostMapping
+	public String createRoutineHistory(@RequestBody RoutineHistoryCreateRequest request,
+			@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+		String memberId = customOAuth2User.getMemberId();
+		List<RoutineHistoryDto> routineHistoryDtos = request.getRoutineExercises()
+			.stream()
+			.map(historyRequest -> RoutineHistoryDto.of(request, historyRequest))
+			.toList();
+		return routineHistoryService.createRoutineHistory(routineHistoryDtos, memberId);
+	}
 
-    @Operation(summary = "루틴 이력 수정", description = "루틴 이력을 수정합니다.")
-    @PutMapping("/{id}")
-    public String updateRoutineHistory(@PathVariable("id") Long id,
-                                    @RequestBody RoutineHistoryUpdateRequest request,
-                                    @AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
-        String memberId = customOAuth2User.getMemberId();
-        List<RoutineHistoryDto> routineHistoryDtos = request.getRoutineExercises().stream()
-                .map(historyRequest -> RoutineHistoryDto.of(id, request, historyRequest))
-                .toList();
-        return routineHistoryService.updateRoutineHistory(id, routineHistoryDtos, memberId);
-    }
+	@Operation(summary = "루틴 이력 수정", description = "루틴 이력을 수정합니다.")
+	@PutMapping("/{id}")
+	public String updateRoutineHistory(@PathVariable("id") Long id, @RequestBody RoutineHistoryUpdateRequest request,
+			@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+		String memberId = customOAuth2User.getMemberId();
+		List<RoutineHistoryDto> routineHistoryDtos = request.getRoutineExercises()
+			.stream()
+			.map(historyRequest -> RoutineHistoryDto.of(id, request, historyRequest))
+			.toList();
+		return routineHistoryService.updateRoutineHistory(id, routineHistoryDtos, memberId);
+	}
 
-    @Operation(summary = "루틴 이력 삭제", description = "루틴 이력을 삭제합니다.")
-    @DeleteMapping("/{id}")
-    public String deleteRoutineHistory(@PathVariable("id") Long id,
-                                    @AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
-        String memberId = customOAuth2User.getMemberId();
-        return routineHistoryService.deleteRoutineHistory(id, memberId);
-    }
+	@Operation(summary = "루틴 이력 삭제", description = "루틴 이력을 삭제합니다.")
+	@DeleteMapping("/{id}")
+	public String deleteRoutineHistory(@PathVariable("id") Long id,
+			@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+		String memberId = customOAuth2User.getMemberId();
+		return routineHistoryService.deleteRoutineHistory(id, memberId);
+	}
+
 }

@@ -21,41 +21,42 @@ import java.util.List;
 @RequestMapping("/routines")
 @RequiredArgsConstructor
 public class RoutineController {
-    private final RoutineService routineService;
 
+	private final RoutineService routineService;
 
-    @Operation(summary = "루틴 생성", description = "루틴 생성 API")
-    @PostMapping()
-    public ApiResponse<Long> createRoutine(@AuthenticationPrincipal CustomOAuth2User customOAuth2User, @Valid @RequestBody RoutineCreateRequest routineCreateRequest) {
-        String memberId = customOAuth2User.getMemberId();
+	@Operation(summary = "루틴 생성", description = "루틴 생성 API")
+	@PostMapping()
+	public ApiResponse<Long> createRoutine(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
+			@Valid @RequestBody RoutineCreateRequest routineCreateRequest) {
+		String memberId = customOAuth2User.getMemberId();
 
+		routineCreateRequest.getRoutineDto().setMemberIdFromToken(memberId);
+		return ApiResponse.success(routineService.createRoutine(routineCreateRequest.getRoutineDto()));
+	}
 
-        routineCreateRequest.getRoutineDto().setMemberIdFromToken(memberId);
-        return ApiResponse.success(routineService.createRoutine(routineCreateRequest.getRoutineDto()));
-    }
+	@Operation(summary = "루틴 조회", description = "루틴 조회 API")
+	@GetMapping
+	public ApiResponse<List<RoutineDto>> findAllRoutine(@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+		Member member = Member.of(customOAuth2User.getMemberId());
+		List<RoutineDto> list = routineService.findAllRoutine(member);
 
+		if (list.isEmpty()) {
+			return ApiResponse.fail(ResultType.DATA_NOT_FOUND);
+		}
 
-    @Operation(summary = "루틴 조회", description = "루틴 조회 API")
-    @GetMapping
-    public ApiResponse<List<RoutineDto>> findAllRoutine(@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
-        Member member = Member.of(customOAuth2User.getMemberId());
-        List<RoutineDto> list = routineService.findAllRoutine(member);
+		return ApiResponse.success(list);
+	}
 
-        if (list.isEmpty()) {
-            return ApiResponse.fail(ResultType.DATA_NOT_FOUND);
-        }
+	@Operation(summary = "루틴 제거", description = "루틴 삭제 API")
+	@DeleteMapping("/{routineId}")
+	public ApiResponse<RoutineDto> deleteRoutine(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
+			@PathVariable long routineId) {
+		Member member = Member.of(customOAuth2User.getMemberId());
+		RoutineDto dto = routineService.deleteRoutine(routineId, member);
+		if (dto == null) {
+			return ApiResponse.fail(ResultType.FAIL);
+		}
+		return ApiResponse.success(dto);
+	}
 
-        return ApiResponse.success(list);
-    }
-
-    @Operation(summary = "루틴 제거", description = "루틴 삭제 API")
-    @DeleteMapping("/{routineId}")
-    public ApiResponse<RoutineDto> deleteRoutine(@AuthenticationPrincipal CustomOAuth2User customOAuth2User, @PathVariable long routineId) {
-        Member member = Member.of(customOAuth2User.getMemberId());
-        RoutineDto dto = routineService.deleteRoutine(routineId, member);
-        if (dto == null){
-            return ApiResponse.fail(ResultType.FAIL);
-        }
-        return ApiResponse.success(dto);
-    }
 }

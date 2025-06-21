@@ -8,15 +8,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class RoutineHistoryDetailsMapper {
 
-    public RoutineHistoryDetails toEntity(RoutineHistoryDetailsDto dto, RoutineHistory routineHistory) {
-        return RoutineHistoryDetails.builder()
-                .id(dto.getId())
-                .order(dto.getOrder())
-                .weight(dto.getWeight())
-                .rep(dto.getRep())
-                .refreshTime(dto.getRefreshTime())
-                .exerciseTime(dto.getExerciseSec())
-                .routineHistory(routineHistory)
-                .build();
-    }
+	public RoutineHistoryDetails toEntity(RoutineHistoryDetailsDto dto, RoutineHistory routineHistory) {
+		return RoutineHistoryDetails.builder()
+			.id(dto.getId())
+			.order(dto.getOrder())
+			.weight(dto.getWeight())
+			.rep(dto.getRep())
+			.refreshTime(dto.getRefreshTime())
+			.exerciseTime(dto.getExerciseSec())
+			.routineHistory(routineHistory)
+			.build();
+	}
+
 }
