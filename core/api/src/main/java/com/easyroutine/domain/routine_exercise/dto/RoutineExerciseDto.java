@@ -1,5 +1,6 @@
 package com.easyroutine.domain.routine_exercise.dto;
 
+import com.easyroutine.domain.exercises.ExerciseCategory;
 import com.easyroutine.domain.routine_exercise_sets.dto.RoutineExerciseSetsDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -18,29 +19,36 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoutineExerciseDto {
-    @JsonIgnore
-    private Long id;
-    @JsonIgnore
-    private Long routineId;
 
-    @NotNull(message = "운동 아이디가 없습니다.")
-    private Long exerciseId;
+	@JsonIgnore
+	private Long id;
 
-    @Min(value = 1, message = "운동 순서는 1 이상이어야 합니다.")
-    @NotNull(message = "운동 순서는 필 수 입니다.")
-    private int order;
+	@JsonIgnore
+	private Long routineId;
 
-    @NotEmpty(message = "세트 리스트는 비어 있을 수 없습니다.")
-    @Valid
-    private List<@Valid RoutineExerciseSetsDto> setsDtoList;
+	@NotNull(message = "운동 아이디가 없습니다.")
+	private Long exerciseId;
 
+	@Min(value = 1, message = "운동 순서는 1 이상이어야 합니다.")
+	@NotNull(message = "운동 순서는 필 수 입니다.")
+	private int order;
 
+	private ExerciseCategory category;
 
-    public void setRoutineId(Long routineId){
-        this.routineId = routineId;
-    }
+	private String image;
 
-    public void setExerciseId(Long exerciseId){
-        this.exerciseId = exerciseId;
-    }
+	private String name;
+
+	@NotEmpty(message = "세트 리스트는 비어 있을 수 없습니다.")
+	@Valid
+	private List<@Valid RoutineExerciseSetsDto> setsDtoList;
+
+	public void setRoutineId(Long routineId) {
+		this.routineId = routineId;
+	}
+
+	public void setExerciseId(Long exerciseId) {
+		this.exerciseId = exerciseId;
+	}
+
 }

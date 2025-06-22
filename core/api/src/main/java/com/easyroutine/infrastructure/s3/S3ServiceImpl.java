@@ -15,52 +15,55 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class S3ServiceImpl implements S3Service{
+public class S3ServiceImpl implements S3Service {
 
-    private final AmazonS3 amazonS3;
+	private final AmazonS3 amazonS3;
 
-    @Value("${cloud.s3.bucket}")
-    private String bucketName;
+	@Value("${cloud.s3.bucket}")
+	private String bucketName;
 
-    @Override
-    public String uploadFile(MultipartFile multipartFile, String directoryPath) {
-        String fileName = getFileName(multipartFile, directoryPath);
-        ObjectMetadata objectMetadata = new ObjectMetadata();
-        objectMetadata.setContentLength(multipartFile.getSize());
-        objectMetadata.setContentType(multipartFile.getContentType());
+	@Override
+	public String uploadFile(MultipartFile multipartFile, String directoryPath) {
+		String fileName = getFileName(multipartFile, directoryPath);
+		ObjectMetadata objectMetadata = new ObjectMetadata();
+		objectMetadata.setContentLength(multipartFile.getSize());
+		objectMetadata.setContentType(multipartFile.getContentType());
 
-        uploadFile2S3(multipartFile, fileName, objectMetadata);
+		uploadFile2S3(multipartFile, fileName, objectMetadata);
 
-        return amazonS3.getUrl(bucketName, fileName).toString();
-    }
+		return amazonS3.getUrl(bucketName, fileName).toString();
+	}
 
-    @Override
-    public boolean deleteFile(String url) {
-        try {
-            String fileKey = getFileKey(url);
-            amazonS3.deleteObject(bucketName, fileKey);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
+	@Override
+	public boolean deleteFile(String url) {
+		try {
+			String fileKey = getFileKey(url);
+			amazonS3.deleteObject(bucketName, fileKey);
+			return true;
+		}
+		catch (Exception e) {
+			return false;
+		}
+	}
 
-    private void uploadFile2S3(MultipartFile multipartFile, String fileName, ObjectMetadata objectMetadata) {
-        try{
-            amazonS3.putObject(
-                    new PutObjectRequest(bucketName, fileName, multipartFile.getInputStream(), objectMetadata)
-                            .withCannedAcl(CannedAccessControlList.PublicRead));
-        } catch (Exception e) {
-            throw new BusinessException(ResultType.S3_UPLOAD_FAIL, e.getMessage());
-        }
-    }
+	private void uploadFile2S3(MultipartFile multipartFile, String fileName, ObjectMetadata objectMetadata) {
+		try {
+			amazonS3
+				.putObject(new PutObjectRequest(bucketName, fileName, multipartFile.getInputStream(), objectMetadata)
+					.withCannedAcl(CannedAccessControlList.PublicRead));
+		}
+		catch (Exception e) {
+			throw new BusinessException(ResultType.S3_UPLOAD_FAIL, e.getMessage());
+		}
+	}
 
-    private String getFileName(MultipartFile multipartFile, String url) {
-        return url + "/" + UUID.randomUUID() + "_" + multipartFile.getOriginalFilename();
-    }
+	private String getFileName(MultipartFile multipartFile, String url) {
+		return url + "/" + UUID.randomUUID() + "_" + multipartFile.getOriginalFilename();
+	}
 
-    private String getFileKey(String url) {
-        String[] fileKeySplit = url.split(".com/");
-        return fileKeySplit[1];
-    }
+	private String getFileKey(String url) {
+		String[] fileKeySplit = url.split(".com/");
+		return fileKeySplit[1];
+	}
+
 }

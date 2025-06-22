@@ -16,19 +16,21 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "컨텍스트 API", description = "Context 관련 API")
 public class ContextController {
 
-    private final MemberService memberService;
-    private final JsonWebTokenUtil jwtUtil;
+	private final MemberService memberService;
 
-    @Operation(summary = "Context", description = "JWT가 유효한지 확인합니다.")
-    @GetMapping("/context")
-    public String context() {
-        return "Context is working!";
-    }
+	private final JsonWebTokenUtil jwtUtil;
 
-    @Operation(summary = "Access Token 발급", description = "Access Token을 발급합니다. (테스트 계정을 사용합니다.)")
-    @GetMapping("/get/tester")
-    public String getTester() {
-        Member tester = memberService.getTester();
-        return jwtUtil.createAccessToken(tester.getId(), tester.getRole(), 60*60*60L);
-    }
+	@Operation(summary = "Context", description = "JWT가 유효한지 확인합니다.")
+	@GetMapping("/context")
+	public String context() {
+		return "Context is working!";
+	}
+
+	@Operation(summary = "Access Token 발급", description = "Access Token을 발급합니다. (테스트 계정을 사용합니다.)")
+	@GetMapping("/get/tester")
+	public String getTester() {
+		Member tester = memberService.getTester();
+		return jwtUtil.createAccessToken(tester.getId(), tester.getRole(), 60 * 60 * 60L);
+	}
+
 }

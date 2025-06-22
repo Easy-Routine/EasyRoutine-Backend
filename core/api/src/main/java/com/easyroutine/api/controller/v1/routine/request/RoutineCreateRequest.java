@@ -6,6 +6,8 @@ import lombok.Getter;
 
 @Getter
 public class RoutineCreateRequest {
-    @Valid
-    private RoutineDto routineDto;
+
+	@Valid
+	private RoutineDto routineDto;
+
 }

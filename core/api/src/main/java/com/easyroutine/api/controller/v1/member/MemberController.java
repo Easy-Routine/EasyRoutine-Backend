@@ -16,12 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MemberController {
 
-    private final MemberService memberService;
+	private final MemberService memberService;
 
-    @Operation(summary = "회원 탈퇴", description = "회원 탈퇴 API")
-    @DeleteMapping
-    public String deleteMember(@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
-        String memberId = customOAuth2User.getMemberId();
-        return memberService.deleteMember(memberId);
-    }
+	@Operation(summary = "회원 탈퇴", description = "회원 탈퇴 API")
+	@DeleteMapping
+	public String deleteMember(@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+		String memberId = customOAuth2User.getMemberId();
+		return memberService.deleteMember(memberId);
+	}
+
 }

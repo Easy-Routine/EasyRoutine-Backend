@@ -20,60 +20,61 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final CustomOAuth2UserService oauth2UserService;
-    private final OAuth2ClientRegistrationStorage clientRegistrationRepository;
-    private final JsonWebTokenUtil jwtUtil;
-    private final AuthenticationSuccessHandler authenticationSuccessHandler;
+	private final CustomOAuth2UserService oauth2UserService;
 
-    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService, OAuth2ClientRegistrationStorage customClientRegistrationRepo,
-                            AuthenticationSuccessHandler authenticationSuccessHandler, JsonWebTokenUtil jwtUtil) {
-        this.oauth2UserService = customOAuth2UserService;
-        this.clientRegistrationRepository = customClientRegistrationRepo;
-        this.jwtUtil = jwtUtil;
-        this.authenticationSuccessHandler = authenticationSuccessHandler;
-    }
+	private final OAuth2ClientRegistrationStorage clientRegistrationRepository;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(AbstractHttpConfigurer::disable)
-                .formLogin(AbstractHttpConfigurer::disable)
-                .httpBasic(AbstractHttpConfigurer::disable);
+	private final JsonWebTokenUtil jwtUtil;
 
-        http
-                .headers(headers -> headers.frameOptions(frame -> frame.disable()));
-        http
-                .cors(auth -> auth.configurationSource(
-                request -> {
-                    CorsConfiguration configuration = new CorsConfiguration();
-                    configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://127.0.0.1:8080", "https://easyroutine.heykiwoung.com"));
-                    configuration.setAllowCredentials(true);
-                    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-                    configuration.setMaxAge(3600L);
-                    return configuration;
-                }));
+	private final AuthenticationSuccessHandler authenticationSuccessHandler;
 
-        http
-                .oauth2Login(oauth2 -> oauth2
-                        .clientRegistrationRepository(clientRegistrationRepository.clientRegistrationRepository())
-                        .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(oauth2UserService))
-                        .successHandler(authenticationSuccessHandler));
+	public SecurityConfig(CustomOAuth2UserService customOAuth2UserService,
+			OAuth2ClientRegistrationStorage customClientRegistrationRepo,
+			AuthenticationSuccessHandler authenticationSuccessHandler, JsonWebTokenUtil jwtUtil) {
+		this.oauth2UserService = customOAuth2UserService;
+		this.clientRegistrationRepository = customClientRegistrationRepo;
+		this.jwtUtil = jwtUtil;
+		this.authenticationSuccessHandler = authenticationSuccessHandler;
+	}
 
-        http
-                .addFilterBefore(new JsonWebTokenFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		http.csrf(AbstractHttpConfigurer::disable)
+			.formLogin(AbstractHttpConfigurer::disable)
+			.httpBasic(AbstractHttpConfigurer::disable);
 
-        http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/oauth2/**", "/login/**").permitAll()
-                        .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/swagger-ui/**").permitAll()
-                        .requestMatchers("/**").permitAll()
-                        .anyRequest().authenticated());
+		http.headers(headers -> headers.frameOptions(frame -> frame.disable()));
+		http.cors(auth -> auth.configurationSource(request -> {
+			CorsConfiguration configuration = new CorsConfiguration();
+			configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://127.0.0.1:8080",
+					"https://easyroutine.heykiwoung.com"));
+			configuration.setAllowCredentials(true);
+			configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+			configuration.setMaxAge(3600L);
+			return configuration;
+		}));
 
-        http
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+		http.oauth2Login(oauth2 -> oauth2
+			.clientRegistrationRepository(clientRegistrationRepository.clientRegistrationRepository())
+			.userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(oauth2UserService))
+			.successHandler(authenticationSuccessHandler));
 
-        return http.build();
-    }
+		http.addFilterBefore(new JsonWebTokenFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
+
+		http.authorizeHttpRequests(auth -> auth.requestMatchers("/", "/oauth2/**", "/login/**")
+			.permitAll()
+			.requestMatchers("/h2-console/**")
+			.permitAll()
+			.requestMatchers("/swagger-ui/**")
+			.permitAll()
+			.requestMatchers("/**")
+			.permitAll()
+			.anyRequest()
+			.authenticated());
+
+		http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+		return http.build();
+	}
+
 }

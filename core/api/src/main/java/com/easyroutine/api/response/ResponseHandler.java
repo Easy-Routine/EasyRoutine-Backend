@@ -13,37 +13,39 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
-@RestControllerAdvice(
-        basePackages = "com.easyroutine.api.controller"
-)
+@RestControllerAdvice(basePackages = "com.easyroutine.api.controller")
 public class ResponseHandler implements ResponseBodyAdvice<Object> {
 
-    @Override
-    public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
-        return (MappingJackson2HttpMessageConverter.class.isAssignableFrom(converterType)
-                || StringHttpMessageConverter.class.isAssignableFrom(converterType))
-                && !ApiResponse.class.isAssignableFrom(returnType.getParameterType());
-    }
+	@Override
+	public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
+		return (MappingJackson2HttpMessageConverter.class.isAssignableFrom(converterType)
+				|| StringHttpMessageConverter.class.isAssignableFrom(converterType))
+				&& !ApiResponse.class.isAssignableFrom(returnType.getParameterType());
+	}
 
-    @Override
-    public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
+	@Override
+	public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType,
+			Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request,
+			ServerHttpResponse response) {
 
-        ApiResponse<?> apiResponse = ApiResponse.success(body);
+		ApiResponse<?> apiResponse = ApiResponse.success(body);
 
-        if (body instanceof String) {
-            return getString2ApiResponse(response, apiResponse);
-        }
+		if (body instanceof String) {
+			return getString2ApiResponse(response, apiResponse);
+		}
 
-        return apiResponse;
-    }
+		return apiResponse;
+	}
 
-    private String getString2ApiResponse(ServerHttpResponse response, ApiResponse<?> apiResponse) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
-        try {
-            return objectMapper.writeValueAsString(apiResponse);
-        } catch (JsonProcessingException e) {
-            throw new IllegalArgumentException("Failed to convert String to JSON", e);
-        }
-    }
+	private String getString2ApiResponse(ServerHttpResponse response, ApiResponse<?> apiResponse) {
+		ObjectMapper objectMapper = new ObjectMapper();
+		response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
+		try {
+			return objectMapper.writeValueAsString(apiResponse);
+		}
+		catch (JsonProcessingException e) {
+			throw new IllegalArgumentException("Failed to convert String to JSON", e);
+		}
+	}
+
 }

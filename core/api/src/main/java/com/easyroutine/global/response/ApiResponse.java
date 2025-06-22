@@ -3,24 +3,26 @@ package com.easyroutine.global.response;
 import lombok.Getter;
 
 @Getter
-public class ApiResponse <T> {
-    private final boolean success;
-    private final String code;
-    private final T result;
+public class ApiResponse<T> {
 
-    private ApiResponse(ResultType result, T resultData) {
-        this.success = result.isSuccess();
-        this.code = result.getCode();
-        this.result = resultData;
-    }
+	private final boolean success;
 
-    public static <T> ApiResponse<T> success(T resultData) {
-        return new ApiResponse<>(ResultType.SUCCESS, resultData);
-    }
+	private final String code;
 
-    public static <T> ApiResponse<T> fail(ResultType errorResult) {
-        return new ApiResponse<>(errorResult, null);
-    }
+	private final T result;
+
+	private ApiResponse(ResultType result, T resultData) {
+		this.success = result.isSuccess();
+		this.code = result.getCode();
+		this.result = resultData;
+	}
+
+	public static <T> ApiResponse<T> success(T resultData) {
+		return new ApiResponse<>(ResultType.SUCCESS, resultData);
+	}
+
+	public static <T> ApiResponse<T> fail(ResultType errorResult) {
+		return new ApiResponse<>(errorResult, null);
+	}
+
 }
-
-

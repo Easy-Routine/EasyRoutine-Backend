@@ -15,64 +15,65 @@ import java.util.stream.Collectors;
 @Service
 public class RoutineHistoryService {
 
-    // repository
-    private final RoutineHistoryRepository routineHistoryRepository;
-    private final RoutineHistoryQueryRepository routineHistoryQueryRepository;
+	// repository
+	private final RoutineHistoryRepository routineHistoryRepository;
 
-    // mapper
-    private final RoutineHistoryMapper routineHistoryMapper;
+	private final RoutineHistoryQueryRepository routineHistoryQueryRepository;
 
-    public RoutineHistoryService(RoutineHistoryRepository routineHistoryRepository,
-                                RoutineHistoryMapper routineHistoryMapper,
-                                RoutineHistoryQueryRepository routineHistoryQueryRepository) {
-        this.routineHistoryRepository = routineHistoryRepository;
-        this.routineHistoryMapper = routineHistoryMapper;
-        this.routineHistoryQueryRepository = routineHistoryQueryRepository;
-    }
+	// mapper
+	private final RoutineHistoryMapper routineHistoryMapper;
 
-    public int getExerciseTime(String date) {
-        return routineHistoryQueryRepository.getExerciseTime(date);
-    }
+	public RoutineHistoryService(RoutineHistoryRepository routineHistoryRepository,
+			RoutineHistoryMapper routineHistoryMapper, RoutineHistoryQueryRepository routineHistoryQueryRepository) {
+		this.routineHistoryRepository = routineHistoryRepository;
+		this.routineHistoryMapper = routineHistoryMapper;
+		this.routineHistoryQueryRepository = routineHistoryQueryRepository;
+	}
 
-    public int getTotalVolume(String date) {
-        return routineHistoryQueryRepository.getTotalVolume(date);
-    }
+	public int getExerciseTime(String date) {
+		return routineHistoryQueryRepository.getExerciseTime(date);
+	}
 
-    public List<RoutineHistory> getRoutineHistory(String date) {
-        return routineHistoryQueryRepository.findAllByExerciseDate(date);
-    }
+	public int getTotalVolume(String date) {
+		return routineHistoryQueryRepository.getTotalVolume(date);
+	}
 
-    @Transactional(rollbackFor = Exception.class)
-    public String createRoutineHistory(List<RoutineHistoryDto> routineHistoryDtos, String memberId) {
-        List<RoutineHistory> routineHistories = routineHistoryDtos.stream()
-                .map(dto -> routineHistoryMapper.toEntity(dto, memberId))
-                .collect(Collectors.toList());
-        routineHistoryRepository.saveAll(routineHistories);
+	public List<RoutineHistory> getRoutineHistory(String date) {
+		return routineHistoryQueryRepository.findAllByExerciseDate(date);
+	}
 
-        return "Success";
-    }
+	@Transactional(rollbackFor = Exception.class)
+	public String createRoutineHistory(List<RoutineHistoryDto> routineHistoryDtos, String memberId) {
+		List<RoutineHistory> routineHistories = routineHistoryDtos.stream()
+			.map(dto -> routineHistoryMapper.toEntity(dto, memberId))
+			.collect(Collectors.toList());
+		routineHistoryRepository.saveAll(routineHistories);
 
-    public String updateRoutineHistory(Long id, List<RoutineHistoryDto> routineHistoryDtos, String memberId) {
-        RoutineHistory routineHistory = routineHistoryQueryRepository.findAllByRoutineHistoryId(id)
-                .orElseThrow(() -> new IllegalArgumentException("루틴 이력을 찾을 수 없습니다."));
+		return "Success";
+	}
 
-        routineHistoryDtos.stream()
-                .map(dto -> routineHistoryMapper.toEntity(dto, memberId))
-                .forEach(entity -> routineHistory.updateRoutineHistory(entity));
+	public String updateRoutineHistory(Long id, List<RoutineHistoryDto> routineHistoryDtos, String memberId) {
+		RoutineHistory routineHistory = routineHistoryQueryRepository.findAllByRoutineHistoryId(id)
+			.orElseThrow(() -> new IllegalArgumentException("루틴 이력을 찾을 수 없습니다."));
 
-        // TODO 변경감지로 update 처리
-        routineHistoryRepository.save(routineHistory);
+		routineHistoryDtos.stream()
+			.map(dto -> routineHistoryMapper.toEntity(dto, memberId))
+			.forEach(entity -> routineHistory.updateRoutineHistory(entity));
 
-        return "Success";
-    }
+		// TODO 변경감지로 update 처리
+		routineHistoryRepository.save(routineHistory);
 
-    public String deleteRoutineHistory(Long id, String memberId) {
-        RoutineHistory routineHistory = routineHistoryQueryRepository.findAllByRoutineHistoryId(id)
-                .orElseThrow(() -> new IllegalArgumentException("루틴 이력을 찾을 수 없습니다."));
+		return "Success";
+	}
 
-        // Soft delete 처리?
-        routineHistoryRepository.delete(routineHistory);
+	public String deleteRoutineHistory(Long id, String memberId) {
+		RoutineHistory routineHistory = routineHistoryQueryRepository.findAllByRoutineHistoryId(id)
+			.orElseThrow(() -> new IllegalArgumentException("루틴 이력을 찾을 수 없습니다."));
 
-        return "Success";
-    }
+		// Soft delete 처리?
+		routineHistoryRepository.delete(routineHistory);
+
+		return "Success";
+	}
+
 }

@@ -14,24 +14,27 @@ import net.minidev.json.annotate.JsonIgnore;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoutineExerciseSetsDto {
-    @JsonIgnore
-    private Long id;
-    @JsonIgnore
-    private Long routineExerciesId;
 
-    @Min(value = 1, message = "세트 순서는 1 이상이어야 합니다.")
-    private int order;
+	@JsonIgnore
+	private Long id;
 
-    @NotNull(message = "무게는 필수 입니다.")
-    private Double weight;
+	@JsonIgnore
+	private Long routineExerciesId;
 
-    @Min(value = 1, message = "반복 수는 1 이상이어야 합니다.")
-    private int rep;
+	@Min(value = 1, message = "세트 순서는 1 이상이어야 합니다.")
+	private int order;
 
-    @NotBlank(message = "휴식 시간은 비어 있을 수 없습니다.")
-    private String restSec; // mm:ss
+	@NotNull(message = "무게는 필수 입니다.")
+	private Double weight;
 
-    public void setRoutineExerciesId(Long routineExerciesId){
-        this.routineExerciesId = routineExerciesId;
-    }
+	@Min(value = 1, message = "반복 수는 1 이상이어야 합니다.")
+	private int rep;
+
+	@NotBlank(message = "휴식 시간은 비어 있을 수 없습니다.")
+	private String restSec; // mm:ss
+
+	public void setRoutineExerciesId(Long routineExerciesId) {
+		this.routineExerciesId = routineExerciesId;
+	}
+
 }

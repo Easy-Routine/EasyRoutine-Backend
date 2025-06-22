@@ -14,59 +14,62 @@ import java.util.Date;
 @Component
 public class JsonWebTokenUtil {
 
-    private SecretKey secretKey;
+	private SecretKey secretKey;
 
-    public JsonWebTokenUtil(@Value("${jwt.secret}") String rawSecretKey) {
-        byte[] key = rawSecretKey.getBytes(StandardCharsets.UTF_8);
-        String algorithm = Jwts.SIG.HS256.key().build().getAlgorithm();
-        this.secretKey = new SecretKeySpec(key, algorithm);
-    }
+	public JsonWebTokenUtil(@Value("${jwt.secret}") String rawSecretKey) {
+		byte[] key = rawSecretKey.getBytes(StandardCharsets.UTF_8);
+		String algorithm = Jwts.SIG.HS256.key().build().getAlgorithm();
+		this.secretKey = new SecretKeySpec(key, algorithm);
+	}
 
-    public String getMemberId(String token) {
-        Claims payload = getClaimsBy(token);
-        return payload.get("memberId", String.class);
-    }
+	public String getMemberId(String token) {
+		Claims payload = getClaimsBy(token);
+		return payload.get("memberId", String.class);
+	}
 
-    public String getRole(String token) {
-        Claims payload = getClaimsBy(token);
-        return payload.get("role", String.class);
-    }
+	public String getRole(String token) {
+		Claims payload = getClaimsBy(token);
+		return payload.get("role", String.class);
+	}
 
-    public Boolean isExpired(String token) {
-        try {
-            Claims payload = getClaimsBy(token);
-            return payload.getExpiration().before(new Date());
-        } catch (ExpiredJwtException e) {
-            log.warn("토큰이 만료되었습니다.");
-            return true;
-        } catch (Exception e) {
-            log.error("토큰 검증에 실패했습니다.", e);
-            return true;
-        }
-    }
+	public Boolean isExpired(String token) {
+		try {
+			Claims payload = getClaimsBy(token);
+			return payload.getExpiration().before(new Date());
+		}
+		catch (ExpiredJwtException e) {
+			log.warn("토큰이 만료되었습니다.");
+			return true;
+		}
+		catch (Exception e) {
+			log.error("토큰 검증에 실패했습니다.", e);
+			return true;
+		}
+	}
 
-    public String createAccessToken(String memberId, String role, Long expiredMs) {
-        return Jwts.builder()
-                .claim("memberId", memberId)
-                .claim("role", role)
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + (expiredMs * 1000)))
-                .signWith(secretKey)
-                .compact();
-    }
+	public String createAccessToken(String memberId, String role, Long expiredMs) {
+		return Jwts.builder()
+			.claim("memberId", memberId)
+			.claim("role", role)
+			.issuedAt(new Date(System.currentTimeMillis()))
+			.expiration(new Date(System.currentTimeMillis() + (expiredMs * 1000)))
+			.signWith(secretKey)
+			.compact();
+	}
 
-    public String createRefreshToken(String memberId, Long expiredMs) {
-        return Jwts.builder()
-                .claim("memberId", memberId)
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + (expiredMs * 1000)))
-                .signWith(secretKey)
-                .compact();
-    }
+	public String createRefreshToken(String memberId, Long expiredMs) {
+		return Jwts.builder()
+			.claim("memberId", memberId)
+			.issuedAt(new Date(System.currentTimeMillis()))
+			.expiration(new Date(System.currentTimeMillis() + (expiredMs * 1000)))
+			.signWith(secretKey)
+			.compact();
+	}
 
-    private Claims getClaimsBy(String token) {
-        JwtParser jwtParser = Jwts.parser().verifyWith(secretKey).build();
-        Jws<Claims> claimsJws = jwtParser.parseSignedClaims(token);
-        return claimsJws.getPayload();
-    }
+	private Claims getClaimsBy(String token) {
+		JwtParser jwtParser = Jwts.parser().verifyWith(secretKey).build();
+		Jws<Claims> claimsJws = jwtParser.parseSignedClaims(token);
+		return claimsJws.getPayload();
+	}
+
 }

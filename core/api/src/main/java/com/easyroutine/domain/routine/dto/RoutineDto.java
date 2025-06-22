@@ -2,6 +2,7 @@ package com.easyroutine.domain.routine.dto;
 
 import com.easyroutine.domain.routine_exercise.dto.RoutineExerciseDto;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -17,21 +18,28 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoutineDto {
-    @JsonIgnore
-    private Long id;
-    @JsonIgnore
-    private String memberId;
 
-    @NotBlank(message = "루틴 이름은 비어 있을 수 없습니다.")
-    private String name;
-    @NotBlank(message = "루틴 색은 비어 있을 수 없습니다.")
-    private String color;
-    @NotEmpty(message = "하나 이상의 루틴을 채워 주세요.")
-    @Valid
-    private List<@Valid RoutineExerciseDto> routineExerciseDtoList;
+	@JsonIgnore
+	private Long id;
 
+	@JsonIgnore
+	private String memberId;
 
-    public void setMemberIdFromToken(String memberId){
-        this.memberId = memberId;
-    }
+	@NotBlank(message = "루틴 이름은 비어 있을 수 없습니다.")
+	private String name;
+
+	@NotBlank(message = "루틴 색은 비어 있을 수 없습니다.")
+	private String color;
+
+	@NotEmpty(message = "하나 이상의 루틴을 채워 주세요.")
+	@Valid
+	private List<@Valid RoutineExerciseDto> routineExerciseDtoList;
+
+	@Min(value = 1, message = "루틴 순서는 1 이상이어야 합니다.")
+	private int order;
+
+	public void setMemberIdFromToken(String memberId) {
+		this.memberId = memberId;
+	}
+
 }

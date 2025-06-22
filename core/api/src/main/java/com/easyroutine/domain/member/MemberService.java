@@ -14,22 +14,22 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class MemberService {
 
-    private final MemberRepository memberRepository;
+	private final MemberRepository memberRepository;
 
-    @Transactional(rollbackFor = Exception.class)
-    public String deleteMember(String memberId) {
-        Optional<Member> optionalMember = memberRepository.findById(memberId);
-        Member member = optionalMember.orElseGet(() -> {
-            throw new DataException(ResultType.DATA_NOT_FOUND, "Member not found : " + memberId);
-        });
-        member.deleteMember();
-        return memberId;
-    }
+	@Transactional(rollbackFor = Exception.class)
+	public String deleteMember(String memberId) {
+		Optional<Member> optionalMember = memberRepository.findById(memberId);
+		Member member = optionalMember.orElseGet(() -> {
+			throw new DataException(ResultType.DATA_NOT_FOUND, "Member not found : " + memberId);
+		});
+		member.deleteMember();
+		return memberId;
+	}
 
-    public Member getTester() {
-        return memberRepository.findByNickname("tester")
-                .orElseGet(() -> {
-                    throw new DataException(ResultType.DATA_NOT_FOUND, "Member not found : " + "tester");
-                });
-    }
+	public Member getTester() {
+		return memberRepository.findByNickname("tester").orElseGet(() -> {
+			throw new DataException(ResultType.DATA_NOT_FOUND, "Member not found : " + "tester");
+		});
+	}
+
 }

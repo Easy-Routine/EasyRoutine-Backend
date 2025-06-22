@@ -25,152 +25,127 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ExercisesRepositoryTest extends IntegrationTestSupport {
 
-    @Autowired
-    private ExercisesRepository exercisesRepository;
+	@Autowired
+	private ExercisesRepository exercisesRepository;
 
-    @Autowired
-    private MemberRepository memberRepository;
+	@Autowired
+	private MemberRepository memberRepository;
 
-    @AfterEach
-    void tearDown() {
-        exercisesRepository.deleteAllInBatch();
-        memberRepository.deleteAllInBatch();
-    }
+	@AfterEach
+	void tearDown() {
+		exercisesRepository.deleteAllInBatch();
+		memberRepository.deleteAllInBatch();
+	}
 
-    @DisplayName("운동 종목을 조회한다.")
-    @ParameterizedTest
-    @ValueSource(strings = {"CHEST", "BACK", "SHOULDER", "LEG", "ARM", "ETC"})
-    void getExercises(String category) {
-    
-        // given
-        Member member = getMember("google", "1234", "tester");
-        Exercise exerciseA = getExerciseEntity("exerciseA", List.of(WEIGHT), CHEST, member);
-        Exercise exerciseB = getExerciseEntity("exerciseB", List.of(TIME), BACK, member);
-        Exercise exerciseC = getExerciseEntity("exerciseC", List.of(COUNT), SHOULDER, member);
-        Exercise exerciseD = getExerciseEntity("exerciseD", List.of(WEIGHT, TIME), LEG, member);
-        Exercise exerciseE = getExerciseEntity("exerciseE", List.of(WEIGHT, COUNT), ARM, member);
-        Exercise exerciseF = getExerciseEntity("exerciseF", List.of(TIME, COUNT), ETC, member);
-        Exercise exerciseG = getExerciseEntity("exerciseG", List.of(WEIGHT, TIME, COUNT), ETC, member);
+	@DisplayName("운동 종목을 조회한다.")
+	@ParameterizedTest
+	@ValueSource(strings = { "CHEST", "BACK", "SHOULDER", "LEG", "ARM", "ETC" })
+	void getExercises(String category) {
 
-        memberRepository.save(member);
-        exercisesRepository.saveAll(List.of(
-                exerciseA,
-                exerciseB,
-                exerciseC,
-                exerciseD,
-                exerciseE,
-                exerciseF,
-                exerciseG
-        ));
+		// given
+		Member member = getMember("google", "1234", "tester");
+		Exercise exerciseA = getExerciseEntity("exerciseA", List.of(WEIGHT), CHEST, member);
+		Exercise exerciseB = getExerciseEntity("exerciseB", List.of(TIME), BACK, member);
+		Exercise exerciseC = getExerciseEntity("exerciseC", List.of(COUNT), SHOULDER, member);
+		Exercise exerciseD = getExerciseEntity("exerciseD", List.of(WEIGHT, TIME), LEG, member);
+		Exercise exerciseE = getExerciseEntity("exerciseE", List.of(WEIGHT, COUNT), ARM, member);
+		Exercise exerciseF = getExerciseEntity("exerciseF", List.of(TIME, COUNT), ETC, member);
+		Exercise exerciseG = getExerciseEntity("exerciseG", List.of(WEIGHT, TIME, COUNT), ETC, member);
 
-        String keyword = null;
-        String memberId = member.getId();
+		memberRepository.save(member);
+		exercisesRepository
+			.saveAll(List.of(exerciseA, exerciseB, exerciseC, exerciseD, exerciseE, exerciseF, exerciseG));
 
-        // when
-        List<Exercise> exercises = exercisesRepository.findAllByCategoryAndDeletedAtIsNull(category, PageRequest.of(0, 10), keyword, memberId);
+		String keyword = null;
+		String memberId = member.getId();
 
-        // then
-        assertThat(exercises)
-                .hasSizeGreaterThan(0)
-                .allMatch(exercise -> exercise.getCategory() == ExerciseCategory.convertToEnum(category));
-    }
+		// when
+		List<Exercise> exercises = exercisesRepository.findAllByCategoryAndDeletedAtIsNull(category,
+				PageRequest.of(0, 10), keyword, memberId);
 
-    @DisplayName("'ALL'은 모든 운동 종목을 조회한다.")
-    @Test
-    void getAllExercises(){
+		// then
+		assertThat(exercises).hasSizeGreaterThan(0)
+			.allMatch(exercise -> exercise.getCategory() == ExerciseCategory.convertToEnum(category));
+	}
 
-        // given
-        Member member = getMember("google", "1234", "tester");
-        Exercise exerciseA = getExerciseEntity("exerciseA", List.of(WEIGHT), CHEST, member);
-        Exercise exerciseB = getExerciseEntity("exerciseB", List.of(TIME), BACK, member);
-        Exercise exerciseC = getExerciseEntity("exerciseC", List.of(COUNT), SHOULDER, member);
-        Exercise exerciseD = getExerciseEntity("exerciseD", List.of(WEIGHT, TIME), LEG, member);
-        Exercise exerciseE = getExerciseEntity("exerciseE", List.of(WEIGHT, COUNT), ARM, member);
-        Exercise exerciseF = getExerciseEntity("exerciseF", List.of(TIME, COUNT), ETC, member);
-        Exercise exerciseG = getExerciseEntity("exerciseG", List.of(WEIGHT, TIME, COUNT), ETC, member);
+	@DisplayName("'ALL'은 모든 운동 종목을 조회한다.")
+	@Test
+	void getAllExercises() {
 
-        memberRepository.save(member);
-        exercisesRepository.saveAll(List.of(
-                exerciseA,
-                exerciseB,
-                exerciseC,
-                exerciseD,
-                exerciseE,
-                exerciseF,
-                exerciseG
-        ));
+		// given
+		Member member = getMember("google", "1234", "tester");
+		Exercise exerciseA = getExerciseEntity("exerciseA", List.of(WEIGHT), CHEST, member);
+		Exercise exerciseB = getExerciseEntity("exerciseB", List.of(TIME), BACK, member);
+		Exercise exerciseC = getExerciseEntity("exerciseC", List.of(COUNT), SHOULDER, member);
+		Exercise exerciseD = getExerciseEntity("exerciseD", List.of(WEIGHT, TIME), LEG, member);
+		Exercise exerciseE = getExerciseEntity("exerciseE", List.of(WEIGHT, COUNT), ARM, member);
+		Exercise exerciseF = getExerciseEntity("exerciseF", List.of(TIME, COUNT), ETC, member);
+		Exercise exerciseG = getExerciseEntity("exerciseG", List.of(WEIGHT, TIME, COUNT), ETC, member);
 
-        String keyword = null;
-        String memberId = member.getId();
+		memberRepository.save(member);
+		exercisesRepository
+			.saveAll(List.of(exerciseA, exerciseB, exerciseC, exerciseD, exerciseE, exerciseF, exerciseG));
 
-        // when
-        String allCategoryKeyword = "ALL";
-        List<Exercise> allByCategory = exercisesRepository.findAllByCategoryAndDeletedAtIsNull(allCategoryKeyword, PageRequest.of(0, 10), keyword, memberId);
+		String keyword = null;
+		String memberId = member.getId();
 
-        // then
-        assertThat(allByCategory)
-                .hasSize(7)
-                .extracting("category")
-                .containsExactlyInAnyOrder(CHEST, BACK, SHOULDER, LEG, ARM, ETC, ETC);
-    }
-    
-    @DisplayName("운동 종목을 조회한다. (삭제된 운동 제외)")
-    @Test
-    void findByIdAndMemberAndDeletedAtIsNull(){
-    
-        // given
-        Member memberA = getMember("google", "1234", "tester1");
-        Member memberB = getMember("google", "1234", "tester2");
-        Exercise exerciseA = getExerciseEntity("exerciseA", List.of(WEIGHT), CHEST, memberA);
-        Exercise exerciseB = getExerciseEntity("exerciseB", List.of(TIME), BACK, memberB);
-        Exercise exerciseC = getExerciseEntity("exerciseB", List.of(TIME), BACK, memberB);
-        exerciseC.deleteExercise();
+		// when
+		String allCategoryKeyword = "ALL";
+		List<Exercise> allByCategory = exercisesRepository.findAllByCategoryAndDeletedAtIsNull(allCategoryKeyword,
+				PageRequest.of(0, 10), keyword, memberId);
 
-        memberRepository.saveAll(List.of(memberA, memberB));
-        exercisesRepository.saveAll(List.of(
-                exerciseA,
-                exerciseB,
-                exerciseC
-        ));
+		// then
+		assertThat(allByCategory).hasSize(7)
+			.extracting("category")
+			.containsExactlyInAnyOrder(CHEST, BACK, SHOULDER, LEG, ARM, ETC, ETC);
+	}
 
-        // when
-        Exercise searchedExerciseA = exercisesRepository.findByIdAndMemberAndDeletedAtIsNull(exerciseA.getId(), memberA).get();
-        Exercise searchedExerciseB = exercisesRepository.findByIdAndMemberAndDeletedAtIsNull(exerciseB.getId(), memberB).get();
-        Optional<Exercise> searchedExerciseC = exercisesRepository.findByIdAndMemberAndDeletedAtIsNull(exerciseC.getId(), memberB);
+	@DisplayName("운동 종목을 조회한다. (삭제된 운동 제외)")
+	@Test
+	void findByIdAndMemberAndDeletedAtIsNull() {
 
+		// given
+		Member memberA = getMember("google", "1234", "tester1");
+		Member memberB = getMember("google", "1234", "tester2");
+		Exercise exerciseA = getExerciseEntity("exerciseA", List.of(WEIGHT), CHEST, memberA);
+		Exercise exerciseB = getExerciseEntity("exerciseB", List.of(TIME), BACK, memberB);
+		Exercise exerciseC = getExerciseEntity("exerciseB", List.of(TIME), BACK, memberB);
+		exerciseC.deleteExercise();
 
-        // then
-        assertThat(searchedExerciseA)
-                .isNotNull()
-                .extracting("name", "category")
-                .containsExactly("exerciseA", CHEST);
+		memberRepository.saveAll(List.of(memberA, memberB));
+		exercisesRepository.saveAll(List.of(exerciseA, exerciseB, exerciseC));
 
-        assertThat(searchedExerciseB)
-                .isNotNull()
-                .extracting("name", "category")
-                .containsExactly("exerciseB", BACK);
+		// when
+		Exercise searchedExerciseA = exercisesRepository.findByIdAndMemberAndDeletedAtIsNull(exerciseA.getId(), memberA)
+			.get();
+		Exercise searchedExerciseB = exercisesRepository.findByIdAndMemberAndDeletedAtIsNull(exerciseB.getId(), memberB)
+			.get();
+		Optional<Exercise> searchedExerciseC = exercisesRepository
+			.findByIdAndMemberAndDeletedAtIsNull(exerciseC.getId(), memberB);
 
-        assertThat(searchedExerciseC).isNotPresent();
-    }
+		// then
+		assertThat(searchedExerciseA).isNotNull().extracting("name", "category").containsExactly("exerciseA", CHEST);
 
-    private static Exercise getExerciseEntity(String name, List<ExerciseType> types, ExerciseCategory category, Member member) {
-        return Exercise.builder()
-                .name(name)
-                .types(types)
-                .category(category)
-                .member(member)
-                .build();
-    }
+		assertThat(searchedExerciseB).isNotNull().extracting("name", "category").containsExactly("exerciseB", BACK);
 
-    private static Member getMember(String provider, String providerId, String nickname) {
-        return Member.builder()
-                .provider(provider)
-                .providerId(providerId)
-                .nickname(nickname)
-                .email("" + nickname + "@example.com")
-                .masking_email("" + nickname + "@example.com")
-                .role(MemberRole.MEMBER)
-                .status(MemberStatus.ACTIVE)
-                .build();
-    }
+		assertThat(searchedExerciseC).isNotPresent();
+	}
+
+	private static Exercise getExerciseEntity(String name, List<ExerciseType> types, ExerciseCategory category,
+			Member member) {
+		return Exercise.builder().name(name).types(types).category(category).member(member).build();
+	}
+
+	private static Member getMember(String provider, String providerId, String nickname) {
+		return Member.builder()
+			.provider(provider)
+			.providerId(providerId)
+			.nickname(nickname)
+			.email("" + nickname + "@example.com")
+			.masking_email("" + nickname + "@example.com")
+			.role(MemberRole.MEMBER)
+			.status(MemberStatus.ACTIVE)
+			.build();
+	}
+
 }

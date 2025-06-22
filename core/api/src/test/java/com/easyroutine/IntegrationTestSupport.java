@@ -10,4 +10,5 @@ import org.springframework.test.context.TestConstructor;
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 @ActiveProfiles("test")
 public abstract class IntegrationTestSupport {
+
 }

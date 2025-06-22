@@ -14,41 +14,43 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 public class RoutineHistoryDetails extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(name = "order_index", nullable = false)
-    private int order;
+	@Column(name = "order_index", nullable = false)
+	private int order;
 
-    @Column(name = "weight")
-    private Double weight;
+	@Column(name = "weight")
+	private Double weight;
 
-    @Column(name = "rep")
-    private int rep;
+	@Column(name = "rep")
+	private int rep;
 
-    @Column(name = "refresh_time")
-    private int refreshTime;
+	@Column(name = "refresh_time")
+	private int refreshTime;
 
-    @Column(name = "exercise_time")
-    private int exerciseTime;
+	@Column(name = "exercise_time")
+	private int exerciseTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "routine_history_id", nullable = false)
-    private RoutineHistory routineHistory;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "routine_history_id", nullable = false)
+	private RoutineHistory routineHistory;
 
-    @Builder
-    public RoutineHistoryDetails(Long id, int order, Double weight, int rep, int refreshTime, int exerciseTime, RoutineHistory routineHistory) {
-        this.id = id;
-        this.order = order;
-        this.weight = weight;
-        this.rep = rep;
-        this.refreshTime = refreshTime;
-        this.exerciseTime = exerciseTime;
-        this.routineHistory = routineHistory;
-    }
+	@Builder
+	public RoutineHistoryDetails(Long id, int order, Double weight, int rep, int refreshTime, int exerciseTime,
+			RoutineHistory routineHistory) {
+		this.id = id;
+		this.order = order;
+		this.weight = weight;
+		this.rep = rep;
+		this.refreshTime = refreshTime;
+		this.exerciseTime = exerciseTime;
+		this.routineHistory = routineHistory;
+	}
 
-    public void setRoutineHistory(RoutineHistory routineHistory) {
-        this.routineHistory = routineHistory;
-    }
+	public void setRoutineHistory(RoutineHistory routineHistory) {
+		this.routineHistory = routineHistory;
+	}
+
 }
