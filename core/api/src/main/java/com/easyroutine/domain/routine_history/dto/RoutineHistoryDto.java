@@ -20,67 +20,62 @@ import java.util.List;
 @NoArgsConstructor
 public class RoutineHistoryDto {
 
-	private Long id;
+    private Long id;
 
-	private Long routineId;
+    private Long routineId;
 
-	private Long exerciseId;
+    private Long exerciseId;
 
-	private String memberId;
+    private String memberId;
 
-	private String name;
+    private String name;
 
-	private String color;
+    private String color;
 
-	private LocalDateTime exerciseDate;
+    private LocalDateTime exerciseDate;
 
-	private List<@Valid RoutineHistoryDetailsDto> routineHistoryDetails;
+    private List<@Valid RoutineHistoryDetailsDto> sets;
 
-	public static RoutineHistoryDto of(RoutineHistory routineHistory) {
-		List<RoutineHistoryDetailsDto> routineHistoryDetailsDtos = routineHistory.getRoutineHistoryDetails()
-			.stream()
-			.map(RoutineHistoryDetailsDto::of)
-			.toList();
+    public static RoutineHistoryDto of(RoutineHistory routineHistory) {
+        List<RoutineHistoryDetailsDto> routineHistoryDetailsDtos = routineHistory.getRoutineHistoryDetails().stream()
+                .map(RoutineHistoryDetailsDto::of)
+                .toList();
 
-		return RoutineHistoryDto.builder()
-			.id(routineHistory.getId())
-			.name(routineHistory.getRoutine().getName())
-			.color(routineHistory.getRoutine().getColor())
-			.routineHistoryDetails(routineHistoryDetailsDtos)
-			.build();
-	}
+        return RoutineHistoryDto.builder()
+                .id(routineHistory.getId())
+                .name(routineHistory.getRoutine().getName())
+                .color(routineHistory.getRoutine().getColor())
+                .sets(routineHistoryDetailsDtos)
+                .build();
+    }
 
-	public static RoutineHistoryDto of(RoutineHistoryCreateRequest request,
-			RoutineExerciseHistoryCreateRequest historyRequest) {
-		List<RoutineHistoryDetailsDto> routineHistoryDetailsDtos = historyRequest.getRoutineHistoryDetails()
-			.stream()
-			.map(historyDetail -> RoutineHistoryDetailsDto.of(historyDetail))
-			.toList();
+    public static RoutineHistoryDto of(RoutineHistoryCreateRequest request,
+                            RoutineExerciseHistoryCreateRequest historyRequest) {
+        List<RoutineHistoryDetailsDto> routineHistoryDetailsDtos = historyRequest.getSets().stream()
+                .map(historyDetail -> RoutineHistoryDetailsDto.of(historyDetail))
+                .toList();
 
-		return RoutineHistoryDto.builder()
-			.routineId(request.getRoutineId())
-			.name(request.getName())
-			.color(request.getColor())
-			.exerciseId(historyRequest.getExerciseId())
-			.routineHistoryDetails(routineHistoryDetailsDtos)
-			.build();
-	}
+        return RoutineHistoryDto.builder()
+                .routineId(request.getRoutineId())
+                .name(request.getName())
+                .color(request.getColor())
+                .exerciseId(historyRequest.getExercise().getExerciseId())
+                .sets(routineHistoryDetailsDtos)
+                .build();
+    }
 
-	public static RoutineHistoryDto of(Long id, RoutineHistoryUpdateRequest request,
-			RoutineExerciseHistoryUpdateRequest historyRequest) {
-		List<RoutineHistoryDetailsDto> routineHistoryDetailsDtos = historyRequest.getRoutineHistoryDetails()
-			.stream()
-			.map(historyDetail -> RoutineHistoryDetailsDto.of(historyDetail))
-			.toList();
+    public static RoutineHistoryDto of(Long id, RoutineHistoryUpdateRequest request, RoutineExerciseHistoryUpdateRequest historyRequest) {
+        List<RoutineHistoryDetailsDto> routineHistoryDetailsDtos = historyRequest.getSets().stream()
+                .map(historyDetail -> RoutineHistoryDetailsDto.of(historyDetail))
+                .toList();
 
-		return RoutineHistoryDto.builder()
-			.id(id)
-			.routineId(request.getRoutineId())
-			.name(request.getName())
-			.color(request.getColor())
-			.exerciseId(historyRequest.getExerciseId())
-			.routineHistoryDetails(routineHistoryDetailsDtos)
-			.build();
-	}
-
+        return RoutineHistoryDto.builder()
+                .id(id)
+                .routineId(request.getRoutineId())
+                .name(request.getName())
+                .color(request.getColor())
+                .exerciseId(historyRequest.getExercise().getExerciseId())
+                .sets(routineHistoryDetailsDtos)
+                .build();
+    }
 }

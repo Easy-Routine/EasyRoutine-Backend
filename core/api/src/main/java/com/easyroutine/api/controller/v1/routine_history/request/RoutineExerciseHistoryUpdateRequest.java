@@ -12,13 +12,9 @@ import java.util.List;
 @NoArgsConstructor
 public class RoutineExerciseHistoryUpdateRequest {
 
-	@Schema(description = "운동 아이디", example = "1")
-	private long exerciseId;
+    @Schema(description = "운동")
+    private RoutineExerciseHistoryExerciseRequest exercise;
 
-	@Schema(description = "운동 순서", example = "1")
-	private int order;
-
-	@Schema(description = "운동 이력 기록 리스트")
-	private List<RoutineHistoryDetailsUpdateRequest> routineHistoryDetails;
-
+    @Schema(description = "운동 이력 기록 리스트")
+    private List<RoutineHistoryDetailsUpdateRequest> sets;
 }
