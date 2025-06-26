@@ -21,7 +21,7 @@ public class Member extends BaseEntity {
 	@Id
 	@GeneratedValue(generator = "uuid2")
 	@UuidGenerator
-	@Column(columnDefinition = "VARCHAR(36)")
+	@Column(name = "id", columnDefinition = "VARCHAR(36)")
 	private String id;
 
 	@Column(length = 50, nullable = false)
