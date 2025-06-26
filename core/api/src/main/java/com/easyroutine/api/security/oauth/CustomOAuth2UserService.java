@@ -2,7 +2,6 @@ package com.easyroutine.api.security.oauth;
 
 import com.easyroutine.domain.member.Member;
 import com.easyroutine.domain.member.MemberRole;
-import com.easyroutine.infrastructure.oauth.CustomOAuth2User;
 import com.easyroutine.infrastructure.oauth.CustomOAuth2UserImpl;
 import com.easyroutine.infrastructure.oauth.response.GoogleResponse;
 import com.easyroutine.infrastructure.oauth.response.KakaoResponse;
@@ -10,9 +9,6 @@ import com.easyroutine.infrastructure.oauth.response.NaverResponse;
 import com.easyroutine.infrastructure.oauth.response.OAuth2Response;
 import com.easyroutine.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -38,7 +34,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 		// TODO : add other roles
 		Member member = Member.of(oAuth2Response, MemberRole.MEMBER);
-		CustomOAuth2User user = new CustomOAuth2UserImpl(member);
 
 		String provider = oAuth2Response.getProvider();
 		String providerId = oAuth2Response.getProviderId();
@@ -50,10 +45,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 			authenticatedMember = memberRepository.save(member);
 		}
 
-		Authentication authToken = new UsernamePasswordAuthenticationToken(authenticatedMember, null, user.getAuthorities());
-		SecurityContextHolder.getContext().setAuthentication(authToken);
-
-		return user;
+		return new CustomOAuth2UserImpl(authenticatedMember);
 	}
 
 	private OAuth2Response getOAuth2ResponseBy(String registrationId, Map<String, Object> attributes) {
