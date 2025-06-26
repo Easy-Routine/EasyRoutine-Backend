@@ -44,14 +44,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		String providerId = oAuth2Response.getProviderId();
 		Optional<Member> existMember = memberRepository.findByProviderAndProviderId(provider, providerId);
 
+		Member authenticatedMember = existMember.get();
+
 		if (existMember.isEmpty()) {
-			memberRepository.save(member);
+			authenticatedMember = memberRepository.save(member);
 		}
 
-		CustomOAuth2User customOAuth2User = new CustomOAuth2UserImpl(member);
-
-		Authentication authToken = new UsernamePasswordAuthenticationToken(customOAuth2User, null,
-				customOAuth2User.getAuthorities());
+		Authentication authToken = new UsernamePasswordAuthenticationToken(authenticatedMember, null, user.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(authToken);
 
 		return user;
