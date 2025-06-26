@@ -1,15 +1,18 @@
 package com.easyroutine.api.security.oauth;
 
+import com.easyroutine.domain.member.Member;
+import com.easyroutine.domain.member.MemberRole;
 import com.easyroutine.infrastructure.oauth.CustomOAuth2User;
 import com.easyroutine.infrastructure.oauth.CustomOAuth2UserImpl;
 import com.easyroutine.infrastructure.oauth.response.GoogleResponse;
 import com.easyroutine.infrastructure.oauth.response.KakaoResponse;
 import com.easyroutine.infrastructure.oauth.response.NaverResponse;
 import com.easyroutine.infrastructure.oauth.response.OAuth2Response;
-import com.easyroutine.domain.member.Member;
-import com.easyroutine.domain.member.MemberRole;
 import com.easyroutine.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -44,6 +47,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		if (existMember.isEmpty()) {
 			memberRepository.save(member);
 		}
+
+		CustomOAuth2User customOAuth2User = new CustomOAuth2UserImpl(member);
+
+		Authentication authToken = new UsernamePasswordAuthenticationToken(customOAuth2User, null,
+				customOAuth2User.getAuthorities());
+		SecurityContextHolder.getContext().setAuthentication(authToken);
 
 		return user;
 	}

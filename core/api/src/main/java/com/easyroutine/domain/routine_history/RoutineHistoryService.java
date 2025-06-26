@@ -52,6 +52,7 @@ public class RoutineHistoryService {
 		return "Success";
 	}
 
+	@Transactional(rollbackFor = Exception.class)
 	public String updateRoutineHistory(Long id, List<RoutineHistoryDto> routineHistoryDtos, String memberId) {
 		RoutineHistory routineHistory = routineHistoryQueryRepository.findAllByRoutineHistoryId(id)
 			.orElseThrow(() -> new IllegalArgumentException("루틴 이력을 찾을 수 없습니다."));
@@ -66,6 +67,7 @@ public class RoutineHistoryService {
 		return "Success";
 	}
 
+	@Transactional(rollbackFor = Exception.class)
 	public String deleteRoutineHistory(Long id, String memberId) {
 		RoutineHistory routineHistory = routineHistoryQueryRepository.findAllByRoutineHistoryId(id)
 			.orElseThrow(() -> new IllegalArgumentException("루틴 이력을 찾을 수 없습니다."));
