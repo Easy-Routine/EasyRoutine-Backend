@@ -11,15 +11,15 @@ import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -63,7 +63,7 @@ public class RoutineControllerTest extends ControllerTestSupport {
 
 		given(routineService.createRoutine(any())).willReturn(1L);
 
-		mockMvc.perform(post("/routines").with(csrf()).contentType("application/json").content(requestJson))
+		mockMvc.perform(post("/api/v1/routines").with(csrf()).contentType("application/json").content(requestJson))
 			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.success").value(true))
@@ -106,7 +106,7 @@ public class RoutineControllerTest extends ControllerTestSupport {
 
 		given(routineService.createRoutine(any())).willReturn(1L);
 
-		mockMvc.perform(post("/routines").with(csrf()).contentType("application/json").content(requestJson))
+		mockMvc.perform(post("/api/v1/routines").with(csrf()).contentType("application/json").content(requestJson))
 			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.success").value(false))
@@ -150,7 +150,7 @@ public class RoutineControllerTest extends ControllerTestSupport {
 
 		given(routineService.findAllRoutine(any())).willReturn(Arrays.asList(routineDto));
 
-		mockMvc.perform(get("/routines").with(csrf()).contentType("application/json"))
+		mockMvc.perform(get("/api/v1/routines").with(csrf()).contentType("application/json"))
 			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.success").value(true));
