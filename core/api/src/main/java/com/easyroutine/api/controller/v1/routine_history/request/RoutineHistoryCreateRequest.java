@@ -21,10 +21,6 @@ public class RoutineHistoryCreateRequest {
 	@Schema(description = "루틴 색상", example = "#FF5733")
 	private String color;
 
-	@Schema(description = "루틴 운동 이력 기록리스트",
-			example = "[" + "{  " + "   \"exerciseId\": 1," + "   \"order\": 1," + "   \"routineHistoryDetails\": ["
-					+ "       {" + "           \"order\": 1, " + "           \"weight\": 20.0, "
-					+ "           \"rep\": 10, " + "           \"restSec\": 30" + "       }" + "    ]" + "}" + "]")
+	@Schema(description = "루틴 운동 이력 기록리스트")
 	private List<RoutineExerciseHistoryCreateRequest> routineExercises;
-
 }
