@@ -26,7 +26,7 @@ public class Exercise extends BaseEntity {
 	@Column
 	private String name;
 
-	@Column
+	@Column(columnDefinition = "TEXT")
 	private String image;
 
 	@Column(name = "origin_image")

@@ -38,7 +38,7 @@ public class RoutineExerciseMapper {
 			.image(e.getExercise().getImage())
 			.name(e.getExercise().getName())
 			.order(e.getOrder())
-			.setsDtoList(setsDtoList)
+			.routineExerciseSetsDtoList(setsDtoList)
 			.build();
 	}
 

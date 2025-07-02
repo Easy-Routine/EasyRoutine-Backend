@@ -28,9 +28,12 @@ public class RoutineController {
 	@PostMapping()
 	public ApiResponse<Long> createRoutine(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
 			@Valid @RequestBody RoutineCreateRequest routineCreateRequest) {
+
+		routineCreateRequest.ofRoutineCreateRequest();
 		String memberId = customOAuth2User.getMemberId();
 
 		routineCreateRequest.getRoutineDto().setMemberIdFromToken(memberId);
+
 		return ApiResponse.success(routineService.createRoutine(routineCreateRequest.getRoutineDto()));
 	}
 
