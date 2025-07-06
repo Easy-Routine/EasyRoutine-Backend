@@ -9,8 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -44,11 +44,24 @@ public class RoutineHistory extends BaseEntity {
     @Column(name = "workout_time", nullable = false)
     private int workoutTime;
 
+    @Column(name = "member_id", nullable = false)
+    private String memberId;
+
     @OneToMany(mappedBy = "routineHistory", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<RoutineHistoryExercise> routineHistoryExercises = new ArrayList<>();
+    private Set<RoutineHistoryExercise> routineHistoryExercises = new HashSet<>();
 
     @Builder
-    private RoutineHistory(Long id, Routine routine, String routineName, LocalDate exerciseDate, int orderIndex, String color, int workoutTime, List<RoutineHistoryExercise> routineHistoryExercises) {
+    private RoutineHistory(
+            Long id,
+            Routine routine,
+            String routineName,
+            LocalDate exerciseDate,
+            int orderIndex,
+            String color,
+            int workoutTime,
+            Set<RoutineHistoryExercise> routineHistoryExercises,
+            String memberId
+    ) {
         this.id = id;
         this.routine = routine;
         this.routineName = routineName;
@@ -57,16 +70,13 @@ public class RoutineHistory extends BaseEntity {
         this.color = color;
         this.workoutTime = workoutTime;
         this.routineHistoryExercises = routineHistoryExercises;
+        this.memberId = memberId;
     }
 
-    public void addRoutineExercises(List<RoutineHistoryExercise> routineHistoryExercises) {
+    public void addRoutineExercises(Set<RoutineHistoryExercise> routineHistoryExercises) {
         for (RoutineHistoryExercise routineHistoryExercise : routineHistoryExercises) {
             routineHistoryExercise.setRoutineHistory(this);
         }
         this.routineHistoryExercises = routineHistoryExercises;
-    }
-
-    public void updateFrom(RoutineHistory routineHistory) {
-
     }
 }

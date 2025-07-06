@@ -3,6 +3,7 @@ package com.easyroutine.api.controller.v1.routine_history;
 import com.easyroutine.api.controller.v1.routine_history.request.RoutineHistoryDeleteRequest;
 import com.easyroutine.api.controller.v1.routine_history.request.create.RoutineHistoryCreateRequest;
 import com.easyroutine.domain.routine_history.RoutineHistory;
+import com.easyroutine.domain.routine_history.dto.HistorySummaryDto;
 import com.easyroutine.domain.routine_history.dto.RoutineHistoryDto;
 import com.easyroutine.domain.routine_history.service.RoutineHistoryService;
 import com.easyroutine.infrastructure.oauth.CustomOAuth2User;
@@ -57,13 +58,13 @@ public class RoutineHistoryController {
                 .toList();
     }
 
-//    @Operation(summary = "루틴 히스토리 요약 조회", description = "루틴 히스토리 요약 조회 API")
-//    @GetMapping("/summary")
-//    public HistorySummaryDto getRoutineHistorySummary(
-//            @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$") @RequestParam(name = "date") String date,
-//            @AuthenticationPrincipal CustomOAuth2User user
-//    ) {
-//        String memberId = user.getMemberId();
-//        return routineHistoryService.getRoutineHistorySummary(memberId, date);
-//    }
+    @Operation(summary = "루틴 히스토리 요약 조회", description = "루틴 히스토리 요약 조회 API")
+    @GetMapping("/summary")
+    public HistorySummaryDto getRoutineHistorySummary(
+            @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$") @RequestParam(name = "date") String date,
+            @AuthenticationPrincipal CustomOAuth2User user
+    ) {
+        String memberId = user.getMemberId();
+        return routineHistoryService.getRoutineHistorySummary(memberId, date);
+    }
 }

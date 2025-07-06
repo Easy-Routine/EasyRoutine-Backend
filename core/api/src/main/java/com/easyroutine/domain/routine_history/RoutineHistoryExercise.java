@@ -10,8 +10,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -46,10 +47,19 @@ public class RoutineHistoryExercise extends BaseEntity {
     private ExerciseCategory exerciseCategories;
 
     @OneToMany(mappedBy = "routineHistoryExercise", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<RoutineHistoryExerciseSets> routineHistoryExerciseSets = new ArrayList<>();
+    private Set<RoutineHistoryExerciseSets> routineHistoryExerciseSets = new HashSet<>();
 
     @Builder
-    private RoutineHistoryExercise(Long id, RoutineHistory routineHistory, int orderIndex, Exercise exercise, String exerciseName, List<ExerciseType> exerciseType, ExerciseCategory exerciseCategories, List<RoutineHistoryExerciseSets> routineHistoryExerciseSets) {
+    private RoutineHistoryExercise(
+            Long id,
+            RoutineHistory routineHistory,
+            int orderIndex,
+            Exercise exercise,
+            String exerciseName,
+            List<ExerciseType> exerciseType,
+            ExerciseCategory exerciseCategories,
+            Set<RoutineHistoryExerciseSets> routineHistoryExerciseSets
+    ) {
         this.id = id;
         this.routineHistory = routineHistory;
         this.orderIndex = orderIndex;
@@ -70,7 +80,7 @@ public class RoutineHistoryExercise extends BaseEntity {
         }
     }
 
-    public void addRoutineHistoryExerciseSets(List<RoutineHistoryExerciseSets> sets) {
+    public void addRoutineHistoryExerciseSets(Set<RoutineHistoryExerciseSets> sets) {
         for (RoutineHistoryExerciseSets set : sets) {
             set.setRoutineHistoryExercise(this);
         }

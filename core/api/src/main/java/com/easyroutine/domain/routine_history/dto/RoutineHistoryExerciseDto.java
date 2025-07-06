@@ -2,7 +2,6 @@ package com.easyroutine.domain.routine_history.dto;
 
 
 import com.easyroutine.api.controller.v1.routine_history.request.create.RoutineHistoryExerciseCreateRequest;
-import com.easyroutine.api.controller.v1.routine_history.request.update.RoutineHistoryExerciseUpdateRequest;
 import com.easyroutine.domain.routine_history.RoutineHistoryExercise;
 import lombok.*;
 

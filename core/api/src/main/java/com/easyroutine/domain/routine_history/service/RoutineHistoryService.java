@@ -1,6 +1,7 @@
 package com.easyroutine.domain.routine_history.service;
 
 import com.easyroutine.domain.routine_history.RoutineHistory;
+import com.easyroutine.domain.routine_history.dto.HistorySummaryDto;
 import com.easyroutine.domain.routine_history.dto.RoutineHistoryDto;
 import com.easyroutine.domain.routine_history.mapper.RoutineHistoryMapper;
 import com.easyroutine.repository.routine_history.RoutineHistoryRepository;
@@ -8,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Slf4j
@@ -42,9 +44,10 @@ public class RoutineHistoryService {
     }
 
     public List<RoutineHistory> getRoutineHistories(String memberId, String date) {
-        return routineHistoryRepository.findByMemberIdAndDate(memberId, date);
+        return routineHistoryRepository.searchByMemberIdAndExerciseDate(memberId, LocalDate.parse(date));
     }
 
-//    public HistorySummaryDto getRoutineHistorySummary(String memberId, String date) {
-//    }
+    public HistorySummaryDto getRoutineHistorySummary(String memberId, String date) {
+        return null;
+    }
 }

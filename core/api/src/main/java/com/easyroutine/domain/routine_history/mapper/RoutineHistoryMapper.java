@@ -12,9 +12,7 @@ import com.easyroutine.repository.exercises.ExercisesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -33,16 +31,16 @@ public class RoutineHistoryMapper {
                 .color(dto.getColor())
                 .orderIndex(dto.getOrder())
                 .workoutTime(dto.getWorkoutTime())
-                .routineHistoryExercises(new ArrayList<>())
+                .routineHistoryExercises(new HashSet<>())
                 .build();
 
-        List<RoutineHistoryExercise> routineHistoryExercises = dto.getRoutineExercises().stream()
+        Set<RoutineHistoryExercise> routineHistoryExercises = dto.getRoutineExercises().stream()
                 .map(exerciseDto -> {
                     RoutineHistoryExercise routineHistoryExercise = toEntity(exerciseDto, exerciseMap);
                     routineHistoryExercise.setRoutineHistory(routineHistory);
                     return routineHistoryExercise;
                 })
-                .toList();
+                .collect(Collectors.toSet());
 
         routineHistory.addRoutineExercises(routineHistoryExercises);
 
@@ -59,16 +57,16 @@ public class RoutineHistoryMapper {
                 .exerciseName(exercise.getName())
                 .exerciseType(new ArrayList<>(exercise.getTypes()))
                 .exerciseCategories(exercise.getCategory())
-                .routineHistoryExerciseSets(new ArrayList<>())
+                .routineHistoryExerciseSets(new HashSet<>())
                 .build();
 
-        List<RoutineHistoryExerciseSets> sets = dto.getSets().stream()
+        Set<RoutineHistoryExerciseSets> sets = dto.getSets().stream()
                 .map(setDto -> {
                     RoutineHistoryExerciseSets routineHistoryExerciseSets = toEntity(setDto);
                     routineHistoryExerciseSets.setRoutineHistoryExercise(routineHistoryExercise);
                     return routineHistoryExerciseSets;
                 })
-                .toList();
+                .collect(Collectors.toSet());
 
         routineHistoryExercise.addRoutineHistoryExerciseSets(sets);
 
