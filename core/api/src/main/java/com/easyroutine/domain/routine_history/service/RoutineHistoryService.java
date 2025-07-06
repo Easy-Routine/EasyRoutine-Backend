@@ -29,7 +29,7 @@ public class RoutineHistoryService {
 
     @Transactional(rollbackFor = Exception.class)
     public Long createRoutineHistory(RoutineHistoryDto routineHistoryDto, String memberId) {
-        RoutineHistory routineHistory = routineHistoryMapper.toEntity(routineHistoryDto);
+        RoutineHistory routineHistory = routineHistoryMapper.toEntity(routineHistoryDto, memberId);
         RoutineHistory savedHistory = routineHistoryRepository.save(routineHistory);
         return savedHistory.getId();
     }

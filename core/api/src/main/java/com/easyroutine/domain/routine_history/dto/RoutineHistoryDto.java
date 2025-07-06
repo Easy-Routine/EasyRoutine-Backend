@@ -58,7 +58,7 @@ public class RoutineHistoryDto {
                 .routineId(routineHistory.getRoutine().getId())
                 .name(routineHistory.getRoutine().getName())
                 .color(routineHistory.getRoutine().getColor())
-                .order(routineHistory.getRoutine().getOrder())
+                .order(routineHistory.getOrderIndex())
                 .workoutTime(totalExerciseTime)
                 .routineExercises(routineExercises)
                 .build();

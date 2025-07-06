@@ -12,6 +12,7 @@ import com.easyroutine.repository.exercises.ExercisesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -21,7 +22,7 @@ public class RoutineHistoryMapper {
 
     private final ExercisesRepository exercisesRepository;
 
-    public RoutineHistory toEntity(RoutineHistoryDto dto) {
+    public RoutineHistory toEntity(RoutineHistoryDto dto, String memberId) {
         Routine routine = Routine.of(dto.getRoutineId());
         Map<Long, Exercise> exerciseMap = getExercisesMapBy(dto);
 
@@ -32,6 +33,8 @@ public class RoutineHistoryMapper {
                 .orderIndex(dto.getOrder())
                 .workoutTime(dto.getWorkoutTime())
                 .routineHistoryExercises(new HashSet<>())
+                .exerciseDate(LocalDate.now())
+                .memberId(memberId)
                 .build();
 
         Set<RoutineHistoryExercise> routineHistoryExercises = dto.getRoutineExercises().stream()
