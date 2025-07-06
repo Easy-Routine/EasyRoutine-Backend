@@ -41,7 +41,7 @@ public class RoutineExerciseDto {
 
 	@NotEmpty(message = "세트 리스트는 비어 있을 수 없습니다.")
 	@Valid
-	private List<@Valid RoutineExerciseSetsDto> setsDtoList;
+	private List<@Valid RoutineExerciseSetsDto> routineExerciseSetsDtoList;
 
 	public void setRoutineId(Long routineId) {
 		this.routineId = routineId;
@@ -51,4 +51,8 @@ public class RoutineExerciseDto {
 		this.exerciseId = exerciseId;
 	}
 
+	// order
+	// exercise
+	// sets
+	//
 }

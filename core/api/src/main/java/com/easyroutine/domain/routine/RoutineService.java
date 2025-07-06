@@ -14,16 +14,15 @@ import com.easyroutine.repository.routine.RoutineRepository;
 import com.easyroutine.repository.routine_exercise.RoutineExerciseRepository;
 import com.easyroutine.repository.routine_exercise_sets.RoutineExerciseSetsRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 @Transactional(readOnly = true)
 public class RoutineService {
 
@@ -48,7 +47,7 @@ public class RoutineService {
 			RoutineExercise routineExercise = routineExerciseRepository
 				.save(routineExerciseMapper.toEntity(routineExerciseDto));
 
-			for (RoutineExerciseSetsDto routineExerciseSetsDto : routineExerciseDto.getSetsDtoList()) {
+			for (RoutineExerciseSetsDto routineExerciseSetsDto : routineExerciseDto.getRoutineExerciseSetsDtoList()) {
 				routineExerciseSetsDto.setRoutineExerciesId(routineExercise.getId());
 				routineExerciseSetsRepository.save(routineExerciseSetsMapper.toEntity(routineExerciseSetsDto));
 			}
