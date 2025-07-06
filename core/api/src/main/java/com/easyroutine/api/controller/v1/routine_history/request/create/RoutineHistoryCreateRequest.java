@@ -26,7 +26,7 @@ public class RoutineHistoryCreateRequest {
     @Schema(description = "루틴 히스토리 순서", example = "1")
     private int order;
 
-    @Schema(description = "루틴 히스토리 운동 시간", example = "3600")
+    @Schema(description = "루틴 히스토리 운동 시간 (초)", example = "3600")
     private int workoutTime; // in seconds
 
     @Schema(description = "루틴 히스토리 운동 목록")

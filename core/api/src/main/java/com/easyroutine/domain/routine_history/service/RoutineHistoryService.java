@@ -1,7 +1,6 @@
 package com.easyroutine.domain.routine_history.service;
 
 import com.easyroutine.domain.routine_history.RoutineHistory;
-import com.easyroutine.domain.routine_history.dto.HistorySummaryDto;
 import com.easyroutine.domain.routine_history.dto.RoutineHistoryDto;
 import com.easyroutine.domain.routine_history.mapper.RoutineHistoryMapper;
 import com.easyroutine.repository.routine_history.RoutineHistoryRepository;
@@ -45,9 +44,5 @@ public class RoutineHistoryService {
 
     public List<RoutineHistory> getRoutineHistories(String memberId, String date) {
         return routineHistoryRepository.searchByMemberIdAndExerciseDate(memberId, LocalDate.parse(date));
-    }
-
-    public HistorySummaryDto getRoutineHistorySummary(String memberId, String date) {
-        return null;
     }
 }

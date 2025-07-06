@@ -65,6 +65,7 @@ public class RoutineHistoryController {
             @AuthenticationPrincipal CustomOAuth2User user
     ) {
         String memberId = user.getMemberId();
-        return routineHistoryService.getRoutineHistorySummary(memberId, date);
+        List<RoutineHistory> histories = routineHistoryService.getRoutineHistories(memberId, date);
+        return HistorySummaryDto.of(histories);
     }
 }

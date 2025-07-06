@@ -79,4 +79,19 @@ public class RoutineHistory extends BaseEntity {
         }
         this.routineHistoryExercises = routineHistoryExercises;
     }
+
+    public int getTotalWorkoutTime() {
+        return routineHistoryExercises.stream()
+                .flatMap(exercise -> exercise.getRoutineHistoryExerciseSets().stream())
+                .mapToInt(RoutineHistoryExerciseSets::getExerciseTime)
+                .sum();
+    }
+
+    public double getTotalWeightLifted() {
+        return routineHistoryExercises.stream()
+                .flatMap(exercise -> exercise.getRoutineHistoryExerciseSets().stream())
+                .mapToDouble(RoutineHistoryExerciseSets::getWeight)
+                .sum();
+    }
 }
+
