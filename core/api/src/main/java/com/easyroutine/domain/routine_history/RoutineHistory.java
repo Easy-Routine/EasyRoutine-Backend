@@ -1,85 +1,97 @@
 package com.easyroutine.domain.routine_history;
 
 import com.easyroutine.domain.BaseEntity;
-import com.easyroutine.domain.exercises.Exercise;
-import com.easyroutine.domain.member.Member;
 import com.easyroutine.domain.routine.Routine;
-import com.easyroutine.domain.routine_history.dto.RoutineHistoryDto;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
-import static lombok.AccessLevel.PROTECTED;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Getter
 @Entity
 @Table(name = "routine_history")
-@NoArgsConstructor(access = PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoutineHistory extends BaseEntity {
 
-	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
-	@Column(name = "exercise_date")
-	private LocalDateTime exerciseDate;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "routine_id", nullable = false)
+    private Routine routine;
 
-	@Column(name = "order_index")
-	private int order;
+    @Column(name = "routine_name", nullable = false)
+    private String routineName;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "routine_id", nullable = false)
-	private Routine routine;
+    @Column(name = "exercise_date", nullable = false)
+    private LocalDate exerciseDate;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "exercise_id", nullable = false)
-	private Exercise exercise;
+    @Column(name = "order_index", nullable = false)
+    private int orderIndex;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id", nullable = false)
-	private Member member;
+    @Column(name = "color", nullable = false)
+    private String color;
 
-	@OneToMany(mappedBy = "routineHistory", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<RoutineHistoryDetails> routineHistoryDetails = new ArrayList<>();
+    @Column(name = "workout_time", nullable = false)
+    private int workoutTime;
 
-	@Builder
-	private RoutineHistory(Long id, LocalDateTime exerciseDate, int order, Routine routine, Exercise exercise,
-			Member member, List<RoutineHistoryDetails> routineHistoryDetails) {
-		this.id = id;
-		this.exerciseDate = exerciseDate;
-		this.order = order;
-		this.routine = routine;
-		this.exercise = exercise;
-		this.member = member;
-		this.routineHistoryDetails = routineHistoryDetails;
-	}
+    @Column(name = "member_id", nullable = false)
+    private String memberId;
 
-	public static RoutineHistory of(RoutineHistoryDto routineHistoryDto) {
-		return RoutineHistory.builder()
-			.id(routineHistoryDto.getId())
-			.exerciseDate(routineHistoryDto.getExerciseDate())
-			.routine(Routine.of(routineHistoryDto.getRoutineId()))
-			.exercise(Exercise.of(routineHistoryDto.getExerciseId()))
-			.member(Member.of(routineHistoryDto.getMemberId()))
-			.build();
-	}
+    @OneToMany(mappedBy = "routineHistory", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<RoutineHistoryExercise> routineHistoryExercises = new HashSet<>();
 
-	public void addRoutineHistoryDetails(List<RoutineHistoryDetails> routineHistoryDetails) {
-		this.routineHistoryDetails = routineHistoryDetails;
-	}
+    @Builder
+    private RoutineHistory(
+            Long id,
+            Routine routine,
+            String routineName,
+            LocalDate exerciseDate,
+            int orderIndex,
+            String color,
+            int workoutTime,
+            Set<RoutineHistoryExercise> routineHistoryExercises,
+            String memberId
+    ) {
+        this.id = id;
+        this.routine = routine;
+        this.routineName = routineName;
+        this.exerciseDate = exerciseDate;
+        this.orderIndex = orderIndex;
+        this.color = color;
+        this.workoutTime = workoutTime;
+        this.routineHistoryExercises = routineHistoryExercises;
+        this.memberId = memberId;
+    }
 
-	public void updateRoutineHistory(RoutineHistory routineHistory) {
-		this.routineHistoryDetails.clear();
-		routineHistory.routineHistoryDetails.forEach(detail -> {
-			detail.setRoutineHistory(this);
-			this.routineHistoryDetails.add(detail);
-		});
-	}
+    public void addRoutineExercises(Set<RoutineHistoryExercise> routineHistoryExercises) {
+        for (RoutineHistoryExercise routineHistoryExercise : routineHistoryExercises) {
+            routineHistoryExercise.setRoutineHistory(this);
+        }
+        this.routineHistoryExercises = routineHistoryExercises;
+    }
 
+    public int getTotalWorkoutTime() {
+        return routineHistoryExercises.stream()
+                .flatMap(exercise -> exercise.getRoutineHistoryExerciseSets().stream())
+                .mapToInt(RoutineHistoryExerciseSets::getExerciseTime)
+                .sum();
+    }
+
+    public double getTotalWeightLifted() {
+        return routineHistoryExercises.stream()
+                .flatMap(exercise -> exercise.getRoutineHistoryExerciseSets().stream())
+                .mapToDouble(RoutineHistoryExerciseSets::getWeight)
+                .sum();
+    }
 }
+

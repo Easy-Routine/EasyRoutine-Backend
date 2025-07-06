@@ -5,6 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RoutineHistoryRepository extends JpaRepository<RoutineHistory, Long> {
-
+public interface RoutineHistoryRepository extends JpaRepository<RoutineHistory, Long>, CustomRoutineHistoryRepository {
 }
