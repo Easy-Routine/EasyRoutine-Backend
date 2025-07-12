@@ -62,13 +62,37 @@ public class RoutineControllerTest extends ControllerTestSupport {
 				}
 				""";
 
-		given(routineService.createRoutine(any())).willReturn(1L);
+		given(routineService.createRoutine(any())).willReturn(RoutineDto.builder()
+			.id(1L)
+			.memberId("test-id")
+			.name("루틴테스트2")
+			.color("#000000")
+			.order(4)
+			.routineExerciseDtoList(Arrays.asList(
+				RoutineExerciseDto.builder()
+					.id(1L)
+					.routineId(1L)
+					.exerciseId(1L)
+					.order(1)
+					.routineExerciseSetsDtoList(Arrays.asList(
+						RoutineExerciseSetsDto.builder()
+							.id(1L)
+							.routineExerciesId(1L)
+							.order(1)
+							.weight(10.0)
+							.rep(10)
+							.restSec("01:30")
+							.build()
+					))
+					.build()
+			))
+			.build());
 
 		mockMvc.perform(post("/api/v1/routines").with(csrf()).contentType("application/json").content(requestJson))
-			.andDo(print())
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.success").value(true))
-			.andExpect(jsonPath("$.result").value(1));
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.success").value(true))
+				.andExpect(jsonPath("$.result.id").value(1L));
 	}
 
 	@Description("루틴을 등록을 실패한다. ")
@@ -107,7 +131,7 @@ public class RoutineControllerTest extends ControllerTestSupport {
 				}
 				""";
 
-		given(routineService.createRoutine(any())).willReturn(1L);
+//		given(routineService.createRoutine(any())).willReturn(1L);
 
 		mockMvc.perform(post("/api/v1/routines").with(csrf()).contentType("application/json").content(requestJson))
 			.andDo(print())

@@ -26,7 +26,7 @@ public class RoutineController {
 
 	@Operation(summary = "루틴 생성", description = "루틴 생성 API")
 	@PostMapping()
-	public ApiResponse<Long> createRoutine(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
+	public ApiResponse<RoutineDto> createRoutine(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
 			@Valid @RequestBody RoutineCreateRequest routineCreateRequest) {
 
 		routineCreateRequest.ofRoutineCreateRequest();

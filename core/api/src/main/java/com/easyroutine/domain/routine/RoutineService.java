@@ -39,7 +39,7 @@ public class RoutineService {
 	private final RoutineExerciseSetsRepository routineExerciseSetsRepository;
 
 	@Transactional(rollbackFor = Exception.class)
-	public Long createRoutine(RoutineDto routineDto) {
+	public RoutineDto createRoutine(RoutineDto routineDto) {
 		Routine routine = routineRepository.save(routineMapper.toEntity(routineDto));
 
 		for (RoutineExerciseDto routineExerciseDto : routineDto.getRoutineExerciseDtoList()) {
@@ -53,7 +53,7 @@ public class RoutineService {
 			}
 		}
 
-		return routine.getId();
+		return routineMapper.fromEntity(routine);
 	}
 
 	/**
