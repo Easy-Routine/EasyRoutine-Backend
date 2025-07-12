@@ -3,6 +3,8 @@ package com.easyroutine.api.controller;
 import com.easyroutine.api.security.jwt.JsonWebTokenUtil;
 import com.easyroutine.domain.member.Member;
 import com.easyroutine.domain.member.MemberService;
+import com.easyroutine.global.exception.DataException;
+import com.easyroutine.global.response.ResultType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -33,4 +35,10 @@ public class ContextController {
 		return jwtUtil.createAccessToken(tester.getId(), tester.getRole(), 60 * 60 * 60L);
 	}
 
+
+	@Operation(summary = "error", description = "에러 테스트를 위한 API입니다.")
+	@GetMapping("/error")
+	public String error() {
+		throw new DataException(ResultType.DATA_NOT_FOUND, "This is a test error.");
+	}
 }

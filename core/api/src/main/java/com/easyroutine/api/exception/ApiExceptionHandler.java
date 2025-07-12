@@ -17,25 +17,24 @@ public class ApiExceptionHandler {
 	@ExceptionHandler(BusinessException.class)
 	public ApiResponse<String> handleBusinessException(BusinessException e) {
 		log.error("BusinessException: {}", e.getMessage(), e);
-		return ApiResponse.fail(e.getResultType(), e.getResultType().getMessage());
+		return ApiResponse.fail(e.getResultType(), e.getMessage());
 	}
 
 	@ExceptionHandler(DataException.class)
 	public ApiResponse<String> handleDataException(DataException e) {
 		log.error("DataException: {}", e.getMessage(), e);
-		return ApiResponse.fail(e.getResultType(), e.getResultType().getMessage());
+		return ApiResponse.fail(e.getResultType(), e.getMessage());
 	}
 
 	@ExceptionHandler({ MethodArgumentNotValidException.class, HandlerMethodValidationException.class })
 	public ApiResponse<String> handleMethodArgumentNotValidException(Exception e) {
 		log.error("MethodArgumentNotValidException : {}", e.getMessage(), e);
-		return ApiResponse.fail(ResultType.INPUT_ERROR, ResultType.INPUT_ERROR.getMessage());
+		return ApiResponse.fail(ResultType.INPUT_ERROR, e.getMessage());
 	}
 
 	@ExceptionHandler(Exception.class)
 	public ApiResponse<String> handleException(Exception e) {
 		log.error("Exception: {}", e.getMessage(), e);
-		return ApiResponse.fail(ResultType.FAIL, ResultType.FAIL.getMessage());
+		return ApiResponse.fail(ResultType.FAIL, e.getMessage());
 	}
-
 }

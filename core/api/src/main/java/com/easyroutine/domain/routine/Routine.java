@@ -2,6 +2,7 @@ package com.easyroutine.domain.routine;
 
 import com.easyroutine.domain.BaseEntity;
 import com.easyroutine.domain.member.Member;
+import com.easyroutine.domain.routine.dto.RoutineDto;
 import com.easyroutine.domain.routine_exercise.RoutineExercise;
 import jakarta.persistence.*;
 import lombok.*;
@@ -57,4 +58,10 @@ public class Routine extends BaseEntity {
 		routineExercise.setroutine(this);
 	}
 
+	public void update(RoutineDto routineDto) {
+		this.name = routineDto.getName();
+		this.color = routineDto.getColor();
+		this.order = routineDto.getOrder();
+		this.routineExercises.clear();
+	}
 }

@@ -22,4 +22,5 @@ public interface RoutineRepository extends JpaRepository<Routine, Long> {
 
 	Optional<Routine> findByIdAndMember(Long id, Member member);
 
+	Optional<Routine> findByIdAndMember_Id(long routineId, String memberId);
 }

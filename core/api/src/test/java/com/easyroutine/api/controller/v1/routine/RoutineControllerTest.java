@@ -65,10 +65,10 @@ public class RoutineControllerTest extends ControllerTestSupport {
 		given(routineService.createRoutine(any())).willReturn(1L);
 
 		mockMvc.perform(post("/api/v1/routines").with(csrf()).contentType("application/json").content(requestJson))
-			.andDo(print())
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.success").value(true))
-			.andExpect(jsonPath("$.result").value(1));
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.success").value(true))
+				.andExpect(jsonPath("$.result").value(1L));
 	}
 
 	@Description("루틴을 등록을 실패한다. ")
@@ -107,7 +107,7 @@ public class RoutineControllerTest extends ControllerTestSupport {
 				}
 				""";
 
-		given(routineService.createRoutine(any())).willReturn(1L);
+//		given(routineService.createRoutine(any())).willReturn(1L);
 
 		mockMvc.perform(post("/api/v1/routines").with(csrf()).contentType("application/json").content(requestJson))
 			.andDo(print())

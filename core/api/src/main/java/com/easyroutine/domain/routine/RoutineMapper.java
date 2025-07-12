@@ -5,11 +5,9 @@ import com.easyroutine.domain.routine.dto.RoutineDto;
 import com.easyroutine.domain.routine_exercise.RoutineExerciseMapper;
 import com.easyroutine.domain.routine_exercise.dto.RoutineExerciseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
