@@ -13,6 +13,7 @@ import com.easyroutine.global.response.ResultType;
 import com.easyroutine.repository.routine.RoutineRepository;
 import com.easyroutine.repository.routine_exercise.RoutineExerciseRepository;
 import com.easyroutine.repository.routine_exercise_sets.RoutineExerciseSetsRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -39,21 +40,10 @@ public class RoutineService {
 	private final RoutineExerciseSetsRepository routineExerciseSetsRepository;
 
 	@Transactional(rollbackFor = Exception.class)
-	public RoutineDto createRoutine(RoutineDto routineDto) {
+	public Long createRoutine(RoutineDto routineDto) {
 		Routine routine = routineRepository.save(routineMapper.toEntity(routineDto));
-
-		for (RoutineExerciseDto routineExerciseDto : routineDto.getRoutineExerciseDtoList()) {
-			routineExerciseDto.setRoutineId(routine.getId());
-			RoutineExercise routineExercise = routineExerciseRepository
-				.save(routineExerciseMapper.toEntity(routineExerciseDto));
-
-			for (RoutineExerciseSetsDto routineExerciseSetsDto : routineExerciseDto.getRoutineExerciseSetsDtoList()) {
-				routineExerciseSetsDto.setRoutineExerciesId(routineExercise.getId());
-				routineExerciseSetsRepository.save(routineExerciseSetsMapper.toEntity(routineExerciseSetsDto));
-			}
-		}
-
-		return routineMapper.fromEntity(routine);
+		saveRoutineExercises(routineDto, routine);
+		return routineMapper.fromEntity(routine).getId();
 	}
 
 	/**
@@ -64,6 +54,26 @@ public class RoutineService {
 	public List<RoutineDto> findAllRoutine(Member member) {
 		List<Routine> routineList = routineRepository.findWithExercisesByMember(member);
 		return routineList.stream().map(routineMapper::fromEntity).toList();
+	}
+
+	/**
+	 * 루틴 수정
+	 * @param routineId
+	 * @param routineDto
+	 * @return
+	 */
+	@Transactional(rollbackFor = Exception.class)
+	public RoutineDto updateRoutine(long routineId, @Valid RoutineDto routineDto) {
+		Routine routine = routineRepository.findByIdAndMember_Id(routineId, routineDto.getMemberId())
+			.orElseThrow(() -> new DataException(ResultType.DATA_NOT_FOUND, "루틴을 찾을 수 없습니다."));
+
+		routine.update(routineDto);
+
+		// 기존 루틴 운동 삭제
+		routineExerciseRepository.deleteAllByRoutineId(routineId);
+
+		saveRoutineExercises(routineDto, routine);
+		return routineMapper.fromEntity(routine);
 	}
 
 	public RoutineDto deleteRoutine(Long id, Member member) {
@@ -83,4 +93,16 @@ public class RoutineService {
 		return routineMapper.fromEntity(routine);
 	}
 
+	private void saveRoutineExercises(RoutineDto routineDto, Routine routine) {
+		for (RoutineExerciseDto routineExerciseDto : routineDto.getRoutineExerciseDtoList()) {
+			routineExerciseDto.setRoutineId(routine.getId());
+			RoutineExercise routineExercise = routineExerciseRepository
+					.save(routineExerciseMapper.toEntity(routineExerciseDto));
+
+			for (RoutineExerciseSetsDto routineExerciseSetsDto : routineExerciseDto.getRoutineExerciseSetsDtoList()) {
+				routineExerciseSetsDto.setRoutineExerciesId(routineExercise.getId());
+				routineExerciseSetsRepository.save(routineExerciseSetsMapper.toEntity(routineExerciseSetsDto));
+			}
+		}
+	}
 }

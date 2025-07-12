@@ -26,8 +26,10 @@ public class RoutineController {
 
 	@Operation(summary = "루틴 생성", description = "루틴 생성 API")
 	@PostMapping()
-	public ApiResponse<RoutineDto> createRoutine(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
-			@Valid @RequestBody RoutineCreateRequest routineCreateRequest) {
+	public ApiResponse<Long> createRoutine(
+			@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
+			@Valid @RequestBody RoutineCreateRequest routineCreateRequest
+	) {
 
 		routineCreateRequest.ofRoutineCreateRequest();
 		String memberId = customOAuth2User.getMemberId();
@@ -39,7 +41,9 @@ public class RoutineController {
 
 	@Operation(summary = "루틴 조회", description = "루틴 조회 API")
 	@GetMapping
-	public ApiResponse<List<RoutineDto>> findAllRoutine(@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+	public ApiResponse<List<RoutineDto>> findAllRoutine(
+			@AuthenticationPrincipal CustomOAuth2User customOAuth2User
+	) {
 		Member member = Member.of(customOAuth2User.getMemberId());
 		List<RoutineDto> list = routineService.findAllRoutine(member);
 
@@ -50,10 +54,33 @@ public class RoutineController {
 		return ApiResponse.success(list);
 	}
 
+	@Operation(summary = "루틴 수정", description = "루틴 수정 API")
+	@PutMapping("/{routineId}")
+	public ApiResponse<Long> updateRoutine(
+			@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
+			@PathVariable long routineId,
+			@Valid @RequestBody RoutineCreateRequest routineCreateRequest
+	) {
+
+		routineCreateRequest.ofRoutineCreateRequest();
+		String memberId = customOAuth2User.getMemberId();
+
+		routineCreateRequest.getRoutineDto().setMemberIdFromToken(memberId);
+		RoutineDto dto = routineService.updateRoutine(routineId, routineCreateRequest.getRoutineDto());
+
+		if (dto == null) {
+			return ApiResponse.fail(ResultType.FAIL);
+		}
+
+		return ApiResponse.success(dto.getId());
+	}
+
 	@Operation(summary = "루틴 제거", description = "루틴 삭제 API")
 	@DeleteMapping("/{routineId}")
-	public ApiResponse<RoutineDto> deleteRoutine(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
-			@PathVariable long routineId) {
+	public ApiResponse<RoutineDto> deleteRoutine(
+			@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
+			@PathVariable long routineId
+	) {
 		Member member = Member.of(customOAuth2User.getMemberId());
 		RoutineDto dto = routineService.deleteRoutine(routineId, member);
 		if (dto == null) {
