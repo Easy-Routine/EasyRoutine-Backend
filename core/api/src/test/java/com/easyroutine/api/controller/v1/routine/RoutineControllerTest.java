@@ -1,7 +1,7 @@
 package com.easyroutine.api.controller.v1.routine;
 
 import com.easyroutine.ControllerTestSupport;
-import com.easyroutine.domain.routine.dto.RoutineDto;
+import com.easyroutine.domain.routine.dto.RoutineListDto;
 import com.easyroutine.domain.routine_exercise.dto.RoutineExerciseDto;
 import com.easyroutine.domain.routine_exercise_sets.dto.RoutineExerciseSetsDto;
 import com.easyroutine.infrastructure.oauth.CustomOAuth2User;
@@ -143,12 +143,10 @@ public class RoutineControllerTest extends ControllerTestSupport {
 			.routineExerciseSetsDtoList(Arrays.asList(routineExerciseSetsDto))
 			.build();
 
-		RoutineDto routineDto = RoutineDto.builder()
+		RoutineListDto routineDto = RoutineListDto.builder()
 			.id(1L)
-			.memberId("test-id")
 			.name("testRoutineName")
 			.color("blue")
-			.routineExerciseDtoList(Arrays.asList(routineExerciseDto))
 			.build();
 
 		given(routineService.findAllRoutine(any())).willReturn(Arrays.asList(routineDto));
