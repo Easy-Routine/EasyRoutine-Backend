@@ -13,14 +13,10 @@ public class RoutineHistoryExerciseDetailDto {
 
     private String imageUrl;
 
-    private int order;
-
-
-    public static RoutineHistoryExerciseDetailDto createOf(Long id, String imageUrl, int order) {
+    public static RoutineHistoryExerciseDetailDto createOf(Long id, String imageUrl) {
         return RoutineHistoryExerciseDetailDto.builder()
                 .id(id)
                 .imageUrl(imageUrl)
-                .order(order)
                 .build();
     }
 }

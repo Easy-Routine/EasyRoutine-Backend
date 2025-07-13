@@ -14,6 +14,10 @@ import java.util.List;
 @AllArgsConstructor
 public class RoutineHistoryExerciseDto {
 
+    private Long id;
+
+    private int order;
+
     private RoutineHistoryExerciseDetailDto exercise;
 
     List<RoutineHistorySetsDto> sets;
@@ -27,9 +31,9 @@ public class RoutineHistoryExerciseDto {
                 .exercise(
                         RoutineHistoryExerciseDetailDto.createOf(
                                 request.getExercise().getId(),
-                                null,
-                                request.getOrder()
+                                null
                         ))
+                .order(request.getOrder())
                 .sets(sets)
                 .build();
     }
@@ -40,12 +44,13 @@ public class RoutineHistoryExerciseDto {
                 .toList();
 
         return RoutineHistoryExerciseDto.builder()
+                .id(routineHistoryExercise.getId())
                 .exercise(
                         RoutineHistoryExerciseDetailDto.createOf(
-                                routineHistoryExercise.getId(),
-                                routineHistoryExercise.getExercise().getImage(),
-                                routineHistoryExercise.getOrderIndex()
+                                routineHistoryExercise.getExercise().getId(),
+                                routineHistoryExercise.getExercise().getImage()
                         ))
+                .order(routineHistoryExercise.getOrderIndex())
                 .sets(sets)
                 .build();
     }

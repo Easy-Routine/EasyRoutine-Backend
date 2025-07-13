@@ -55,7 +55,7 @@ public class RoutineHistoryMapper {
 
         RoutineHistoryExercise routineHistoryExercise = RoutineHistoryExercise.builder()
                 .routineHistory(null)
-                .orderIndex(dto.getExercise().getOrder())
+                .orderIndex(dto.getOrder())
                 .exercise(exercise)
                 .exerciseName(exercise.getName())
                 .exerciseType(new ArrayList<>(exercise.getTypes()))
