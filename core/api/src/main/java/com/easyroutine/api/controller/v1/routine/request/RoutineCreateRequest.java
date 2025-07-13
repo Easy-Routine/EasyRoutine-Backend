@@ -26,9 +26,9 @@ public class RoutineCreateRequest {
 			List<RoutineExerciseSetsDto> sets = exercise.getSets().stream().map(set ->
 					RoutineExerciseSetsDto.builder()
 							.order(set.getOrder())
-							.weight(Double.parseDouble(set.getWeight())) // weight는 String으로 받지만 Double로 변환
-							.rep(Integer.parseInt(set.getRep()))         // rep도 String → int
-							.restSec(set.getRestSec())   // restSec이 숫자라면 문자열로 변환
+							.weight(set.getWeight())
+							.rep(set.getRep())
+							.refreshSec(set.getRestSec())
 							.build()
 			).toList();
 
@@ -63,12 +63,9 @@ public class RoutineCreateRequest {
 	@Data
 	public static class ReqSets {
 		private int order;
-		private String weight;
-		private String rep;
-		private String exerciseSec;
-		private String restSec;
+		private double weight;
+		private int rep;
+		private int exerciseSec;
+		private int restSec;
 	}
-
-
-
 }

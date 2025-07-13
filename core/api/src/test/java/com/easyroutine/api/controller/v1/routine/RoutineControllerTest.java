@@ -132,7 +132,7 @@ public class RoutineControllerTest extends ControllerTestSupport {
 			.order(1)
 			.weight(100.0)
 			.rep(10)
-			.restSec("1:30")
+			.refreshSec(60)
 			.build();
 
 		RoutineExerciseDto routineExerciseDto = RoutineExerciseDto.builder()

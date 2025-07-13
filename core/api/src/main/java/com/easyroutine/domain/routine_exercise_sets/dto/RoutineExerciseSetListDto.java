@@ -13,5 +13,5 @@ public class RoutineExerciseSetListDto {
     private Double weight;
     private int rep;
     private int exerciseSec;
-    private String restSec;
+    private int restSec;
 }

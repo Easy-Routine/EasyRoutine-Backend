@@ -90,7 +90,7 @@ public class RoutineServiceTest extends IntegrationTestSupport {
 			.routineExercise(routineExercise)
 			.weight(50.0)
 			.rep(10)
-			.restSec("1:30")
+			.refreshSec(60)
 			.order(1)
 			.build();
 		routineExerciseSetsRepository.save(sets);
@@ -135,7 +135,7 @@ public class RoutineServiceTest extends IntegrationTestSupport {
 			.routineExercise(routineExercise)
 			.weight(30.0)
 			.rep(5)
-			.restSec("0:45")
+			.refreshSec(60)
 			.order(1)
 			.build();
 		routineExerciseSetsRepository.save(sets);
@@ -180,7 +180,7 @@ public class RoutineServiceTest extends IntegrationTestSupport {
 	}
 
 	private static RoutineExerciseSetsDto getRoutineExerciseSetsDto() {
-		return RoutineExerciseSetsDto.builder().weight(50.0).rep(10).restSec("1:30").build();
+		return RoutineExerciseSetsDto.builder().weight(50.0).rep(10).refreshSec(60).build();
 	}
 
 	private static Member getMember(String provider, String providerId, String nickname) {
