@@ -51,11 +51,11 @@ public class RoutineHistoryMapper {
     }
 
     public RoutineHistoryExercise toEntity(RoutineHistoryExerciseDto dto, Map<Long, Exercise> exerciseMap) {
-        Exercise exercise = exerciseMap.getOrDefault(dto.getExerciseId(), Exercise.of(dto.getExerciseId()));
+        Exercise exercise = exerciseMap.getOrDefault(dto.getExercise().getId(), Exercise.of(dto.getExercise().getId()));
 
         RoutineHistoryExercise routineHistoryExercise = RoutineHistoryExercise.builder()
                 .routineHistory(null)
-                .orderIndex(dto.getOrder())
+                .orderIndex(dto.getExercise().getOrder())
                 .exercise(exercise)
                 .exerciseName(exercise.getName())
                 .exerciseType(new ArrayList<>(exercise.getTypes()))
@@ -89,7 +89,7 @@ public class RoutineHistoryMapper {
 
     private Map<Long, Exercise> getExercisesMapBy(RoutineHistoryDto dto) {
         List<Long> exerciseIds = dto.getRoutineExercises().stream()
-                .map(RoutineHistoryExerciseDto::getExerciseId)
+                .map(e -> e.getExercise().getId())
                 .toList();
 
         List<Exercise> exercises = exercisesRepository.findAllById(exerciseIds);
