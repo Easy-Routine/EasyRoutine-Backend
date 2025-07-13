@@ -53,8 +53,8 @@ public class RoutineControllerTest extends ControllerTestSupport {
 				          "order": 1,
 				          "weight": "10",
 				          "rep": "10",
-				          "exerciseSec": "10:30",
-				          "restSec": "01:30"
+				          "exerciseSec": "60",
+				          "restSec": "60"
 				        }
 				      ]
 				    }
