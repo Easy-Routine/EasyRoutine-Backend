@@ -2,8 +2,10 @@ package com.easyroutine.domain.routine;
 
 import com.easyroutine.domain.member.Member;
 import com.easyroutine.domain.routine.dto.RoutineDto;
+import com.easyroutine.domain.routine.dto.RoutineListDto;
 import com.easyroutine.domain.routine_exercise.RoutineExerciseMapper;
 import com.easyroutine.domain.routine_exercise.dto.RoutineExerciseDto;
+import com.easyroutine.domain.routine_exercise.dto.RoutineExerciseListDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -37,6 +39,20 @@ public class RoutineMapper {
 			.name(e.getName())
 			.color(e.getColor())
 			.routineExerciseDtoList(routineExerciseDtoList)
+			.build();
+	}
+
+	public RoutineListDto fromEntityToListDto(Routine e) {
+		List<RoutineExerciseListDto> routineExerciseListDto = e.getRoutineExercises()
+			.stream()
+			.map(routineExerciseMapper::fromEntityToListDto)
+			.toList();
+		return RoutineListDto.builder()
+			.id(e.getId())
+			.name(e.getName())
+			.color(e.getColor())
+			.order(e.getOrder())
+			.routineExercises(routineExerciseListDto)
 			.build();
 	}
 

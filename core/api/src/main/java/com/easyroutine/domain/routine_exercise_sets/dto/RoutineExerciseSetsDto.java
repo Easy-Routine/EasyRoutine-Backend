@@ -31,10 +31,9 @@ public class RoutineExerciseSetsDto {
 	private int rep;
 
 	@NotBlank(message = "휴식 시간은 비어 있을 수 없습니다.")
-	private String restSec; // mm:ss
+	private int refreshSec; // mm:ss
 
 	public void setRoutineExerciesId(Long routineExerciesId) {
 		this.routineExerciesId = routineExerciesId;
 	}
-
 }

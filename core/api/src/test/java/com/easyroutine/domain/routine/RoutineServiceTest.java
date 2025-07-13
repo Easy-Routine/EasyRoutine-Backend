@@ -6,19 +6,21 @@ import com.easyroutine.domain.member.Member;
 import com.easyroutine.domain.member.MemberRole;
 import com.easyroutine.domain.member.MemberStatus;
 import com.easyroutine.domain.routine.dto.RoutineDto;
+import com.easyroutine.domain.routine.dto.RoutineListDto;
 import com.easyroutine.domain.routine_exercise.RoutineExercise;
 import com.easyroutine.domain.routine_exercise.dto.RoutineExerciseDto;
+import com.easyroutine.domain.routine_exercise.dto.RoutineExerciseListDto;
 import com.easyroutine.domain.routine_exercise_sets.RoutineExerciseSets;
+import com.easyroutine.domain.routine_exercise_sets.dto.RoutineExerciseSetListDto;
 import com.easyroutine.domain.routine_exercise_sets.dto.RoutineExerciseSetsDto;
 import com.easyroutine.repository.exercises.ExercisesRepository;
 import com.easyroutine.repository.member.MemberRepository;
 import com.easyroutine.repository.routine.RoutineRepository;
 import com.easyroutine.repository.routine_exercise.RoutineExerciseRepository;
 import com.easyroutine.repository.routine_exercise_sets.RoutineExerciseSetsRepository;
-import jakarta.transaction.Transactional;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -88,7 +90,7 @@ public class RoutineServiceTest extends IntegrationTestSupport {
 			.routineExercise(routineExercise)
 			.weight(50.0)
 			.rep(10)
-			.restSec("1:30")
+			.refreshSec(60)
 			.order(1)
 			.build();
 		routineExerciseSetsRepository.save(sets);
@@ -98,17 +100,17 @@ public class RoutineServiceTest extends IntegrationTestSupport {
 		em.clear();
 
 		// when
-		List<RoutineDto> result = routineService.findAllRoutine(member);
+		List<RoutineListDto> result = routineService.findAllRoutine(member);
 
 		// then
 		assertThat(result).hasSize(1).extracting("name", "color").containsExactly(tuple("test-routine", "test-color"));
 
-		RoutineDto routineDto = result.get(0);
-		assertThat(routineDto.getRoutineExerciseDtoList()).hasSize(1);
-		RoutineExerciseDto routineExerciseDto = routineDto.getRoutineExerciseDtoList().get(0);
+		RoutineListDto routineDto = result.get(0);
+		assertThat(routineDto.getRoutineExercises()).hasSize(1);
+		RoutineExerciseListDto routineExerciseDto = routineDto.getRoutineExercises().get(0);
 		assertThat(routineExerciseDto.getOrder()).isEqualTo(1);
-		assertThat(routineExerciseDto.getRoutineExerciseSetsDtoList()).hasSize(1);
-		RoutineExerciseSetsDto setsDto = routineExerciseDto.getRoutineExerciseSetsDtoList().get(0);
+		assertThat(routineExerciseDto.getSets()).hasSize(1);
+		RoutineExerciseSetListDto setsDto = routineExerciseDto.getSets().get(0);
 		assertThat(setsDto.getWeight()).isEqualTo(50.0);
 		assertThat(setsDto.getRep()).isEqualTo(10);
 		assertThat(setsDto.getRestSec()).isEqualTo("1:30");
@@ -133,7 +135,7 @@ public class RoutineServiceTest extends IntegrationTestSupport {
 			.routineExercise(routineExercise)
 			.weight(30.0)
 			.rep(5)
-			.restSec("0:45")
+			.refreshSec(60)
 			.order(1)
 			.build();
 		routineExerciseSetsRepository.save(sets);
@@ -178,7 +180,7 @@ public class RoutineServiceTest extends IntegrationTestSupport {
 	}
 
 	private static RoutineExerciseSetsDto getRoutineExerciseSetsDto() {
-		return RoutineExerciseSetsDto.builder().weight(50.0).rep(10).restSec("1:30").build();
+		return RoutineExerciseSetsDto.builder().weight(50.0).rep(10).refreshSec(60).build();
 	}
 
 	private static Member getMember(String provider, String providerId, String nickname) {

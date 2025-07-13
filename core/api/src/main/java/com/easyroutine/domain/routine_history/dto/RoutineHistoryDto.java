@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class RoutineHistoryDto {
 
-    private Long historyId;
+    private Long id;
 
     private Long routineId;
 
@@ -54,7 +54,7 @@ public class RoutineHistoryDto {
                 .toList();
 
         return RoutineHistoryDto.builder()
-                .historyId(routineHistory.getId())
+                .id(routineHistory.getId())
                 .routineId(routineHistory.getRoutine().getId())
                 .name(routineHistory.getRoutine().getName())
                 .color(routineHistory.getRoutine().getColor())
