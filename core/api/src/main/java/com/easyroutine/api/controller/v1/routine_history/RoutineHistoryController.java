@@ -6,6 +6,7 @@ import com.easyroutine.domain.routine_history.RoutineHistory;
 import com.easyroutine.domain.routine_history.dto.HistorySummaryDto;
 import com.easyroutine.domain.routine_history.dto.RoutineHistoryDto;
 import com.easyroutine.domain.routine_history.service.RoutineHistoryService;
+import com.easyroutine.global.response.PageData;
 import com.easyroutine.infrastructure.oauth.CustomOAuth2User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -47,15 +48,16 @@ public class RoutineHistoryController {
 
     @Operation(summary = "루틴 히스토리 목록 조회", description = "루틴 히스토리 목록 조회 API")
     @GetMapping
-    public List<RoutineHistoryDto> getRoutineHistories(
+    public PageData<RoutineHistoryDto> getRoutineHistories(
             @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$") @RequestParam(name = "date") String date,
             @AuthenticationPrincipal CustomOAuth2User user
     ) {
         String memberId = user.getMemberId();
         List<RoutineHistory> histories = routineHistoryService.getRoutineHistories(memberId, date);
-        return histories.stream()
+        List<RoutineHistoryDto> historyDtos = histories.stream()
                 .map(RoutineHistoryDto::of)
                 .toList();
+        return PageData.of(0, historyDtos);
     }
 
     @Operation(summary = "루틴 히스토리 요약 조회", description = "루틴 히스토리 요약 조회 API")

@@ -2,11 +2,12 @@ package com.easyroutine.api.controller.v1.routine;
 
 import com.easyroutine.api.controller.v1.routine.request.RoutineCreateRequest;
 import com.easyroutine.domain.member.Member;
-import com.easyroutine.domain.routine.dto.RoutineDto;
-import com.easyroutine.infrastructure.oauth.CustomOAuth2User;
 import com.easyroutine.domain.routine.RoutineService;
+import com.easyroutine.domain.routine.dto.RoutineDto;
 import com.easyroutine.global.response.ApiResponse;
+import com.easyroutine.global.response.PageData;
 import com.easyroutine.global.response.ResultType;
+import com.easyroutine.infrastructure.oauth.CustomOAuth2User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -41,17 +42,12 @@ public class RoutineController {
 
 	@Operation(summary = "루틴 조회", description = "루틴 조회 API")
 	@GetMapping
-	public ApiResponse<List<RoutineDto>> findAllRoutine(
+	public PageData<RoutineDto> findAllRoutine(
 			@AuthenticationPrincipal CustomOAuth2User customOAuth2User
 	) {
 		Member member = Member.of(customOAuth2User.getMemberId());
 		List<RoutineDto> list = routineService.findAllRoutine(member);
-
-		if (list.isEmpty()) {
-			return ApiResponse.fail(ResultType.DATA_NOT_FOUND);
-		}
-
-		return ApiResponse.success(list);
+		return PageData.of(0, list);
 	}
 
 	@Operation(summary = "루틴 수정", description = "루틴 수정 API")
