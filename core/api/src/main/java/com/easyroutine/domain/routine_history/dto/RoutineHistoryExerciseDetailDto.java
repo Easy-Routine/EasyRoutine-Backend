@@ -11,12 +11,12 @@ public class RoutineHistoryExerciseDetailDto {
 
     private Long id;
 
-    private String imageUrl;
+    private String image;
 
     public static RoutineHistoryExerciseDetailDto createOf(Long id, String imageUrl) {
         return RoutineHistoryExerciseDetailDto.builder()
                 .id(id)
-                .imageUrl(imageUrl)
+                .image(imageUrl)
                 .build();
     }
 }
