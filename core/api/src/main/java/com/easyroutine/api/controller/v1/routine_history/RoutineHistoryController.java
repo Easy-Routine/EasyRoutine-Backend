@@ -57,7 +57,7 @@ public class RoutineHistoryController {
         List<RoutineHistoryDto> historyDtos = histories.stream()
                 .map(RoutineHistoryDto::of)
                 .toList();
-        return PageData.of(0, historyDtos);
+        return PageData.of(historyDtos.size(), historyDtos);
     }
 
     @Operation(summary = "루틴 히스토리 요약 조회", description = "루틴 히스토리 요약 조회 API")

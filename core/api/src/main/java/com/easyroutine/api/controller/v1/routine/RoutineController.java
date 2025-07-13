@@ -47,7 +47,7 @@ public class RoutineController {
 	) {
 		Member member = Member.of(customOAuth2User.getMemberId());
 		List<RoutineDto> list = routineService.findAllRoutine(member);
-		return PageData.of(0, list);
+		return PageData.of(list.size(), list);
 	}
 
 	@Operation(summary = "루틴 수정", description = "루틴 수정 API")

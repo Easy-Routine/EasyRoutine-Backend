@@ -40,7 +40,7 @@ public class ExerciseController {
         List<ExerciseDto> exerciseDtos = exercises.stream()
                 .map(ExerciseDto::of)
                 .toList();
-        return PageData.of(0, exerciseDtos);
+        return PageData.of(exerciseDtos.size(), exerciseDtos);
     }
 
     @Operation(summary = "운동 상세 조회", description = "운동의 상세 정보를 조회합니다.")
