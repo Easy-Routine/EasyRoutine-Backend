@@ -47,8 +47,7 @@ public class RoutineHistoryExerciseDto {
                 .id(routineHistoryExercise.getId())
                 .exercise(
                         RoutineHistoryExerciseDetailDto.createOf(
-                                routineHistoryExercise.getExercise().getId(),
-                                routineHistoryExercise.getExercise().getImage()
+                                routineHistoryExercise
                         ))
                 .order(routineHistoryExercise.getOrderIndex())
                 .sets(sets)
