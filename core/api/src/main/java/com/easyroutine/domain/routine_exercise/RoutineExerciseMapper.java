@@ -47,8 +47,12 @@ public class RoutineExerciseMapper {
     public RoutineExerciseListDto fromEntityToListDto(RoutineExercise e) {
         RoutineExerciseDetailDto exerciseDto = RoutineExerciseDetailDto.builder()
                 .id(e.getExercise().getId())
-                .imageUrl(e.getExercise().getImage())
+                .image(e.getExercise().getImage())
                 .name(e.getExercise().getName())
+                .category(e.getExercise().getCategory())
+                .types(e.getExercise().getTypes())
+                .isEditable(e.getExercise().getIsEditable())
+                .shareLevel(e.getExercise().getShareLevel())
                 .build();
         List<RoutineExerciseSetListDto> setsDtoList = e.getSets()
                 .stream()

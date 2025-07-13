@@ -60,6 +60,16 @@ public class RoutineHistoryController {
         return PageData.of(historyDtos.size(), historyDtos);
     }
 
+    @Operation(summary = "루틴 히스토리 상세 조회", description = "루틴 히스토리 상세 조회 API")
+    @GetMapping("/{historyId}")
+    public RoutineHistoryDto getRoutineHistory(
+            @PathVariable Long historyId,
+            @AuthenticationPrincipal CustomOAuth2User user
+    ) {
+        RoutineHistory history = routineHistoryService.getRoutineHistory(historyId);
+        return RoutineHistoryDto.of(history);
+    }
+
     @Operation(summary = "루틴 히스토리 요약 조회", description = "루틴 히스토리 요약 조회 API")
     @GetMapping("/summary")
     public HistorySummaryDto getRoutineHistorySummary(

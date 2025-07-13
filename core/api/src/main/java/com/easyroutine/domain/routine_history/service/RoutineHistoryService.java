@@ -45,4 +45,9 @@ public class RoutineHistoryService {
     public List<RoutineHistory> getRoutineHistories(String memberId, String date) {
         return routineHistoryRepository.searchByMemberIdAndExerciseDate(memberId, LocalDate.parse(date));
     }
+
+    public RoutineHistory getRoutineHistory(Long historyId) {
+        return routineHistoryRepository.findById(historyId)
+                .orElseThrow(() -> new IllegalArgumentException("Routine history not found with id: " + historyId));
+    }
 }
