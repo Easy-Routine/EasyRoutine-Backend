@@ -77,6 +77,7 @@ public class RoutineService {
 		return routineMapper.fromEntity(routine).getId();
 	}
 
+	@Transactional(rollbackFor = Exception.class)
 	public RoutineDto deleteRoutine(Long id, Member member) {
 		Routine routine = routineRepository.findByIdAndMember(id, member)
 			.orElseThrow(() -> new DataException(ResultType.DATA_NOT_FOUND, "루틴을 찾을 수 없습니다."));

@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface RoutineRepository extends JpaRepository<Routine, Long> {
 
 	@EntityGraph(attributePaths = { "routineExercises" })
-	@Query("SELECT r FROM Routine r WHERE r.member = :member")
+	@Query("SELECT r FROM Routine r WHERE r.member = :member AND r.deletedAt IS NULL ORDER BY r.order")
 	List<Routine> findWithExercisesByMember(@Param("member") Member member);
 
 	List<Routine> findByMember(Member member);
