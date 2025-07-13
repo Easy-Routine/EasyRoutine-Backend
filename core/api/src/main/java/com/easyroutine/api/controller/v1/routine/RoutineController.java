@@ -4,6 +4,7 @@ import com.easyroutine.api.controller.v1.routine.request.RoutineCreateRequest;
 import com.easyroutine.domain.member.Member;
 import com.easyroutine.domain.routine.RoutineService;
 import com.easyroutine.domain.routine.dto.RoutineDto;
+import com.easyroutine.domain.routine.dto.RoutineListDto;
 import com.easyroutine.global.response.ApiResponse;
 import com.easyroutine.global.response.PageData;
 import com.easyroutine.global.response.ResultType;
@@ -42,11 +43,11 @@ public class RoutineController {
 
 	@Operation(summary = "루틴 조회", description = "루틴 조회 API")
 	@GetMapping
-	public PageData<RoutineDto> findAllRoutine(
+	public PageData<RoutineListDto> findAllRoutine(
 			@AuthenticationPrincipal CustomOAuth2User customOAuth2User
 	) {
 		Member member = Member.of(customOAuth2User.getMemberId());
-		List<RoutineDto> list = routineService.findAllRoutine(member);
+		List<RoutineListDto> list = routineService.findAllRoutine(member);
 		return PageData.of(list.size(), list);
 	}
 
@@ -62,13 +63,13 @@ public class RoutineController {
 		String memberId = customOAuth2User.getMemberId();
 
 		routineCreateRequest.getRoutineDto().setMemberIdFromToken(memberId);
-		RoutineDto dto = routineService.updateRoutine(routineId, routineCreateRequest.getRoutineDto());
+		Long updatedRoutineId = routineService.updateRoutine(routineId, routineCreateRequest.getRoutineDto());
 
-		if (dto == null) {
+		if (updatedRoutineId == null) {
 			return ApiResponse.fail(ResultType.FAIL);
 		}
 
-		return ApiResponse.success(dto.getId());
+		return ApiResponse.success(updatedRoutineId);
 	}
 
 	@Operation(summary = "루틴 제거", description = "루틴 삭제 API")

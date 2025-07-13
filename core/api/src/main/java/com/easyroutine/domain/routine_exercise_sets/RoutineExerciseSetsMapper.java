@@ -1,6 +1,7 @@
 package com.easyroutine.domain.routine_exercise_sets;
 
 import com.easyroutine.domain.routine_exercise.RoutineExercise;
+import com.easyroutine.domain.routine_exercise_sets.dto.RoutineExerciseSetListDto;
 import com.easyroutine.domain.routine_exercise_sets.dto.RoutineExerciseSetsDto;
 import org.springframework.stereotype.Component;
 
@@ -28,4 +29,13 @@ public class RoutineExerciseSetsMapper {
 			.build();
 	}
 
+	public RoutineExerciseSetListDto fromEntityToListDto(RoutineExerciseSets e) {
+		return RoutineExerciseSetListDto.builder()
+			.id(e.getId())
+			.order(e.getOrder())
+			.weight(e.getWeight())
+			.rep(e.getRep())
+			.restSec(e.getRestSec())
+			.build();
+	}
 }

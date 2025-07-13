@@ -2,6 +2,7 @@ package com.easyroutine.domain.routine;
 
 import com.easyroutine.domain.member.Member;
 import com.easyroutine.domain.routine.dto.RoutineDto;
+import com.easyroutine.domain.routine.dto.RoutineListDto;
 import com.easyroutine.domain.routine_exercise.RoutineExercise;
 import com.easyroutine.domain.routine_exercise.RoutineExerciseMapper;
 import com.easyroutine.domain.routine_exercise.dto.RoutineExerciseDto;
@@ -51,9 +52,9 @@ public class RoutineService {
 	 * @param member
 	 * @return
 	 */
-	public List<RoutineDto> findAllRoutine(Member member) {
+	public List<RoutineListDto> findAllRoutine(Member member) {
 		List<Routine> routineList = routineRepository.findWithExercisesByMember(member);
-		return routineList.stream().map(routineMapper::fromEntity).toList();
+		return routineList.stream().map(routineMapper::fromEntityToListDto).toList();
 	}
 
 	/**
@@ -63,7 +64,7 @@ public class RoutineService {
 	 * @return
 	 */
 	@Transactional(rollbackFor = Exception.class)
-	public RoutineDto updateRoutine(long routineId, @Valid RoutineDto routineDto) {
+	public Long updateRoutine(long routineId, @Valid RoutineDto routineDto) {
 		Routine routine = routineRepository.findByIdAndMember_Id(routineId, routineDto.getMemberId())
 			.orElseThrow(() -> new DataException(ResultType.DATA_NOT_FOUND, "루틴을 찾을 수 없습니다."));
 
@@ -73,7 +74,7 @@ public class RoutineService {
 		routineExerciseRepository.deleteAllByRoutineId(routineId);
 
 		saveRoutineExercises(routineDto, routine);
-		return routineMapper.fromEntity(routine);
+		return routineMapper.fromEntity(routine).getId();
 	}
 
 	public RoutineDto deleteRoutine(Long id, Member member) {
