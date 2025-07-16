@@ -1,6 +1,7 @@
 package com.easyroutine.domain.routine_history.service;
 
 import com.easyroutine.domain.routine_history.RoutineHistory;
+import com.easyroutine.domain.routine_history.dto.HistoryStatisticDto;
 import com.easyroutine.domain.routine_history.dto.RoutineHistoryDto;
 import com.easyroutine.domain.routine_history.mapper.RoutineHistoryMapper;
 import com.easyroutine.repository.routine_history.RoutineHistoryRepository;
@@ -49,5 +50,9 @@ public class RoutineHistoryService {
     public RoutineHistory getRoutineHistory(Long historyId) {
         return routineHistoryRepository.findById(historyId)
                 .orElseThrow(() -> new IllegalArgumentException("Routine history not found with id: " + historyId));
+    }
+
+    public List<HistoryStatisticDto> getRoutineStatistics(Long exerciseId, String memberId, String startDate, String endDate) {
+        return routineHistoryRepository.searchStatisticsByExerciseId(exerciseId, memberId, LocalDate.parse(startDate), LocalDate.parse(endDate));
     }
 }
