@@ -3,6 +3,7 @@ package com.easyroutine.api.controller.v1.routine_history;
 import com.easyroutine.api.controller.v1.routine_history.request.RoutineHistoryDeleteRequest;
 import com.easyroutine.api.controller.v1.routine_history.request.create.RoutineHistoryCreateRequest;
 import com.easyroutine.domain.routine_history.RoutineHistory;
+import com.easyroutine.domain.routine_history.dto.HistoryStatisticDto;
 import com.easyroutine.domain.routine_history.dto.HistorySummaryDto;
 import com.easyroutine.domain.routine_history.dto.RoutineHistoryDto;
 import com.easyroutine.domain.routine_history.service.RoutineHistoryService;
@@ -79,5 +80,17 @@ public class RoutineHistoryController {
         String memberId = user.getMemberId();
         List<RoutineHistory> histories = routineHistoryService.getRoutineHistories(memberId, date);
         return HistorySummaryDto.of(histories);
+    }
+
+    @Operation(summary = "루틴 기간별 통계", description = "루틴 기간별 통계 API")
+    @GetMapping("/statistics")
+    public List<HistoryStatisticDto> getRoutineStatistics(
+            @RequestParam(name = "exerciseId") Long exerciseId,
+            @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$") @RequestParam(name = "startDate") String startDate,
+            @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$") @RequestParam(name = "endDate") String endDate,
+            @AuthenticationPrincipal CustomOAuth2User user
+    ) {
+        String memberId = user.getMemberId();
+        return routineHistoryService.getRoutineStatistics(exerciseId, memberId, startDate, endDate);
     }
 }
