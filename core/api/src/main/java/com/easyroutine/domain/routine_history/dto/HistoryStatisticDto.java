@@ -13,5 +13,5 @@ public class HistoryStatisticDto {
     private LocalDate date;
     private int totalWorkoutTime;
     private int totalWeightLifted;
-    private int totalReqCount;
+    private int totalRepCount;
 }
