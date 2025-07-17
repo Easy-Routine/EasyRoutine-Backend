@@ -36,7 +36,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 		String token = jwtUtil.createAccessToken(memberId, role, 60 * 60 * 60L);
 		String refreshToken = jwtUtil.createRefreshToken(memberId, 60 * 60 * 24 * 30L);
 
-		String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000")
+		String targetUrl = UriComponentsBuilder.fromUriString("http://www.healper.shop")
 			.queryParam("token", token)
 			.queryParam("refreshToken", refreshToken)
 			.build()
