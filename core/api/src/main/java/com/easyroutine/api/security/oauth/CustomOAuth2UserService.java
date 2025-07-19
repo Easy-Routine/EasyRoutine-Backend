@@ -39,9 +39,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		String providerId = oAuth2Response.getProviderId();
 		Optional<Member> existMember = memberRepository.findByProviderAndProviderId(provider, providerId);
 
-		Member authenticatedMember = existMember.get();
+		Member authenticatedMember = null;
 
-		if (existMember.isEmpty()) {
+		if (existMember.isPresent()) {
+			authenticatedMember = existMember.get();
+		} else {
 			authenticatedMember = memberRepository.save(member);
 		}
 
