@@ -10,8 +10,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 public class HistoryStatisticDto {
-    private LocalDate date;
-    private int totalWorkoutTime;
-    private int totalWeightLifted;
-    private int totalRepCount;
+    private LocalDate key;
+    private int value;
 }

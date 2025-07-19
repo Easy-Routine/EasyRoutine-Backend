@@ -1,6 +1,7 @@
 package com.easyroutine.repository.routine_history;
 
 import com.easyroutine.domain.routine_history.RoutineHistory;
+import com.easyroutine.domain.routine_history.RoutineHistoryType;
 import com.easyroutine.domain.routine_history.dto.HistoryStatisticDto;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -38,24 +39,25 @@ public class CustomRoutineHistoryRepositoryImpl implements CustomRoutineHistoryR
     }
 
     @Override
-    public List<HistoryStatisticDto> searchStatisticsByExerciseId(Long exerciseId, String memberId, LocalDate startDate, LocalDate endDate) {
-        return queryFactory
-                .select(Projections.constructor(
-                        HistoryStatisticDto.class,
-                        routineHistory.exerciseDate,
-                        routineHistoryExerciseSets.exerciseTime.sum().as("totalExerciseTime"),
-                        routineHistoryExerciseSets.reps.multiply(routineHistoryExerciseSets.weight).sum().as("totalVolume"),
-                        routineHistoryExerciseSets.reps.sum().as("totalReps")
-                        ))
-                .from(routineHistoryExerciseSets)
-                .join(routineHistoryExerciseSets.routineHistoryExercise, routineHistoryExercise)
-                .join(routineHistoryExercise.routineHistory, routineHistory)
-                .where(
-                        routineHistoryExercise.exercise.id.eq(exerciseId),
-                        routineHistory.memberId.eq(memberId),
-                        routineHistory.exerciseDate.between(startDate, endDate)
-                )
-                .groupBy(routineHistory.exerciseDate)
-                .fetch();
-    }
+public List<HistoryStatisticDto> searchStatisticsByExerciseId(
+        Long exerciseId, String memberId, LocalDate startDate, LocalDate endDate, RoutineHistoryType type
+) {
+    return queryFactory
+            .select(Projections.constructor(
+                    HistoryStatisticDto.class,
+                    routineHistory.exerciseDate.as("key"),
+                    type.getExpression(routineHistoryExerciseSets).as("value")
+            ))
+            .from(routineHistoryExerciseSets)
+            .join(routineHistoryExerciseSets.routineHistoryExercise, routineHistoryExercise)
+            .join(routineHistoryExercise.routineHistory, routineHistory)
+            .where(
+                    routineHistoryExercise.exercise.id.eq(exerciseId),
+                    routineHistory.memberId.eq(memberId),
+                    routineHistory.exerciseDate.between(startDate, endDate)
+            )
+            .groupBy(routineHistory.exerciseDate)
+            .fetch();
+}
+
 }
