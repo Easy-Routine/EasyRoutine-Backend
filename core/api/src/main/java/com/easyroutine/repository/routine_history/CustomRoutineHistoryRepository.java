@@ -11,4 +11,6 @@ public interface CustomRoutineHistoryRepository {
     List<RoutineHistory> searchByMemberIdAndExerciseDate(String memberId, LocalDate date);
 
     List<HistoryStatisticDto> searchStatisticsByExerciseId(Long exerciseId, String memberId, LocalDate startDate, LocalDate endDate, RoutineHistoryType type);
+
+    List<RoutineHistory> searchByMemberIdAndMonth(String memberId, LocalDate monthDate);
 }
