@@ -7,6 +7,7 @@ import com.easyroutine.domain.routine_history.RoutineHistoryPeriod;
 import com.easyroutine.domain.routine_history.RoutineHistoryType;
 import com.easyroutine.domain.routine_history.dto.HistoryStatisticDto;
 import com.easyroutine.domain.routine_history.dto.HistorySummaryDto;
+import com.easyroutine.domain.routine_history.dto.MonthlyRoutineHistoryDto;
 import com.easyroutine.domain.routine_history.dto.RoutineHistoryDto;
 import com.easyroutine.domain.routine_history.service.RoutineHistoryService;
 import com.easyroutine.global.response.PageData;
@@ -18,7 +19,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Tag(name = "루틴 히스토리 API", description = "루틴 히스토리 관련 API")
 @RestController
@@ -86,14 +90,28 @@ public class RoutineHistoryController {
 
     @Operation(summary = "루틴 기간별 통계", description = "루틴 기간별 통계 API")
     @GetMapping("/statistics")
-public List<HistoryStatisticDto> getRoutineStatistics(
-        @RequestParam Long exerciseId,
-        @RequestParam RoutineHistoryPeriod period,
-        @RequestParam RoutineHistoryType type,
-        @AuthenticationPrincipal CustomOAuth2User user
-) {
-    String memberId = user.getMemberId();
-    return routineHistoryService.getRoutineStatistics(exerciseId, memberId, period, type);
-}
+    public List<HistoryStatisticDto> getRoutineStatistics(
+            @RequestParam Long exerciseId,
+            @RequestParam RoutineHistoryPeriod period,
+            @RequestParam RoutineHistoryType type,
+            @AuthenticationPrincipal CustomOAuth2User user
+    ) {
+        String memberId = user.getMemberId();
+        return routineHistoryService.getRoutineStatistics(exerciseId, memberId, period, type);
+    }
 
+    @Operation(summary = "월별 루틴 기록 조회", description = "월별 루틴 기록 조회 API")
+    @GetMapping("/monthly")
+    public Map<LocalDate, List<MonthlyRoutineHistoryDto>> getMonthlyRoutineHistories(
+            @Pattern(regexp = "^\\d{4}-\\d{2}$") @RequestParam(name = "month") String month,
+            @AuthenticationPrincipal CustomOAuth2User user
+    ) {
+        String memberId = user.getMemberId();
+        List<RoutineHistory> histories = routineHistoryService.getMonthlyRoutineHistories(memberId, month);
+        List<MonthlyRoutineHistoryDto> monthlyRoutineHistoryDtoList = histories.stream()
+                .map(MonthlyRoutineHistoryDto::createByRoutineHistory)
+                .toList();
+        return monthlyRoutineHistoryDtoList.stream()
+                .collect(Collectors.groupingBy(MonthlyRoutineHistoryDto::getExerciseDate));
+    }
 }

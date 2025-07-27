@@ -10,6 +10,7 @@ import com.easyroutine.global.response.PageData;
 import com.easyroutine.infrastructure.oauth.CustomOAuth2User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,7 +58,7 @@ public class ExerciseController {
     @Operation(summary = "운동 생성", description = "운동을 생성합니다.")
     @PostMapping
     public String createExercise(
-            @RequestBody ExerciseCreateRequest request,
+            @Valid @RequestBody ExerciseCreateRequest request,
             @AuthenticationPrincipal CustomOAuth2User user
     ) {
         String memberId = user.getMemberId();

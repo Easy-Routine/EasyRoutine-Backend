@@ -55,14 +55,18 @@ public class RoutineHistoryService {
     }
 
     public List<HistoryStatisticDto> getRoutineStatistics(
-        Long exerciseId, String memberId, RoutineHistoryPeriod period, RoutineHistoryType type
-) {
-    LocalDate endDate = LocalDate.now();
-    LocalDate startDate = period.toStartDate(endDate);
+            Long exerciseId,
+            String memberId,
+            RoutineHistoryPeriod period,
+            RoutineHistoryType type
+    ) {
+        LocalDate endDate = LocalDate.now();
+        LocalDate startDate = period.toStartDate(endDate);
 
-    return routineHistoryRepository.searchStatisticsByExerciseId(
-            exerciseId, memberId, startDate, endDate, type
-    );
-}
+        return routineHistoryRepository.searchStatisticsByExerciseId(exerciseId, memberId, startDate, endDate, type);
+    }
 
+    public List<RoutineHistory> getMonthlyRoutineHistories(String memberId, String month) {
+        return routineHistoryRepository.searchByMemberIdAndMonth(memberId, LocalDate.parse(month + "-01"));
+    }
 }
