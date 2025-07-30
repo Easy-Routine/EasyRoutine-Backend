@@ -12,11 +12,19 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoutineExerciseDetailDto {
-    private Long id;
-    private String image;
-    private String name;
-    private ExerciseCategory category;
-    private List<ExerciseType> types;
-    private int isEditable;
-    private int shareLevel;
+
+	private Long id;
+
+	private String image;
+
+	private String name;
+
+	private ExerciseCategory category;
+
+	private List<ExerciseType> types;
+
+	private int isEditable;
+
+	private int shareLevel;
+
 }

@@ -35,4 +35,5 @@ public class RoutineExerciseSets extends BaseEntity {
 
 	@Column(name = "exercise_time")
 	private int exerciseSec; // seconds
+
 }

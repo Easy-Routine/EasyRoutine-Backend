@@ -53,7 +53,7 @@ public class RoutineServiceTest extends IntegrationTestSupport {
 	private RoutineExerciseSetsRepository routineExerciseSetsRepository;
 
 	@DisplayName("루틴을 생성한다.")
-//	@Test
+	// @Test
 	void createRoutine() {
 		// given
 		RoutineDto routineDto = getMockRoutineDto();
@@ -72,7 +72,7 @@ public class RoutineServiceTest extends IntegrationTestSupport {
 	}
 
 	@DisplayName("회원의 루틴 목록을 조회한다.")
-//	@Test
+	// @Test
 	void findAllRoutine() {
 		// given
 		Member member = memberRepository.save(getMember("google", "1234", "tester"));
@@ -117,7 +117,7 @@ public class RoutineServiceTest extends IntegrationTestSupport {
 	}
 
 	@DisplayName("루틴을 삭제한다.")
-//	@Test
+	// @Test
 	void deleteRoutine() {
 		// given
 		Member member = memberRepository.save(getMember("google", "1234", "tester"));
@@ -176,7 +176,10 @@ public class RoutineServiceTest extends IntegrationTestSupport {
 	}
 
 	private static RoutineExerciseDto getRoutineExerciseDto() {
-		return RoutineExerciseDto.builder().order(1).routineExerciseSetsDtoList(List.of(getRoutineExerciseSetsDto())).build();
+		return RoutineExerciseDto.builder()
+			.order(1)
+			.routineExerciseSetsDtoList(List.of(getRoutineExerciseSetsDto()))
+			.build();
 	}
 
 	private static RoutineExerciseSetsDto getRoutineExerciseSetsDto() {

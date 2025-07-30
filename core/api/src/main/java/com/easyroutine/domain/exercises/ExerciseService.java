@@ -19,56 +19,58 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class ExerciseService {
 
-    private final ExercisesRepository exerciseRepository;
+	private final ExercisesRepository exerciseRepository;
 
-    public ExerciseService(ExercisesRepository exerciseRepository) {
-        this.exerciseRepository = exerciseRepository;
-    }
+	public ExerciseService(ExercisesRepository exerciseRepository) {
+		this.exerciseRepository = exerciseRepository;
+	}
 
-    public List<Exercise> getExercises(String category, int page, int size, String keyword, String memberId) {
-        Pageable pageable = (page == 0 || size == 0) ? Pageable.unpaged() : PageRequest.of(page, size);
-        return exerciseRepository.findAllByCategoryAndDeletedAtIsNull(category, pageable, keyword, memberId);
-    }
+	public List<Exercise> getExercises(String category, int page, int size, String keyword, String memberId) {
+		Pageable pageable = (page == 0 || size == 0) ? Pageable.unpaged() : PageRequest.of(page, size);
+		return exerciseRepository.findAllByCategoryAndDeletedAtIsNull(category, pageable, keyword, memberId);
+	}
 
-    public Exercise getExercise(Long id, String memberId) {
-        Member member = Member.of(memberId);
-        return exerciseRepository.findByIdAndMemberAndDeletedAtIsNull(id, member)
-                .orElseThrow(() -> new DataException(ResultType.DATA_NOT_FOUND, "운동을 찾을 수 없습니다."));
-    }
+	public Exercise getExercise(Long id, String memberId) {
+		Member member = Member.of(memberId);
+		return exerciseRepository.findByIdAndMemberAndDeletedAtIsNull(id, member)
+			.orElseThrow(() -> new DataException(ResultType.DATA_NOT_FOUND, "운동을 찾을 수 없습니다."));
+	}
 
-    @Transactional(rollbackFor = Exception.class)
-    public String createExercise(ExerciseDto exerciseDto, String memberId) {
-        Member member = Member.of(memberId);
-        Exercise exercise = Exercise.of(exerciseDto, member);
+	@Transactional(rollbackFor = Exception.class)
+	public String createExercise(ExerciseDto exerciseDto, String memberId) {
+		Member member = Member.of(memberId);
+		Exercise exercise = Exercise.of(exerciseDto, member);
 
-        exerciseRepository.save(exercise);
+		exerciseRepository.save(exercise);
 
-        return "Success";
-    }
+		return "Success";
+	}
 
-    @Transactional(rollbackFor = Exception.class)
-    public String updateExercise(ExerciseDto exerciseDto, String memberId) {
-        Member member = Member.of(memberId);
-        Optional<Exercise> exerciseOptional = exerciseRepository.findByIdAndMemberAndDeletedAtIsNull(exerciseDto.getId(), member);
+	@Transactional(rollbackFor = Exception.class)
+	public String updateExercise(ExerciseDto exerciseDto, String memberId) {
+		Member member = Member.of(memberId);
+		Optional<Exercise> exerciseOptional = exerciseRepository
+			.findByIdAndMemberAndDeletedAtIsNull(exerciseDto.getId(), member);
 
-        exerciseOptional.ifPresentOrElse(exercise -> {
-            exercise.updateExercise(exerciseDto);
-            }, () -> {
-            throw new DataException(ResultType.DATA_NOT_FOUND, "운동을 찾을 수 없습니다.");
-        });
+		exerciseOptional.ifPresentOrElse(exercise -> {
+			exercise.updateExercise(exerciseDto);
+		}, () -> {
+			throw new DataException(ResultType.DATA_NOT_FOUND, "운동을 찾을 수 없습니다.");
+		});
 
-        return "Success";
-    }
+		return "Success";
+	}
 
-    @Transactional(rollbackFor = Exception.class)
-    public String deleteExercise(Long id, String memberId) {
-        Member member = Member.of(memberId);
-        Optional<Exercise> exerciseOptional = exerciseRepository.findByIdAndMemberAndDeletedAtIsNull(id, member);
+	@Transactional(rollbackFor = Exception.class)
+	public String deleteExercise(Long id, String memberId) {
+		Member member = Member.of(memberId);
+		Optional<Exercise> exerciseOptional = exerciseRepository.findByIdAndMemberAndDeletedAtIsNull(id, member);
 
-        exerciseOptional.ifPresentOrElse(Exercise::deleteExercise, () -> {
-            throw new DataException(ResultType.DATA_NOT_FOUND, "운동을 찾을 수 없습니다.");
-        });
+		exerciseOptional.ifPresentOrElse(Exercise::deleteExercise, () -> {
+			throw new DataException(ResultType.DATA_NOT_FOUND, "운동을 찾을 수 없습니다.");
+		});
 
-        return "Success";
-    }
+		return "Success";
+	}
+
 }

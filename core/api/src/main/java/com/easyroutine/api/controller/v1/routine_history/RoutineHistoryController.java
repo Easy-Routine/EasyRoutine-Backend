@@ -30,88 +30,75 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RoutineHistoryController {
 
-    private final RoutineHistoryService routineHistoryService;
+	private final RoutineHistoryService routineHistoryService;
 
-    @Operation(summary = "루틴 히스토리 생성", description = "루틴 히스토리 생성 API")
-    @PostMapping
-    public Long createRoutineHistory(
-            @RequestBody RoutineHistoryCreateRequest request,
-            @AuthenticationPrincipal CustomOAuth2User user
-    ) {
-        String memberId = user.getMemberId();
-        RoutineHistoryDto routineHistoryDto = RoutineHistoryDto.createOf(request);
-        return routineHistoryService.createRoutineHistory(routineHistoryDto, memberId);
-    }
+	@Operation(summary = "루틴 히스토리 생성", description = "루틴 히스토리 생성 API")
+	@PostMapping
+	public Long createRoutineHistory(@RequestBody RoutineHistoryCreateRequest request,
+			@AuthenticationPrincipal CustomOAuth2User user) {
+		String memberId = user.getMemberId();
+		RoutineHistoryDto routineHistoryDto = RoutineHistoryDto.createOf(request);
+		return routineHistoryService.createRoutineHistory(routineHistoryDto, memberId);
+	}
 
-    @Operation(summary = "루틴 히스토리 삭제", description = "루틴 히스토리 삭제 API")
-    @DeleteMapping
-    public Long deleteRoutineHistory(
-            @RequestBody RoutineHistoryDeleteRequest request,
-            @AuthenticationPrincipal CustomOAuth2User user
-    ) {
-        String memberId = user.getMemberId();
-        return routineHistoryService.deleteRoutineHistory(request.getId(), memberId);
-    }
+	@Operation(summary = "루틴 히스토리 삭제", description = "루틴 히스토리 삭제 API")
+	@DeleteMapping
+	public Long deleteRoutineHistory(@RequestBody RoutineHistoryDeleteRequest request,
+			@AuthenticationPrincipal CustomOAuth2User user) {
+		String memberId = user.getMemberId();
+		return routineHistoryService.deleteRoutineHistory(request.getId(), memberId);
+	}
 
-    @Operation(summary = "루틴 히스토리 목록 조회", description = "루틴 히스토리 목록 조회 API")
-    @GetMapping
-    public PageData<RoutineHistoryDto> getRoutineHistories(
-            @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$") @RequestParam(name = "date") String date,
-            @AuthenticationPrincipal CustomOAuth2User user
-    ) {
-        String memberId = user.getMemberId();
-        List<RoutineHistory> histories = routineHistoryService.getRoutineHistories(memberId, date);
-        List<RoutineHistoryDto> historyDtos = histories.stream()
-                .map(RoutineHistoryDto::of)
-                .toList();
-        return PageData.of(historyDtos.size(), historyDtos);
-    }
+	@Operation(summary = "루틴 히스토리 목록 조회", description = "루틴 히스토리 목록 조회 API")
+	@GetMapping
+	public PageData<RoutineHistoryDto> getRoutineHistories(
+			@Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$") @RequestParam(name = "date") String date,
+			@AuthenticationPrincipal CustomOAuth2User user) {
+		String memberId = user.getMemberId();
+		List<RoutineHistory> histories = routineHistoryService.getRoutineHistories(memberId, date);
+		List<RoutineHistoryDto> historyDtos = histories.stream().map(RoutineHistoryDto::of).toList();
+		return PageData.of(historyDtos.size(), historyDtos);
+	}
 
-    @Operation(summary = "루틴 히스토리 상세 조회", description = "루틴 히스토리 상세 조회 API")
-    @GetMapping("/{historyId}")
-    public RoutineHistoryDto getRoutineHistory(
-            @PathVariable Long historyId,
-            @AuthenticationPrincipal CustomOAuth2User user
-    ) {
-        RoutineHistory history = routineHistoryService.getRoutineHistory(historyId);
-        return RoutineHistoryDto.of(history);
-    }
+	@Operation(summary = "루틴 히스토리 상세 조회", description = "루틴 히스토리 상세 조회 API")
+	@GetMapping("/{historyId}")
+	public RoutineHistoryDto getRoutineHistory(@PathVariable Long historyId,
+			@AuthenticationPrincipal CustomOAuth2User user) {
+		RoutineHistory history = routineHistoryService.getRoutineHistory(historyId);
+		return RoutineHistoryDto.of(history);
+	}
 
-    @Operation(summary = "루틴 히스토리 요약 조회", description = "루틴 히스토리 요약 조회 API")
-    @GetMapping("/summary")
-    public HistorySummaryDto getRoutineHistorySummary(
-            @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$") @RequestParam(name = "date") String date,
-            @AuthenticationPrincipal CustomOAuth2User user
-    ) {
-        String memberId = user.getMemberId();
-        List<RoutineHistory> histories = routineHistoryService.getRoutineHistories(memberId, date);
-        return HistorySummaryDto.of(histories);
-    }
+	@Operation(summary = "루틴 히스토리 요약 조회", description = "루틴 히스토리 요약 조회 API")
+	@GetMapping("/summary")
+	public HistorySummaryDto getRoutineHistorySummary(
+			@Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$") @RequestParam(name = "date") String date,
+			@AuthenticationPrincipal CustomOAuth2User user) {
+		String memberId = user.getMemberId();
+		List<RoutineHistory> histories = routineHistoryService.getRoutineHistories(memberId, date);
+		return HistorySummaryDto.of(histories);
+	}
 
-    @Operation(summary = "루틴 기간별 통계", description = "루틴 기간별 통계 API")
-    @GetMapping("/statistics")
-    public List<HistoryStatisticDto> getRoutineStatistics(
-            @RequestParam Long exerciseId,
-            @RequestParam RoutineHistoryPeriod period,
-            @RequestParam RoutineHistoryType type,
-            @AuthenticationPrincipal CustomOAuth2User user
-    ) {
-        String memberId = user.getMemberId();
-        return routineHistoryService.getRoutineStatistics(exerciseId, memberId, period, type);
-    }
+	@Operation(summary = "루틴 기간별 통계", description = "루틴 기간별 통계 API")
+	@GetMapping("/statistics")
+	public List<HistoryStatisticDto> getRoutineStatistics(@RequestParam Long exerciseId,
+			@RequestParam RoutineHistoryPeriod period, @RequestParam RoutineHistoryType type,
+			@AuthenticationPrincipal CustomOAuth2User user) {
+		String memberId = user.getMemberId();
+		return routineHistoryService.getRoutineStatistics(exerciseId, memberId, period, type);
+	}
 
-    @Operation(summary = "월별 루틴 기록 조회", description = "월별 루틴 기록 조회 API")
-    @GetMapping("/monthly")
-    public Map<LocalDate, List<MonthlyRoutineHistoryDto>> getMonthlyRoutineHistories(
-            @Pattern(regexp = "^\\d{4}-\\d{2}$") @RequestParam(name = "month") String month,
-            @AuthenticationPrincipal CustomOAuth2User user
-    ) {
-        String memberId = user.getMemberId();
-        List<RoutineHistory> histories = routineHistoryService.getMonthlyRoutineHistories(memberId, month);
-        List<MonthlyRoutineHistoryDto> monthlyRoutineHistoryDtoList = histories.stream()
-                .map(MonthlyRoutineHistoryDto::createByRoutineHistory)
-                .toList();
-        return monthlyRoutineHistoryDtoList.stream()
-                .collect(Collectors.groupingBy(MonthlyRoutineHistoryDto::getExerciseDate));
-    }
+	@Operation(summary = "월별 루틴 기록 조회", description = "월별 루틴 기록 조회 API")
+	@GetMapping("/monthly")
+	public Map<LocalDate, List<MonthlyRoutineHistoryDto>> getMonthlyRoutineHistories(
+			@Pattern(regexp = "^\\d{4}-\\d{2}$") @RequestParam(name = "month") String month,
+			@AuthenticationPrincipal CustomOAuth2User user) {
+		String memberId = user.getMemberId();
+		List<RoutineHistory> histories = routineHistoryService.getMonthlyRoutineHistories(memberId, month);
+		List<MonthlyRoutineHistoryDto> monthlyRoutineHistoryDtoList = histories.stream()
+			.map(MonthlyRoutineHistoryDto::createByRoutineHistory)
+			.toList();
+		return monthlyRoutineHistoryDtoList.stream()
+			.collect(Collectors.groupingBy(MonthlyRoutineHistoryDto::getExerciseDate));
+	}
+
 }

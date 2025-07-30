@@ -43,7 +43,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 		if (existMember.isPresent()) {
 			authenticatedMember = existMember.get();
-		} else {
+		}
+		else {
 			authenticatedMember = memberRepository.save(member);
 		}
 

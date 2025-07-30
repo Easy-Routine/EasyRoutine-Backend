@@ -36,4 +36,5 @@ public class RoutineExerciseSetsDto {
 	public void setRoutineExerciesId(Long routineExerciesId) {
 		this.routineExerciesId = routineExerciesId;
 	}
+
 }

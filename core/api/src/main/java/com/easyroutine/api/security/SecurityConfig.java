@@ -46,16 +46,9 @@ public class SecurityConfig {
 		http.headers(headers -> headers.frameOptions(frame -> frame.disable()));
 		http.cors(auth -> auth.configurationSource(request -> {
 			CorsConfiguration configuration = new CorsConfiguration();
-			configuration.setAllowedOrigins(
-					Arrays.asList(
-							"http://localhost:3000",
-							"http://127.0.0.1:8080",
-							"http://localhost:8080",
-							"https://easyroutine.heykiwoung.com",
-							"http://www.healper.shop",
-							"https://www.healper.shop"
-					)
-			);
+			configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://127.0.0.1:8080",
+					"http://localhost:8080", "https://easyroutine.heykiwoung.com", "http://www.healper.shop",
+					"https://www.healper.shop"));
 			configuration.setAllowCredentials(true);
 			configuration.setAllowedHeaders(Arrays.asList("*"));
 			configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
@@ -85,4 +78,5 @@ public class SecurityConfig {
 
 		return http.build();
 	}
+
 }

@@ -11,10 +11,15 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoutineListDto {
-    private Long id;
-    private String name;
-    private String color;
-    private int order;
-    private List<RoutineExerciseListDto> routineExercises;
+
+	private Long id;
+
+	private String name;
+
+	private String color;
+
+	private int order;
+
+	private List<RoutineExerciseListDto> routineExercises;
 
 }

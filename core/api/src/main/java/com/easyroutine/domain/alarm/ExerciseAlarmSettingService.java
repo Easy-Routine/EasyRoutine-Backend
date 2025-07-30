@@ -12,11 +12,17 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class ExerciseAlarmSettingService {
 
-    private final ExerciseAlarmSettingRepository exerciseAlarmSettingRepository;
+	private final ExerciseAlarmSettingRepository exerciseAlarmSettingRepository;
 
-    @Transactional(rollbackFor = Exception.class)
-    public Long saveExerciseAlarmSetting(ExerciseAlarmSettingDto.ReqSaveExerciseAlarmSetting reqSaveExerciseAlarmSetting, Member member) {
-        return exerciseAlarmSettingRepository
-                .save(ExerciseAlarmSetting.of(reqSaveExerciseAlarmSetting, member)).getId();
-    }
+	@Transactional(rollbackFor = Exception.class)
+	public Long saveExerciseAlarmSetting(
+			ExerciseAlarmSettingDto.ReqSaveExerciseAlarmSetting reqSaveExerciseAlarmSetting, Member member) {
+		return exerciseAlarmSettingRepository.save(ExerciseAlarmSetting.of(reqSaveExerciseAlarmSetting, member))
+			.getId();
+	}
+
+	public ExerciseAlarmSettingDto.ResFindExerciseAlarmSetting findExerciseAlarmSettingById(Member member) {
+		return exerciseAlarmSettingRepository.findByMember(member).from();
+	}
+
 }

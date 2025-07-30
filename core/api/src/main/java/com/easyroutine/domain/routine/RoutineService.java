@@ -99,7 +99,7 @@ public class RoutineService {
 		for (RoutineExerciseDto routineExerciseDto : routineDto.getRoutineExerciseDtoList()) {
 			routineExerciseDto.setRoutineId(routine.getId());
 			RoutineExercise routineExercise = routineExerciseRepository
-					.save(routineExerciseMapper.toEntity(routineExerciseDto));
+				.save(routineExerciseMapper.toEntity(routineExerciseDto));
 
 			for (RoutineExerciseSetsDto routineExerciseSetsDto : routineExerciseDto.getRoutineExerciseSetsDtoList()) {
 				routineExerciseSetsDto.setRoutineExerciesId(routineExercise.getId());
@@ -107,4 +107,5 @@ public class RoutineService {
 			}
 		}
 	}
+
 }

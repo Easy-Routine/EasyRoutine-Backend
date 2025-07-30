@@ -19,54 +19,50 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class RoutineHistoryService {
 
-    private final RoutineHistoryRepository routineHistoryRepository;
-    private final RoutineHistoryMapper routineHistoryMapper;
+	private final RoutineHistoryRepository routineHistoryRepository;
 
-    public RoutineHistoryService(
-            RoutineHistoryRepository routineHistoryRepository,
-            RoutineHistoryMapper routineHistoryMapper
-    ) {
-        this.routineHistoryRepository = routineHistoryRepository;
-        this.routineHistoryMapper = routineHistoryMapper;
-    }
+	private final RoutineHistoryMapper routineHistoryMapper;
 
-    @Transactional(rollbackFor = Exception.class)
-    public Long createRoutineHistory(RoutineHistoryDto routineHistoryDto, String memberId) {
-        RoutineHistory routineHistory = routineHistoryMapper.toEntity(routineHistoryDto, memberId);
-        RoutineHistory savedHistory = routineHistoryRepository.save(routineHistory);
-        return savedHistory.getId();
-    }
+	public RoutineHistoryService(RoutineHistoryRepository routineHistoryRepository,
+			RoutineHistoryMapper routineHistoryMapper) {
+		this.routineHistoryRepository = routineHistoryRepository;
+		this.routineHistoryMapper = routineHistoryMapper;
+	}
 
-    @Transactional(rollbackFor = Exception.class)
-    public Long deleteRoutineHistory(Long id, String memberId) {
-        RoutineHistory routineHistory = routineHistoryRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Routine history not found with id: " + id));
-        routineHistoryRepository.delete(routineHistory);
-        return routineHistory.getId();
-    }
+	@Transactional(rollbackFor = Exception.class)
+	public Long createRoutineHistory(RoutineHistoryDto routineHistoryDto, String memberId) {
+		RoutineHistory routineHistory = routineHistoryMapper.toEntity(routineHistoryDto, memberId);
+		RoutineHistory savedHistory = routineHistoryRepository.save(routineHistory);
+		return savedHistory.getId();
+	}
 
-    public List<RoutineHistory> getRoutineHistories(String memberId, String date) {
-        return routineHistoryRepository.searchByMemberIdAndExerciseDate(memberId, LocalDate.parse(date));
-    }
+	@Transactional(rollbackFor = Exception.class)
+	public Long deleteRoutineHistory(Long id, String memberId) {
+		RoutineHistory routineHistory = routineHistoryRepository.findById(id)
+			.orElseThrow(() -> new IllegalArgumentException("Routine history not found with id: " + id));
+		routineHistoryRepository.delete(routineHistory);
+		return routineHistory.getId();
+	}
 
-    public RoutineHistory getRoutineHistory(Long historyId) {
-        return routineHistoryRepository.findById(historyId)
-                .orElseThrow(() -> new IllegalArgumentException("Routine history not found with id: " + historyId));
-    }
+	public List<RoutineHistory> getRoutineHistories(String memberId, String date) {
+		return routineHistoryRepository.searchByMemberIdAndExerciseDate(memberId, LocalDate.parse(date));
+	}
 
-    public List<HistoryStatisticDto> getRoutineStatistics(
-            Long exerciseId,
-            String memberId,
-            RoutineHistoryPeriod period,
-            RoutineHistoryType type
-    ) {
-        LocalDate endDate = LocalDate.now();
-        LocalDate startDate = period.toStartDate(endDate);
+	public RoutineHistory getRoutineHistory(Long historyId) {
+		return routineHistoryRepository.findById(historyId)
+			.orElseThrow(() -> new IllegalArgumentException("Routine history not found with id: " + historyId));
+	}
 
-        return routineHistoryRepository.searchStatisticsByExerciseId(exerciseId, memberId, startDate, endDate, type);
-    }
+	public List<HistoryStatisticDto> getRoutineStatistics(Long exerciseId, String memberId, RoutineHistoryPeriod period,
+			RoutineHistoryType type) {
+		LocalDate endDate = LocalDate.now();
+		LocalDate startDate = period.toStartDate(endDate);
 
-    public List<RoutineHistory> getMonthlyRoutineHistories(String memberId, String month) {
-        return routineHistoryRepository.searchByMemberIdAndMonth(memberId, LocalDate.parse(month + "-01"));
-    }
+		return routineHistoryRepository.searchStatisticsByExerciseId(exerciseId, memberId, startDate, endDate, type);
+	}
+
+	public List<RoutineHistory> getMonthlyRoutineHistories(String memberId, String month) {
+		return routineHistoryRepository.searchByMemberIdAndMonth(memberId, LocalDate.parse(month + "-01"));
+	}
+
 }

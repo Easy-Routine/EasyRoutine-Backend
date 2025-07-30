@@ -28,10 +28,8 @@ public class RoutineController {
 
 	@Operation(summary = "루틴 생성", description = "루틴 생성 API")
 	@PostMapping()
-	public ApiResponse<Long> createRoutine(
-			@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
-			@Valid @RequestBody RoutineCreateRequest routineCreateRequest
-	) {
+	public ApiResponse<Long> createRoutine(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
+			@Valid @RequestBody RoutineCreateRequest routineCreateRequest) {
 
 		routineCreateRequest.ofRoutineCreateRequest();
 		String memberId = customOAuth2User.getMemberId();
@@ -43,9 +41,7 @@ public class RoutineController {
 
 	@Operation(summary = "루틴 조회", description = "루틴 조회 API")
 	@GetMapping
-	public PageData<RoutineListDto> findAllRoutine(
-			@AuthenticationPrincipal CustomOAuth2User customOAuth2User
-	) {
+	public PageData<RoutineListDto> findAllRoutine(@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
 		Member member = Member.of(customOAuth2User.getMemberId());
 		List<RoutineListDto> list = routineService.findAllRoutine(member);
 		return PageData.of(list.size(), list);
@@ -53,11 +49,8 @@ public class RoutineController {
 
 	@Operation(summary = "루틴 수정", description = "루틴 수정 API")
 	@PutMapping("/{routineId}")
-	public ApiResponse<Long> updateRoutine(
-			@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
-			@PathVariable long routineId,
-			@Valid @RequestBody RoutineCreateRequest routineCreateRequest
-	) {
+	public ApiResponse<Long> updateRoutine(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
+			@PathVariable long routineId, @Valid @RequestBody RoutineCreateRequest routineCreateRequest) {
 
 		routineCreateRequest.ofRoutineCreateRequest();
 		String memberId = customOAuth2User.getMemberId();
@@ -74,10 +67,8 @@ public class RoutineController {
 
 	@Operation(summary = "루틴 제거", description = "루틴 삭제 API")
 	@DeleteMapping("/{routineId}")
-	public ApiResponse<RoutineDto> deleteRoutine(
-			@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
-			@PathVariable long routineId
-	) {
+	public ApiResponse<RoutineDto> deleteRoutine(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
+			@PathVariable long routineId) {
 		Member member = Member.of(customOAuth2User.getMemberId());
 		RoutineDto dto = routineService.deleteRoutine(routineId, member);
 		if (dto == null) {

@@ -17,52 +17,53 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RoutineExerciseMapper {
 
-    private final RoutineExerciseSetsMapper routineExerciseSetsMapper;
+	private final RoutineExerciseSetsMapper routineExerciseSetsMapper;
 
-    public RoutineExercise toEntity(RoutineExerciseDto routineExerciseDto) {
-        return RoutineExercise.builder()
-                .routine(Routine.of(routineExerciseDto.getRoutineId()))
-                .exercise(Exercise.of(routineExerciseDto.getExerciseId()))
-                .order(routineExerciseDto.getOrder())
-                .build();
-    }
+	public RoutineExercise toEntity(RoutineExerciseDto routineExerciseDto) {
+		return RoutineExercise.builder()
+			.routine(Routine.of(routineExerciseDto.getRoutineId()))
+			.exercise(Exercise.of(routineExerciseDto.getExerciseId()))
+			.order(routineExerciseDto.getOrder())
+			.build();
+	}
 
-    public RoutineExerciseDto fromEntity(RoutineExercise e) {
-        List<RoutineExerciseSetsDto> setsDtoList = e.getSets()
-                .stream()
-                .map(routineExerciseSetsMapper::fromEntity)
-                .toList();
-        return RoutineExerciseDto.builder()
-                .id(e.getId())
-                .routineId(e.getRoutine().getId())
-                .exerciseId(e.getExercise().getId())
-                .category(e.getExercise().getCategory())
-                .image(e.getExercise().getImage())
-                .name(e.getExercise().getName())
-                .order(e.getOrder())
-                .routineExerciseSetsDtoList(setsDtoList)
-                .build();
-    }
+	public RoutineExerciseDto fromEntity(RoutineExercise e) {
+		List<RoutineExerciseSetsDto> setsDtoList = e.getSets()
+			.stream()
+			.map(routineExerciseSetsMapper::fromEntity)
+			.toList();
+		return RoutineExerciseDto.builder()
+			.id(e.getId())
+			.routineId(e.getRoutine().getId())
+			.exerciseId(e.getExercise().getId())
+			.category(e.getExercise().getCategory())
+			.image(e.getExercise().getImage())
+			.name(e.getExercise().getName())
+			.order(e.getOrder())
+			.routineExerciseSetsDtoList(setsDtoList)
+			.build();
+	}
 
-    public RoutineExerciseListDto fromEntityToListDto(RoutineExercise e) {
-        RoutineExerciseDetailDto exerciseDto = RoutineExerciseDetailDto.builder()
-                .id(e.getExercise().getId())
-                .image(e.getExercise().getImage())
-                .name(e.getExercise().getName())
-                .category(e.getExercise().getCategory())
-                .types(e.getExercise().getTypes())
-                .isEditable(e.getExercise().getIsEditable())
-                .shareLevel(e.getExercise().getShareLevel())
-                .build();
-        List<RoutineExerciseSetListDto> setsDtoList = e.getSets()
-                .stream()
-                .map(routineExerciseSetsMapper::fromEntityToListDto)
-                .toList();
-        return RoutineExerciseListDto.builder()
-                .id(e.getId())
-                .order(e.getOrder())
-                .exercise(exerciseDto)
-                .sets(setsDtoList)
-                .build();
-    }
+	public RoutineExerciseListDto fromEntityToListDto(RoutineExercise e) {
+		RoutineExerciseDetailDto exerciseDto = RoutineExerciseDetailDto.builder()
+			.id(e.getExercise().getId())
+			.image(e.getExercise().getImage())
+			.name(e.getExercise().getName())
+			.category(e.getExercise().getCategory())
+			.types(e.getExercise().getTypes())
+			.isEditable(e.getExercise().getIsEditable())
+			.shareLevel(e.getExercise().getShareLevel())
+			.build();
+		List<RoutineExerciseSetListDto> setsDtoList = e.getSets()
+			.stream()
+			.map(routineExerciseSetsMapper::fromEntityToListDto)
+			.toList();
+		return RoutineExerciseListDto.builder()
+			.id(e.getId())
+			.order(e.getOrder())
+			.exercise(exerciseDto)
+			.sets(setsDtoList)
+			.build();
+	}
+
 }

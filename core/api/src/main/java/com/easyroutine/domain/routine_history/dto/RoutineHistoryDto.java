@@ -13,54 +13,58 @@ import java.util.List;
 @AllArgsConstructor
 public class RoutineHistoryDto {
 
-    private Long id;
+	private Long id;
 
-    private Long routineId;
+	private Long routineId;
 
-    private String name;
+	private String name;
 
-    private String color;
+	private String color;
 
-    private int order;
+	private int order;
 
-    private int workoutTime;
+	private int workoutTime;
 
-    private List<RoutineHistoryExerciseDto> routineExercises;
+	private List<RoutineHistoryExerciseDto> routineExercises;
 
-    public static RoutineHistoryDto createOf(RoutineHistoryCreateRequest request) {
-        List<RoutineHistoryExerciseDto> routineExercises = request.getRoutineExercises().stream()
-                .map(RoutineHistoryExerciseDto::createOf)
-                .toList();
+	public static RoutineHistoryDto createOf(RoutineHistoryCreateRequest request) {
+		List<RoutineHistoryExerciseDto> routineExercises = request.getRoutineExercises()
+			.stream()
+			.map(RoutineHistoryExerciseDto::createOf)
+			.toList();
 
-        return RoutineHistoryDto.builder()
-                .routineId(request.getRoutineId())
-                .name(request.getName())
-                .color(request.getColor())
-                .order(request.getOrder())
-                .workoutTime(request.getWorkoutTime())
-                .routineExercises(routineExercises)
-                .build();
-    }
+		return RoutineHistoryDto.builder()
+			.routineId(request.getRoutineId())
+			.name(request.getName())
+			.color(request.getColor())
+			.order(request.getOrder())
+			.workoutTime(request.getWorkoutTime())
+			.routineExercises(routineExercises)
+			.build();
+	}
 
-    public static RoutineHistoryDto of(RoutineHistory routineHistory) {
+	public static RoutineHistoryDto of(RoutineHistory routineHistory) {
 
-        int totalExerciseTime = routineHistory.getRoutineHistoryExercises().stream()
-                .flatMap(exercise -> exercise.getRoutineHistoryExerciseSets().stream())
-                .mapToInt(set -> set.getExerciseTime())
-                .sum();
+		int totalExerciseTime = routineHistory.getRoutineHistoryExercises()
+			.stream()
+			.flatMap(exercise -> exercise.getRoutineHistoryExerciseSets().stream())
+			.mapToInt(set -> set.getExerciseTime())
+			.sum();
 
-        List<RoutineHistoryExerciseDto> routineExercises = routineHistory.getRoutineHistoryExercises().stream()
-                .map(RoutineHistoryExerciseDto::of)
-                .toList();
+		List<RoutineHistoryExerciseDto> routineExercises = routineHistory.getRoutineHistoryExercises()
+			.stream()
+			.map(RoutineHistoryExerciseDto::of)
+			.toList();
 
-        return RoutineHistoryDto.builder()
-                .id(routineHistory.getId())
-                .routineId(routineHistory.getRoutine().getId())
-                .name(routineHistory.getRoutine().getName())
-                .color(routineHistory.getRoutine().getColor())
-                .order(routineHistory.getOrderIndex())
-                .workoutTime(totalExerciseTime)
-                .routineExercises(routineExercises)
-                .build();
-    }
+		return RoutineHistoryDto.builder()
+			.id(routineHistory.getId())
+			.routineId(routineHistory.getRoutine().getId())
+			.name(routineHistory.getRoutine().getName())
+			.color(routineHistory.getRoutine().getColor())
+			.order(routineHistory.getOrderIndex())
+			.workoutTime(totalExerciseTime)
+			.routineExercises(routineExercises)
+			.build();
+	}
+
 }

@@ -64,4 +64,5 @@ public class Routine extends BaseEntity {
 		this.order = routineDto.getOrder();
 		this.routineExercises.clear();
 	}
+
 }

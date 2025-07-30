@@ -22,68 +22,62 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoutineHistoryExercise extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private RoutineHistory routineHistory;
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	private RoutineHistory routineHistory;
 
-    @Column(name = "order_index", nullable = false)
-    private int orderIndex;
+	@Column(name = "order_index", nullable = false)
+	private int orderIndex;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private Exercise exercise;
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	private Exercise exercise;
 
-    @Column(name = "exercise_name")
-    private String exerciseName;
+	@Column(name = "exercise_name")
+	private String exerciseName;
 
-    @ElementCollection
-    @Column(name = "exercise_type")
-    @Enumerated(EnumType.STRING)
-    private List<ExerciseType> exerciseType = List.of();
+	@ElementCollection
+	@Column(name = "exercise_type")
+	@Enumerated(EnumType.STRING)
+	private List<ExerciseType> exerciseType = List.of();
 
-    @Column(name = "exercise_category")
-    private ExerciseCategory exerciseCategories;
+	@Column(name = "exercise_category")
+	private ExerciseCategory exerciseCategories;
 
-    @OneToMany(mappedBy = "routineHistoryExercise", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<RoutineHistoryExerciseSets> routineHistoryExerciseSets = new HashSet<>();
+	@OneToMany(mappedBy = "routineHistoryExercise", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<RoutineHistoryExerciseSets> routineHistoryExerciseSets = new HashSet<>();
 
-    @Builder
-    private RoutineHistoryExercise(
-            Long id,
-            RoutineHistory routineHistory,
-            int orderIndex,
-            Exercise exercise,
-            String exerciseName,
-            List<ExerciseType> exerciseType,
-            ExerciseCategory exerciseCategories,
-            Set<RoutineHistoryExerciseSets> routineHistoryExerciseSets
-    ) {
-        this.id = id;
-        this.routineHistory = routineHistory;
-        this.orderIndex = orderIndex;
-        this.exercise = exercise;
-        this.exerciseName = exerciseName;
-        this.exerciseType = exerciseType;
-        this.exerciseCategories = exerciseCategories;
-        this.routineHistoryExerciseSets = routineHistoryExerciseSets;
-    }
+	@Builder
+	private RoutineHistoryExercise(Long id, RoutineHistory routineHistory, int orderIndex, Exercise exercise,
+			String exerciseName, List<ExerciseType> exerciseType, ExerciseCategory exerciseCategories,
+			Set<RoutineHistoryExerciseSets> routineHistoryExerciseSets) {
+		this.id = id;
+		this.routineHistory = routineHistory;
+		this.orderIndex = orderIndex;
+		this.exercise = exercise;
+		this.exerciseName = exerciseName;
+		this.exerciseType = exerciseType;
+		this.exerciseCategories = exerciseCategories;
+		this.routineHistoryExerciseSets = routineHistoryExerciseSets;
+	}
 
-    public void setRoutineHistory(RoutineHistory routineHistory) {
-        if (this.routineHistory != null) {
-            this.routineHistory.getRoutineHistoryExercises().remove(this);
-        }
-        this.routineHistory = routineHistory;
-        if (routineHistory != null) {
-            routineHistory.getRoutineHistoryExercises().add(this);
-        }
-    }
+	public void setRoutineHistory(RoutineHistory routineHistory) {
+		if (this.routineHistory != null) {
+			this.routineHistory.getRoutineHistoryExercises().remove(this);
+		}
+		this.routineHistory = routineHistory;
+		if (routineHistory != null) {
+			routineHistory.getRoutineHistoryExercises().add(this);
+		}
+	}
 
-    public void addRoutineHistoryExerciseSets(Set<RoutineHistoryExerciseSets> sets) {
-        for (RoutineHistoryExerciseSets set : sets) {
-            set.setRoutineHistoryExercise(this);
-        }
-        this.routineHistoryExerciseSets = sets;
-    }
+	public void addRoutineHistoryExerciseSets(Set<RoutineHistoryExerciseSets> sets) {
+		for (RoutineHistoryExerciseSets set : sets) {
+			set.setRoutineHistoryExercise(this);
+		}
+		this.routineHistoryExerciseSets = sets;
+	}
+
 }

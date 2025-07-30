@@ -65,15 +65,15 @@ public class RoutineControllerTest extends ControllerTestSupport {
 		given(routineService.createRoutine(any())).willReturn(1L);
 
 		mockMvc.perform(post("/api/v1/routines").with(csrf()).contentType("application/json").content(requestJson))
-				.andDo(print())
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.success").value(true))
-				.andExpect(jsonPath("$.result").value(1L));
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.success").value(true))
+			.andExpect(jsonPath("$.result").value(1L));
 	}
 
 	@Description("루틴을 등록을 실패한다. ")
 	@WithMockUser(username = "tester", roles = "MEMBER")
-//	@Test
+	// @Test
 	void createRoutineInputError() throws Exception {
 		CustomOAuth2User customUser = mock(CustomOAuth2User.class);
 
@@ -107,7 +107,7 @@ public class RoutineControllerTest extends ControllerTestSupport {
 				}
 				""";
 
-//		given(routineService.createRoutine(any())).willReturn(1L);
+		// given(routineService.createRoutine(any())).willReturn(1L);
 
 		mockMvc.perform(post("/api/v1/routines").with(csrf()).contentType("application/json").content(requestJson))
 			.andDo(print())
@@ -143,11 +143,7 @@ public class RoutineControllerTest extends ControllerTestSupport {
 			.routineExerciseSetsDtoList(Arrays.asList(routineExerciseSetsDto))
 			.build();
 
-		RoutineListDto routineDto = RoutineListDto.builder()
-			.id(1L)
-			.name("testRoutineName")
-			.color("blue")
-			.build();
+		RoutineListDto routineDto = RoutineListDto.builder().id(1L).name("testRoutineName").color("blue").build();
 
 		given(routineService.findAllRoutine(any())).willReturn(Arrays.asList(routineDto));
 

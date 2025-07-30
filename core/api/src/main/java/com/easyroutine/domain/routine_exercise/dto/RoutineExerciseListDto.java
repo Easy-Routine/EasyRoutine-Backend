@@ -11,8 +11,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoutineExerciseListDto {
-    private Long id;
-    private int order;
-    private RoutineExerciseDetailDto exercise;
-    private List<RoutineExerciseSetListDto> sets;
+
+	private Long id;
+
+	private int order;
+
+	private RoutineExerciseDetailDto exercise;
+
+	private List<RoutineExerciseSetListDto> sets;
+
 }

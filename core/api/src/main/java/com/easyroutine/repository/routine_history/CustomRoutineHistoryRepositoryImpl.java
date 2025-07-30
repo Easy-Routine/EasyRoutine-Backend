@@ -20,61 +20,47 @@ import static com.easyroutine.domain.routine_history.QRoutineHistoryExerciseSets
 @RequiredArgsConstructor
 public class CustomRoutineHistoryRepositoryImpl implements CustomRoutineHistoryRepository {
 
-    private final JPAQueryFactory queryFactory;
+	private final JPAQueryFactory queryFactory;
 
-    @Override
-    public List<RoutineHistory> searchByMemberIdAndExerciseDate(String memberId, LocalDate date) {
-        return queryFactory
-                .select(routineHistory)
-                .from(routineHistory)
-                .leftJoin(routineHistory.routine, routine).fetchJoin()
-                .leftJoin(routineHistory.routineHistoryExercises, routineHistoryExercise).fetchJoin()
-                .leftJoin(routineHistoryExercise.routineHistoryExerciseSets, routineHistoryExerciseSets).fetchJoin()
-                .where(
-                        routineHistory.memberId.eq(memberId),
-                        (routineHistory.exerciseDate.eq(date))
-                )
-                .orderBy(routineHistory.orderIndex.asc())
-                .fetch();
-    }
+	@Override
+	public List<RoutineHistory> searchByMemberIdAndExerciseDate(String memberId, LocalDate date) {
+		return queryFactory.select(routineHistory)
+			.from(routineHistory)
+			.leftJoin(routineHistory.routine, routine)
+			.fetchJoin()
+			.leftJoin(routineHistory.routineHistoryExercises, routineHistoryExercise)
+			.fetchJoin()
+			.leftJoin(routineHistoryExercise.routineHistoryExerciseSets, routineHistoryExerciseSets)
+			.fetchJoin()
+			.where(routineHistory.memberId.eq(memberId), (routineHistory.exerciseDate.eq(date)))
+			.orderBy(routineHistory.orderIndex.asc())
+			.fetch();
+	}
 
-    @Override
-    public List<HistoryStatisticDto> searchStatisticsByExerciseId(
-            Long exerciseId,
-            String memberId,
-            LocalDate startDate,
-            LocalDate endDate,
-            RoutineHistoryType type
-    ) {
-        return queryFactory
-                .select(Projections.constructor(
-                        HistoryStatisticDto.class,
-                        routineHistory.exerciseDate.as("key"),
-                        type.getExpression(routineHistoryExerciseSets).as("value")
-                ))
-                .from(routineHistoryExerciseSets)
-                .join(routineHistoryExerciseSets.routineHistoryExercise, routineHistoryExercise)
-                .join(routineHistoryExercise.routineHistory, routineHistory)
-                .where(
-                        routineHistoryExercise.exercise.id.eq(exerciseId),
-                        routineHistory.memberId.eq(memberId),
-                        routineHistory.exerciseDate.between(startDate, endDate)
-                )
-                .groupBy(routineHistory.exerciseDate)
-                .fetch();
-    }
+	@Override
+	public List<HistoryStatisticDto> searchStatisticsByExerciseId(Long exerciseId, String memberId, LocalDate startDate,
+			LocalDate endDate, RoutineHistoryType type) {
+		return queryFactory
+			.select(Projections.constructor(HistoryStatisticDto.class, routineHistory.exerciseDate.as("key"),
+					type.getExpression(routineHistoryExerciseSets).as("value")))
+			.from(routineHistoryExerciseSets)
+			.join(routineHistoryExerciseSets.routineHistoryExercise, routineHistoryExercise)
+			.join(routineHistoryExercise.routineHistory, routineHistory)
+			.where(routineHistoryExercise.exercise.id.eq(exerciseId), routineHistory.memberId.eq(memberId),
+					routineHistory.exerciseDate.between(startDate, endDate))
+			.groupBy(routineHistory.exerciseDate)
+			.fetch();
+	}
 
-    @Override
-    public List<RoutineHistory> searchByMemberIdAndMonth(String memberId, LocalDate monthDate) {
-        return queryFactory
-                .select(routineHistory)
-                .from(routineHistory)
-                .where(
-                        routineHistory.memberId.eq(memberId),
-                        routineHistory.exerciseDate.month().eq(monthDate.getMonthValue()),
-                        routineHistory.exerciseDate.year().eq(monthDate.getYear())
-                )
-                .orderBy(routineHistory.orderIndex.asc())
-                .fetch();
-    }
+	@Override
+	public List<RoutineHistory> searchByMemberIdAndMonth(String memberId, LocalDate monthDate) {
+		return queryFactory.select(routineHistory)
+			.from(routineHistory)
+			.where(routineHistory.memberId.eq(memberId),
+					routineHistory.exerciseDate.month().eq(monthDate.getMonthValue()),
+					routineHistory.exerciseDate.year().eq(monthDate.getYear()))
+			.orderBy(routineHistory.orderIndex.asc())
+			.fetch();
+	}
+
 }

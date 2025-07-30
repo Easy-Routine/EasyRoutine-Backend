@@ -11,29 +11,31 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MonthlyRoutineHistoryDto {
-    private Long id;
 
-    private Long routineId;
+	private Long id;
 
-    private String name;
+	private Long routineId;
 
-    private String color;
+	private String name;
 
-    private LocalDate exerciseDate;
+	private String color;
 
-    private int order;
+	private LocalDate exerciseDate;
 
-    private int workoutTime;
+	private int order;
 
-    public static MonthlyRoutineHistoryDto createByRoutineHistory(RoutineHistory routineHistory) {
-        return MonthlyRoutineHistoryDto.builder()
-                .id(routineHistory.getId())
-                .routineId(routineHistory.getRoutine().getId())
-                .name(routineHistory.getRoutineName())
-                .color(routineHistory.getColor())
-                .exerciseDate(routineHistory.getExerciseDate())
-                .order(routineHistory.getOrderIndex())
-                .workoutTime(routineHistory.getWorkoutTime())
-                .build();
-    }
+	private int workoutTime;
+
+	public static MonthlyRoutineHistoryDto createByRoutineHistory(RoutineHistory routineHistory) {
+		return MonthlyRoutineHistoryDto.builder()
+			.id(routineHistory.getId())
+			.routineId(routineHistory.getRoutine().getId())
+			.name(routineHistory.getRoutineName())
+			.color(routineHistory.getColor())
+			.exerciseDate(routineHistory.getExerciseDate())
+			.order(routineHistory.getOrderIndex())
+			.workoutTime(routineHistory.getWorkoutTime())
+			.build();
+	}
+
 }

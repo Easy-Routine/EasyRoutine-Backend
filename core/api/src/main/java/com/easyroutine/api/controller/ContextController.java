@@ -37,10 +37,10 @@ public class ContextController {
 		return jwtUtil.createAccessToken(tester.getId(), tester.getRole(), 60 * 60 * 60L);
 	}
 
-
 	@Operation(summary = "error", description = "에러 테스트를 위한 API입니다.")
 	@GetMapping("/error")
 	public String error() {
 		throw new DataException(ResultType.DATA_NOT_FOUND, "This is a test error.");
 	}
+
 }

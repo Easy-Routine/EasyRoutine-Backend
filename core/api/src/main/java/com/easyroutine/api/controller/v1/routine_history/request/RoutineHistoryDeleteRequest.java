@@ -12,6 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RoutineHistoryDeleteRequest {
 
-    @Schema(description = "루틴 히스토리 ID", example = "1")
-    private Long id; // 루틴 히스토리 ID
+	@Schema(description = "루틴 히스토리 ID", example = "1")
+	private Long id; // 루틴 히스토리 ID
+
 }

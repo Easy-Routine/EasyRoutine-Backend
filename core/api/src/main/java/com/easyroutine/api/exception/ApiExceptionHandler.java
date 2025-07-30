@@ -37,4 +37,5 @@ public class ApiExceptionHandler {
 		log.error("Exception: {}", e.getMessage(), e);
 		return ApiResponse.fail(ResultType.FAIL, e.getMessage());
 	}
+
 }

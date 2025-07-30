@@ -12,9 +12,13 @@ import java.util.List;
 
 @Getter
 public class RoutineCreateRequest {
+
 	private String name;
+
 	private String color;
+
 	private int order;
+
 	private List<ReqRoutineExercise> routineExercises;
 
 	@JsonIgnore
@@ -23,49 +27,62 @@ public class RoutineCreateRequest {
 
 	public void ofRoutineCreateRequest() {
 		List<RoutineExerciseDto> routineExerciseDtoList = routineExercises.stream().map(exercise -> {
-			List<RoutineExerciseSetsDto> sets = exercise.getSets().stream().map(set ->
-					RoutineExerciseSetsDto.builder()
-							.order(set.getOrder())
-							.weight(set.getWeight())
-							.rep(set.getRep())
-							.refreshSec(set.getRestSec())
-							.build()
-			).toList();
+			List<RoutineExerciseSetsDto> sets = exercise.getSets()
+				.stream()
+				.map(set -> RoutineExerciseSetsDto.builder()
+					.order(set.getOrder())
+					.weight(set.getWeight())
+					.rep(set.getRep())
+					.refreshSec(set.getRestSec())
+					.build())
+				.toList();
 
 			return RoutineExerciseDto.builder()
-					.exerciseId((long) exercise.getExercise().getId())
-					.order(exercise.getOrder())
-					.routineExerciseSetsDtoList(sets)
-					.build();
+				.exerciseId((long) exercise.getExercise().getId())
+				.order(exercise.getOrder())
+				.routineExerciseSetsDtoList(sets)
+				.build();
 		}).toList();
 
 		this.routineDto = RoutineDto.builder()
-				.name(this.name)
-				.color(this.color)
-				.order(this.order)
-				.routineExerciseDtoList(routineExerciseDtoList)
-				.build();
+			.name(this.name)
+			.color(this.color)
+			.order(this.order)
+			.routineExerciseDtoList(routineExerciseDtoList)
+			.build();
 	}
-
 
 	@Data
 	public static class ReqRoutineExercise {
+
 		private int order;
+
 		private ReqExercise exercise;
+
 		private List<ReqSets> sets;
+
 	}
 
 	@Data
 	public static class ReqExercise {
+
 		private int id;
+
 	}
 
 	@Data
 	public static class ReqSets {
+
 		private int order;
+
 		private double weight;
+
 		private int rep;
+
 		private int exerciseSec;
+
 		private int restSec;
+
 	}
+
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
 	private final MemberService memberService;
+
 	private final ExerciseAlarmSettingService exerciseAlarmSettingService;
 
 	@Operation(summary = "회원 탈퇴", description = "회원 탈퇴 API")
@@ -29,10 +30,19 @@ public class MemberController {
 	}
 
 	@Operation(summary = "알람 저장", description = "알람 저장 API")
-	@PostMapping("/save/alarm")
-	public Long saveAlarm(@AuthenticationPrincipal CustomOAuth2User customOAuth2User, @RequestBody ExerciseAlarmSettingDto.ReqSaveExerciseAlarmSetting req) {
+	@PostMapping("/mypage/alarm/save")
+	public Long saveAlarm(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
+			@RequestBody ExerciseAlarmSettingDto.ReqSaveExerciseAlarmSetting req) {
 		Member member = Member.of(customOAuth2User.getMemberId());
 		return exerciseAlarmSettingService.saveExerciseAlarmSetting(req, member);
+	}
+
+	@Operation(summary = "알람 조회", description = "알람 조회 API")
+	@GetMapping("/mypage/alarm")
+	public ExerciseAlarmSettingDto.ResFindExerciseAlarmSetting getAlarmSetting(
+			@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+		Member member = Member.of(customOAuth2User.getMemberId());
+		return exerciseAlarmSettingService.findExerciseAlarmSettingById(member);
 	}
 
 }

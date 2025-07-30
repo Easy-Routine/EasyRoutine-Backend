@@ -12,6 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RoutineHistoryExerciseRequest {
 
-    @Schema(description = "운동 이력 ID", example = "1")
-    private Long id;
+	@Schema(description = "운동 이력 ID", example = "1")
+	private Long id;
+
 }

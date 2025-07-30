@@ -28,4 +28,5 @@ public class ApiResponse<T> {
 	public static <String> ApiResponse<String> fail(ResultType errorResult, String message) {
 		return new ApiResponse<>(errorResult, message);
 	}
+
 }

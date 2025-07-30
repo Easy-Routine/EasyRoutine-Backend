@@ -20,81 +20,75 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RoutineHistoryMapper {
 
-    private final ExercisesRepository exercisesRepository;
+	private final ExercisesRepository exercisesRepository;
 
-    public RoutineHistory toEntity(RoutineHistoryDto dto, String memberId) {
-        Routine routine = Routine.of(dto.getRoutineId());
-        Map<Long, Exercise> exerciseMap = getExercisesMapBy(dto);
+	public RoutineHistory toEntity(RoutineHistoryDto dto, String memberId) {
+		Routine routine = Routine.of(dto.getRoutineId());
+		Map<Long, Exercise> exerciseMap = getExercisesMapBy(dto);
 
-        RoutineHistory routineHistory = RoutineHistory.builder()
-                .routine(routine)
-                .routineName(dto.getName())
-                .color(dto.getColor())
-                .orderIndex(dto.getOrder())
-                .workoutTime(dto.getWorkoutTime())
-                .routineHistoryExercises(new HashSet<>())
-                .exerciseDate(LocalDate.now())
-                .memberId(memberId)
-                .build();
+		RoutineHistory routineHistory = RoutineHistory.builder()
+			.routine(routine)
+			.routineName(dto.getName())
+			.color(dto.getColor())
+			.orderIndex(dto.getOrder())
+			.workoutTime(dto.getWorkoutTime())
+			.routineHistoryExercises(new HashSet<>())
+			.exerciseDate(LocalDate.now())
+			.memberId(memberId)
+			.build();
 
-        Set<RoutineHistoryExercise> routineHistoryExercises = dto.getRoutineExercises().stream()
-                .map(exerciseDto -> {
-                    RoutineHistoryExercise routineHistoryExercise = toEntity(exerciseDto, exerciseMap);
-                    routineHistoryExercise.setRoutineHistory(routineHistory);
-                    return routineHistoryExercise;
-                })
-                .collect(Collectors.toSet());
+		Set<RoutineHistoryExercise> routineHistoryExercises = dto.getRoutineExercises().stream().map(exerciseDto -> {
+			RoutineHistoryExercise routineHistoryExercise = toEntity(exerciseDto, exerciseMap);
+			routineHistoryExercise.setRoutineHistory(routineHistory);
+			return routineHistoryExercise;
+		}).collect(Collectors.toSet());
 
-        routineHistory.addRoutineExercises(routineHistoryExercises);
+		routineHistory.addRoutineExercises(routineHistoryExercises);
 
-        return routineHistory;
-    }
+		return routineHistory;
+	}
 
-    public RoutineHistoryExercise toEntity(RoutineHistoryExerciseDto dto, Map<Long, Exercise> exerciseMap) {
-        Exercise exercise = exerciseMap.getOrDefault(dto.getExercise().getId(), Exercise.of(dto.getExercise().getId()));
+	public RoutineHistoryExercise toEntity(RoutineHistoryExerciseDto dto, Map<Long, Exercise> exerciseMap) {
+		Exercise exercise = exerciseMap.getOrDefault(dto.getExercise().getId(), Exercise.of(dto.getExercise().getId()));
 
-        RoutineHistoryExercise routineHistoryExercise = RoutineHistoryExercise.builder()
-                .routineHistory(null)
-                .orderIndex(dto.getOrder())
-                .exercise(exercise)
-                .exerciseName(exercise.getName())
-                .exerciseType(new ArrayList<>(exercise.getTypes()))
-                .exerciseCategories(exercise.getCategory())
-                .routineHistoryExerciseSets(new HashSet<>())
-                .build();
+		RoutineHistoryExercise routineHistoryExercise = RoutineHistoryExercise.builder()
+			.routineHistory(null)
+			.orderIndex(dto.getOrder())
+			.exercise(exercise)
+			.exerciseName(exercise.getName())
+			.exerciseType(new ArrayList<>(exercise.getTypes()))
+			.exerciseCategories(exercise.getCategory())
+			.routineHistoryExerciseSets(new HashSet<>())
+			.build();
 
-        Set<RoutineHistoryExerciseSets> sets = dto.getSets().stream()
-                .map(setDto -> {
-                    RoutineHistoryExerciseSets routineHistoryExerciseSets = toEntity(setDto);
-                    routineHistoryExerciseSets.setRoutineHistoryExercise(routineHistoryExercise);
-                    return routineHistoryExerciseSets;
-                })
-                .collect(Collectors.toSet());
+		Set<RoutineHistoryExerciseSets> sets = dto.getSets().stream().map(setDto -> {
+			RoutineHistoryExerciseSets routineHistoryExerciseSets = toEntity(setDto);
+			routineHistoryExerciseSets.setRoutineHistoryExercise(routineHistoryExercise);
+			return routineHistoryExerciseSets;
+		}).collect(Collectors.toSet());
 
-        routineHistoryExercise.addRoutineHistoryExerciseSets(sets);
+		routineHistoryExercise.addRoutineHistoryExerciseSets(sets);
 
-        return routineHistoryExercise;
-    }
+		return routineHistoryExercise;
+	}
 
-    public RoutineHistoryExerciseSets toEntity(RoutineHistorySetsDto routineHistorySetsDto) {
-        return RoutineHistoryExerciseSets.builder()
-                .routineHistoryExercise(null)
-                .orderIndex(routineHistorySetsDto.getOrder())
-                .reps(routineHistorySetsDto.getReps())
-                .weight(routineHistorySetsDto.getWeight())
-                .exerciseTime(routineHistorySetsDto.getExerciseTime())
-                .refreshTime(routineHistorySetsDto.getRestSec())
-                .build();
-    }
+	public RoutineHistoryExerciseSets toEntity(RoutineHistorySetsDto routineHistorySetsDto) {
+		return RoutineHistoryExerciseSets.builder()
+			.routineHistoryExercise(null)
+			.orderIndex(routineHistorySetsDto.getOrder())
+			.reps(routineHistorySetsDto.getReps())
+			.weight(routineHistorySetsDto.getWeight())
+			.exerciseTime(routineHistorySetsDto.getExerciseTime())
+			.refreshTime(routineHistorySetsDto.getRestSec())
+			.build();
+	}
 
-    private Map<Long, Exercise> getExercisesMapBy(RoutineHistoryDto dto) {
-        List<Long> exerciseIds = dto.getRoutineExercises().stream()
-                .map(e -> e.getExercise().getId())
-                .toList();
+	private Map<Long, Exercise> getExercisesMapBy(RoutineHistoryDto dto) {
+		List<Long> exerciseIds = dto.getRoutineExercises().stream().map(e -> e.getExercise().getId()).toList();
 
-        List<Exercise> exercises = exercisesRepository.findAllById(exerciseIds);
+		List<Exercise> exercises = exercisesRepository.findAllById(exerciseIds);
 
-        return exercises.stream()
-                .collect(Collectors.toMap(Exercise::getId, e -> e));
-    }
+		return exercises.stream().collect(Collectors.toMap(Exercise::getId, e -> e));
+	}
+
 }

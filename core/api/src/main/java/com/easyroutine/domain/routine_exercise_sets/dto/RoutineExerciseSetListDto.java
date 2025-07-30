@@ -8,10 +8,17 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoutineExerciseSetListDto {
-    private Long id;
-    private int order;
-    private Double weight;
-    private int rep;
-    private int exerciseSec;
-    private int restSec;
+
+	private Long id;
+
+	private int order;
+
+	private Double weight;
+
+	private int rep;
+
+	private int exerciseSec;
+
+	private int restSec;
+
 }

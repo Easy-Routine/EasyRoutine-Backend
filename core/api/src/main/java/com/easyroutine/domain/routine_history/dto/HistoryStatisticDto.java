@@ -10,6 +10,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 public class HistoryStatisticDto {
-    private LocalDate key;
-    private int value;
+
+	private LocalDate key;
+
+	private int value;
+
 }
