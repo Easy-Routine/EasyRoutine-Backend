@@ -1,5 +1,4 @@
 spring.application.name: core-api
-spring.profiles.active: local
 
 spring:
   config:
@@ -7,10 +6,6 @@ spring:
       - monitoring.yml
       - logging.yml
   web.resources.add-mappings: false
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
   datasource:
     driver-class-name: org.postgresql.Driver
     username: ${DB_USER}
@@ -24,15 +19,24 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         default_batch_fetch_size: 100
+
 server:
+  forward-headers-strategy: framework
   tomcat:
-    max-connections: 20000
-    threads:
-      max: 600
-      min-spare: 100
+    remoteip:
+      remote-ip-header: x-forwarded-for
+      protocol-header: x-forwarded-proto
+      internal-proxies: .*
+    use-relative-redirects: true
+  servlet:
+    session:
+      cookie:
+        secure: true
+
 jwt:
   expiration_time: 86400000
   secret: ${JWT_SECRET_KEY}
+
 cloud:
   aws:
     credentials:
@@ -47,6 +51,12 @@ cloud:
 
 ---
 spring.config.activate.on-profile: local
+
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
 
 google:
   client:
@@ -93,6 +103,26 @@ cloud:
 
 ---
 spring.config.activate.on-profile: live
+
+google:
+  client:
+    id: ${GOOGLE_CLIENT_ID}
+    secret: ${GOOGLE_CLIENT_SECRET}
+    redirect-uri: https://www.healper.shop/login/oauth2/code/google
+naver:
+  client:
+    id: ${NAVER_CLIENT_ID}
+    secret: ${NAVER_CLIENT_SECRET}
+    redirect-uri: https://www.healper.shop/login/oauth2/code/naver
+kakao:
+  client:
+    id: ${KAKAO_CLIENT_ID}
+    secret: ${KAKAO_CLIENT_SECRET}
+    redirect-uri: https://www.healper.shop/login/oauth2/code/kakao
+
+cloud:
+  s3:
+    directory: prod
 
 ---
 spring.config.activate.on-profile: test
