@@ -13,76 +13,85 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.filter.ForwardedHeaderFilter;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-	private final CustomOAuth2UserService oauth2UserService;
+    private final CustomOAuth2UserService oauth2UserService;
+    private final OAuth2ClientRegistrationStorage clientRegistrationRepository;
+    private final JsonWebTokenUtil jwtUtil;
+    private final AuthenticationSuccessHandler authenticationSuccessHandler;
 
-	private final OAuth2ClientRegistrationStorage clientRegistrationRepository;
+    public SecurityConfig(
+            CustomOAuth2UserService customOAuth2UserService,
+            OAuth2ClientRegistrationStorage customClientRegistrationRepo,
+            AuthenticationSuccessHandler authenticationSuccessHandler,
+            JsonWebTokenUtil jwtUtil
+    ) {
+        this.oauth2UserService = customOAuth2UserService;
+        this.clientRegistrationRepository = customClientRegistrationRepo;
+        this.jwtUtil = jwtUtil;
+        this.authenticationSuccessHandler = authenticationSuccessHandler;
+    }
 
-	private final JsonWebTokenUtil jwtUtil;
+    @Bean
+    public ForwardedHeaderFilter forwardedHeaderFilter() {
+        return new ForwardedHeaderFilter();
+    }
 
-	private final AuthenticationSuccessHandler authenticationSuccessHandler;
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable);
 
-	public SecurityConfig(CustomOAuth2UserService customOAuth2UserService,
-			OAuth2ClientRegistrationStorage customClientRegistrationRepo,
-			AuthenticationSuccessHandler authenticationSuccessHandler, JsonWebTokenUtil jwtUtil) {
-		this.oauth2UserService = customOAuth2UserService;
-		this.clientRegistrationRepository = customClientRegistrationRepo;
-		this.jwtUtil = jwtUtil;
-		this.authenticationSuccessHandler = authenticationSuccessHandler;
-	}
+        http.headers(headers -> headers.frameOptions(frame -> frame.disable()));
+        http.headers()
+                .httpStrictTransportSecurity()
+                .includeSubDomains(true)
+                .maxAgeInSeconds(31536000);
 
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http.csrf(AbstractHttpConfigurer::disable)
-			.formLogin(AbstractHttpConfigurer::disable)
-			.httpBasic(AbstractHttpConfigurer::disable);
+        http.cors(auth -> auth.configurationSource(request -> {
+            CorsConfiguration configuration = new CorsConfiguration();
+            configuration.setAllowCredentials(true);
+            configuration.setAllowedHeaders(List.of("*"));
+            configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+            configuration.setMaxAge(3600L);
+            configuration.setAllowedOrigins(Arrays.asList(
+                    "https://www.healper.shop",
+                    "https://easyroutine.heykiwoung.com",
+                    "http://localhost:3000",
+                    "http://127.0.0.1:8080",
+                    "http://localhost:8080"
+            ));
+            return configuration;
+        }));
 
-		http.headers(headers -> headers.frameOptions(frame -> frame.disable()));
-		http.cors(auth -> auth.configurationSource(request -> {
-			CorsConfiguration configuration = new CorsConfiguration();
-			configuration.setAllowedOrigins(
-					Arrays.asList(
-							"http://localhost:3000",
-							"http://127.0.0.1:8080",
-							"http://localhost:8080",
-							"https://easyroutine.heykiwoung.com",
-							"http://www.healper.shop",
-							"https://www.healper.shop"
-					)
-			);
-			configuration.setAllowCredentials(true);
-			configuration.setAllowedHeaders(Arrays.asList("*"));
-			configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-			configuration.setMaxAge(3600L);
-			return configuration;
-		}));
+        http.requiresChannel(channel -> channel.anyRequest().requiresSecure());
 
-		http.oauth2Login(oauth2 -> oauth2
-			.clientRegistrationRepository(clientRegistrationRepository.clientRegistrationRepository())
-			.userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(oauth2UserService))
-			.successHandler(authenticationSuccessHandler));
+        http.oauth2Login(oauth2 -> oauth2
+                .clientRegistrationRepository(clientRegistrationRepository.clientRegistrationRepository())
+                .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(oauth2UserService))
+                .successHandler(authenticationSuccessHandler)
+        );
 
-		http.addFilterBefore(new JsonWebTokenFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
+        http.addFilterBefore(new JsonWebTokenFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
 
-		http.authorizeHttpRequests(auth -> auth.requestMatchers("/", "/oauth2/**", "/login/**")
-			.permitAll()
-			.requestMatchers("/h2-console/**")
-			.permitAll()
-			.requestMatchers("/swagger-ui/**")
-			.permitAll()
-			.requestMatchers("/**")
-			.permitAll()
-			.anyRequest()
-			.authenticated());
+        http.authorizeHttpRequests(auth -> auth
+                .requestMatchers("/", "/oauth2/**", "/login/**").permitAll()
+                .requestMatchers("/h2-console/**").permitAll()
+                .requestMatchers("/swagger-ui/**").permitAll()
+                .requestMatchers("/**").permitAll()
+                .anyRequest().authenticated()
+        );
 
-		http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-		return http.build();
-	}
+        return http.build();
+    }
 }
